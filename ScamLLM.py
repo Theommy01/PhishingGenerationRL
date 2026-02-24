@@ -138,14 +138,4 @@ Potenziale vulnerabilità ad attacchi di avvelenamento dei dati o prompt injecti
 
 Un avversario può introdurre dati falsi o prompt camuffati per indurre errori di classificazione.
 
-Utilità nel tuo contesto di ricerca
-
-Nel tuo progetto — che combina phishing generation e phishing detection — RoBERTa rappresenta una scelta strategica per la parte difensiva, perché:
-
-consente di replicare approcci accademici moderni (come ScamLLM del paper IEEE 2024),
-
-fornisce una baseline solida per il confronto con modelli tradizionali (SVM, Naive Bayes, Random Forest),
-
-permette di studiare l’efficacia e la robustezza del rilevamento rispetto a tecniche di evasione generate da modelli linguistici (es. GPT o LLaMA).
-
 """
