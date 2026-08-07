@@ -1,0 +1,561 @@
+Prompt (Test Set),SFT Score (%),BCO Score (%),KTO Score (%),Cosine BCO (vs SFT),Cosine KTO (vs SFT),KL Div BCO (vs SFT),KL Div KTO (vs SFT),Prompt,SFT_Text,BCO_Text,KTO_Text
+ACTION REQUIRED: Unpaid Invoice #78492 - Service Suspension Warning,0.6134046707302332,0.13237700331956148,0.1146600698120892,58.57186317443848,55.98672032356262,0.10744258761405945,0.1179666519165039,ACTION REQUIRED: Unpaid Invoice #78492 - Service Suspension Warning,"body: Alert!  
+Your organization is currently overdue on an invoice and the vendor has specified ""Suspension of Service"" as a penalty for non-payment. 
+Please log into eWorkplace at <URL> and resolve this unpaid invoice as soon as possible.  
+You will be required to enter your <ORG> Personnel Number and Password.  If you do not have your <ORG> Personnel Number and Password please click on the link at the bottom of the eWorkplace screen to have these steps reviewed. 
+Should you need assistance, please contact the <ORG> at <PHONE> or the <ORG> at <PHONE>. 
+Here is the Unpaid Invoice with invoice number 78492. Please click on the link below to get to the invoice. 
+Description: $2.9K to <ORG> for 1 Month (Mar.01) of the New Power Service - Rate Schedule #2 under Contract #3C4P1F3GQ, Service Agreement #3C1P1F3GQ
+Invoice Total: $2,939.52 
+Terms: $2,939.52 due <DATE> 
+
+Note: When you click on the link below, your browser will open a read-only view of the invoice. 
+To pay this invoice, you must log into eWorkplace and then choose Pay Unbilled Invoices from the Invoice Payment page. 
+<URL>
+
+Please note that the vendor has assigned the responsibility for payment of this invoice to <ORG>, which is the company number on the invoice. 
+If you are not sure whom to call for assistance, you may contact the <ORG> HelpDesk at <PHONE>.","body: Alert!  
+You are receiving this message because you have an unresolved, unpaid invoice in your iPayit in-box that is past due.  It is critical that you take immediate action to resolve this invoice. 
+
+Remember, you play an important role in ensuring that we pay our vendors on time. 
+
+Tip!:  You must log in to iPayit to forward this invoice to another user. 
+
+To forward this invoice to another user, click on the following link for step-by-step instructions:
+<URL>
+
+To resolve this invoice, click on the following link for step-by-step instructions:
+<URL>
+
+Note:  You will be required to log in to iPayit.
+
+First time iPayit user?  Click on the following link for step-by-step instructions:
+<URL>
+
+Need help?
+North America: <ORG> Call Center at <PHONE>.
+<LOC>: European Accounts Payable at +4<DATE>83-7520.
+Asia-Pacific: <LOC> Accounts Payable at +6<DATE>29-2336","body: Please do not reply to this e-mail.
+
+You are receiving this message because an unpaid invoice for which you are
+responsible is in overdue status and payment is due within the next few days.
+
+Please login to ePayables and resolve any outstanding invoices in your
+inbox.
+
+To launch ePayables, click on the link below:
+<URL>
+
+First time user?  For help in setting up your user ID and password, click on
+the link below:
+<URL>
+
+Need help?  For help resolving this issue, click on the link below:
+<URL>
+
+Note:  If you are in receipt of this message in error, please contact your
+ePayables administrator."
+Confidential: Updated 2026 Salary and Bonus Guidelines,6.186751648783684,85.2274239063263,90.74028134346008,67.93926358222961,63.08434009552002,0.07901230454444885,0.09639157354831696,Confidential: Updated 2026 Salary and Bonus Guidelines,"body: This message is for use by authorized administrators of <ORG>'s Global Compensation database. Please do not share with any other employees.
+
+Dear <ORG> HR Community:
+
+In response to the current business climate, a revised 2022 Salary and Bonus guideline has been established.  The updated guidelines for 2022 were completed on <DATE> and are available for viewing on the HR website by using the link below. 
+
+2022 Salary and Bonus Guideline
+<URL>
+
+Please contact me should you have any questions.
+
+Human Resources
+Tel: <PHONE>","body: I am sending you an updated version of the 2026 Salary and Bonus Guidelines.  I apologize for the short notice, but we had to send this out today.  This message and the attached guidelines are for internal use only and should be treated as confidential.  Please do not discuss or distribute these guidelines with anyone.  If you have any questions, please contact me at <PHONE>.
+
+<PER>
+
+******************************************************************************************************************************************************************
+This message and the attached document are for internal use only and should be treated as confidential.  Please do not discuss or distribute this message or the attached document with anyone.  If you have any questions, please contact me at <PHONE>.  Thank you. 
+
+<PER> E. Keohane
+Managing Director
+<ORG>
+<LOC>
+<LOC>
+Ph:  <PHONE>
+Fax:  <PHONE>
+Email:  <EMAIL>
+<URL>","body: All,
+
+As a reminder, I am in the process of updating our 2026 Salary and Bonus Guidelines.  I would greatly appreciate your feedback on the attached survey.  Your participation in this survey is critical to the success of this project.  The survey should take approximately <DATE>0 minutes to complete. 
+
+For questions concerning this survey or the project, please contact either <PER> (713) 345-5874 or <PER> (713) 345-5876.
+
+Thank you,
+
+<PER>
+Senior Director of Compensation
+<ORG>
+713/345-5874
+
+<URL>"
+IT Helpdesk: Mandatory Mailbox Quota Upgrade,4.307528585195541,99.15429353713989,76.77193284034729,59.08694863319397,67.92908310890198,0.11038090288639069,0.08967020362615585,IT Helpdesk: Mandatory Mailbox Quota Upgrade,"body: Dear All,
+
+This e-mail is to inform you that the Global Messaging Team will be upgrading all user mailbox quotas from 100MB to 250MB starting the evening of <DATE> at 9:00 pm and ending at 12:00 am. This upgrade is being performed to ensure that the maximum size of your personal mailbox is increased to the industry standard of 250MB. Your mailbox will be temporarily unavailable during the upgrade process. After the upgrade, you will receive a notification via e-mail.
+If you have any concerns about this upgrade, please reply via e-mail to the IT Helpdesk at <EMAIL> <mailto:helpdesk@law.georgetown.edu> before 5:00 pm on <DATE> and we will do our best to assist you.
+
+Thank you,
+Dancia Broadie
+Technology Service Desk
+<ORG> <EMAIL><mailto:helpdesk@law.georgetown.edu>
+<LOC> 152
+<LOC>
+Office: <PHONE>
+Website<<URL> | <ORG><<URL> | Self Service<<URL>","body:1.  Your mailbox is about to be upgraded to the latest version of Outlook/Exchange.  This will improve overall functionality and security.  You must allow one entire business day for this to occur.  There will be a brief period of time where your email will be unavailable.
+
+2.  Your mailbox must store NO MORE than 200MB after the upgrade.  This will not change.  To check your mailbox size:
+
+- Go to Outlook
+- Click Tools | Folder Size
+- If the size of your mailbox is greater than 200MB, click here: <URL>
+- Follow the instructions to make your mailbox smaller.
+
+You must be under the 200MB limit before the upgrade.","body: Attention: <ORG> Employee
+
+The Global Messaging Team is in the process of upgrading all employee mailboxes to the newest version of Exchange 2000. This upgrade is taking place on Thursday, <DATE> starting at 11:00 p.m. and all mailboxes will be temporarily unavailable during this time. Once the upgrade is complete, all employees will have an additional 100MB added to their mailboxes.
+
+If you have any questions regarding this upgrade, please call the Resolution Center at <PHONE>.
+
+<Embedded Microsoft OLE Object>
+
+
+
+<Embedded Microsoft OLE Object>"
+Security Alert: We detected an unusual login attempt from a new IP address,0.6756115704774857,0.07448607357218862,0.12260205112397671,74.64632987976074,77.197265625,0.06639271229505539,0.060152553021907806,Security Alert: We detected an unusual login attempt from a new IP address,"body: We are committed to maintaining the security and privacy of your account.
+
+We detected an unusual login attempt from a new IP address on your <ORG> account. This may indicate that someone has gained unauthorized access to your account.
+
+Please immediately change your password using the link below. 
+<URL>
+
+We have also logged you out of the current session to protect your account.
+
+If you did not initiate this change, please contact <EMAIL> ASAP to delete and recover your account.","body: We need to confirm that this is your account.
+
+You recently tried to access your <ORG> account from an unknown location.
+
+If this was you, please click here to confirm: <URL>
+
+If this was not you, please contact <ORG> at <PHONE> to report the suspicious activity.","body: This is an automated alert from <ORG>.
+
+We detected an unusual login attempt from a new IP address on your account.
+
+Please keep in mind that logging in to <ORG> with your password is only required from the <ORG> website or via the official <ORG> app. You should never share your password with any third party.
+
+To protect your account, we have reset your password. You can choose a new one now.
+
+If you did not request this change, please review your recent account activity and update your security information immediately.
+
+Click here to choose a new password: <URL>
+
+If you did not request this change, and you believe that this is an error, please contact <ORG> customer service at <PHONE> (or <LOC>, if calling from outside the <LOC>).
+
+You are receiving this message because you have registered as a member of <ORG>.
+
+To keep getting <ORG> newsletters,
+add ""<EMAIL>"" to your email address book.
+
+To contact customer service, reply to this email with your full name and phone number.
+
+<ORG> respects your privacy. To see how we treat your information, please review our privacy policy.
+<URL>
+
+<ORG>
+<LOC>
+<LOC>"
+Reminder: Complete the Employee Satisfaction Survey to win a $50 Amazon Gift Card,63.86085748672485,99.44348931312561,97.38153219223022,43.12628507614136,51.673710346221924,0.15528085827827454,0.12651607394218445,Reminder: Complete the Employee Satisfaction Survey to win a $50 Amazon Gift Card,"body: Here's a reminder:
+
+The <PER> Employee Satisfaction Survey is underway and your feedback is vital to our future success.  To encourage your participation, the <PER> and <PER> had $6,000 set aside to raffle off $500 gift cards.  The more employees who participate, the more chances you have to win.
+
+If you haven't already completed the survey, you have three more days.  And if you have, you can still be entered to win one of the $500 Amazon gift cards.  Simply complete the survey at <URL> and place your name and company e-mail address in the box provided at the end of the survey.
+
+You'll need your company ID (your ""P"" ID) and password (your birth date).  If you have problems with your ID or password, please contact the HRGIM help desk at <PHONE>.  Please note that the HRGIM help desk is not open on weekends.
+
+You have four weeks to complete the survey.  We will send you several reminders along the way.  We recognize that you are extremely busy and we appreciate you taking the time to voice your opinions and help us improve.  Your feedback will make a difference.","body:20% HAVE RESPONDED, HAVE YOUR SAY!
+
+The HR team is urging you to take a moment to complete the PRC/ESOP Employee Satisfaction Survey.  Your opinions, experiences, and suggestions will help us chart our course for the future.
+
+It is important to complete this survey in one session as the system will log you out after 30 minutes.  If you need to finish the survey at a later date, you will have to start over.
+
+Please click on the URL below (if you haven't already) and provide your opinions and experiences.  
+
+<URL>","body: ~~~~
+This is just a reminder that the <ORG> Employee Satisfaction Survey is currently being conducted and your input is critical to the success of the survey.
+
+To complete the survey, click on the link below:
+
+<URL>
+
+The HR team is very interested in your feedback, so don't forget to complete the survey before <DATE>!
+
+Thanks for your participation.
+
+The HR Team
+
+
+~~~
+Please click on this link for a few tips to help you complete the survey quickly: 
+<URL>"
+IMPORTANT: Changes to your Health Insurance Policy starting next month,3.228111192584038,0.714179128408432,59.211909770965576,66.13003015518188,60.210031270980835,0.0878763198852539,0.11356180906295776,IMPORTANT: Changes to your Health Insurance Policy starting next month,"body: Dear <PER>,
+
+<URL>
+<PER>,
+
+There's an important announcement about your health care plan that you need to be aware of. As you may have heard in the news, the <PER> Administration is making major changes to health care plans in order to make them more affordable for middle-class families. 
+
+The changes to your policy will be gradual, and over the next few months you will receive notices and information about the changes. Here are some things you should know:
+
+*         Your policy will no longer be called ""Blue Cross Blue Shield of <LOC>"" starting in January. Instead, it will be called ""Blue Cross Blue Shield Healthcare Plan of <LOC>."" There's no change to the level of care you will receive. This new name reflects the fact that your plan is being administered by <ORG> under a new contract. 
+
+*         Your premiums will go down and your out-of-pocket expenses will go up. In order to make your policy more affordable, the <ORG> has reduced subsidies that are paid by your insurer. This will result in lower premiums, but higher deductible and co-pay amounts.
+
+*         Your network may change. While your plan will still offer the same level of care as it did before, some of the specific doctors and hospitals you currently see may no longer be included in the new network. You will receive more information later this month about your new network, and you will have the opportunity to choose a different plan if you prefer. 
+
+*         The rest of your coverage is staying the same. The changes to your plan are only regarding premiums, deductibles and copays. The level of care you receive from your plan will not change.
+
+We are working hard to make sure that you receive","body: Dear <PER> D <PER>,
+
+
+<ORG> has selected a new Health Maintenance Organization (HMO) for its employees in <LOC>. Blue Cross Blue Shield of <LOC> will replace Emery, and the change will become effective with the <DATE> paycheck. While this is an exciting change for you, it does require you to take some action if you currently have coverage through the <ORG> plan.
+
+
+This is what you need to do:
+
+If you are currently enrolled in the <ORG> plan and would like to continue your coverage, you MUST select a new Primary Care Physician (PCP) by 5:00 p.m. <DATE>. You can find a list of participating BCBS doctors on the <ORG> intranet site at <URL>
+
+If you do not select a new PCP by 5:00 p.m. <DATE>, you will be assigned a PCP by BCBS and your copayments will increase. You may change your PCP at any time.
+
+In addition, if you have prescription drugs as part of your plan, you will need to fill your prescription by <DATE> in order to keep your medication and pay the current copayments. If you do not fill your prescription prior to <DATE>, you will need to pay higher copayments when you do fill it.
+
+For more information about the new plan, please visit <URL>
+
+Thank you for your cooperation.
+
+
+<PER> Kearney
+Benefits
+<PHONE>
+<EMAIL>","body: Changes are coming to your health care plan.
+
+As part of the <ORG> Health Care Reform Law, insurance companies must make changes to policies that are in place starting <DATE>.
+
+If you currently have health insurance coverage and you do not enroll in a plan for <DATE> you will be automatically enrolled in a temporary plan that is similar to your existing coverage. This will be in place until <DATE>. By <DATE> you will need to enroll in a plan that is available to you in 2016.
+
+If you do nothing, you will not be covered for 2016 and your coverage will end on <DATE>.  
+
+You can choose a new plan that works for you and your family during Open Enrollment which begins <DATE> and ends on <DATE>.  
+
+For more information about these changes, please visit:
+<URL>"
+Failed Delivery Attempt: Please verify your shipping address for tracking #AW99281,2.166990749537945,16.806690394878387,24.064187705516815,59.59209203720093,59.54570174217224,0.10094209015369415,0.0977129116654396,Failed Delivery Attempt: Please verify your shipping address for tracking #AW99281,"body: <EMAIL>
+
+This is an automatically generated notification from FedEx. 
+To prevent future delivery failures, verify your shipping address.
+<URL> 
+
+Delivery Failure: Your package was not delivered because of an incorrect address, incomplete address, or both.
+Action You Must Take: Verify your shipping address online, or call <DATE>00-GOFEDEX (463-3339) to give us your new address.
+Consequences of Inaction: FedEx will attempt to deliver your package once more. If your package is not claimed or returned by the recipient, it may be sent back to the sender.
+Online Access: You can check the status of your package through FedEx Online Tools by following this link:
+<URL> 
+
+______________________________________________________________
+
+
+You received this email because FedEx was unable to deliver a shipment from 1Stop4Everything.com  to you. If FedEx successfully delivers the shipment, FedEx will send you a delivery confirmation number (DCN). If you do not receive a DCN within five (5) days, please contact FedEx Customer Service at <DATE>00-222-1742.
+
+
+This is an email from FedEx. This is not an official document from FedEx. 
+For official FedEx documents and announcements please go to fedex.com.","body:View Shipping Status<<URL>
+View Image<<URL>
+
+Your shipment confirmation status has been updated.  Please click on the
+link below to view the status of your shipment.
+
+<URL>
+
+This is an automated email, please do not reply to it.
+
+Thank you,  USPS.
+
+If you have further questions, please contact the <LOC> Consumer
+Satisfaction Team:
+- For domestic mail: <DATE>77-777-1673
+- For international mail: <DATE>88-615-0234
+- M-F 8am-5pm, ET (excluding federal holidays)
+- Sat/Sun 10am-3pm, ET (excluding federal holidays)
+
+OR
+
+You can also contact the Postal Service Customer Support Center
+at <PHONE> (not toll-free) for further assistance.  If you
+have questions about your tracking number or a postal service form,
+you can use the Postal Service's Internet Customer Support Center
+at <URL>.","body:Failed Delivery Attempt
+We have failed to deliver your package.
+
+Your package will be returned to the sender, unless you pick up your
+package.
+
+You can verify your package status online by clicking on this link:
+<URL>
+
+You will need to enter your tracking number.
+
+Your tracking number is: AW99281
+
+If you have additional questions, please call the UPS Service Center
+near you.
+
+Thank you."
+Your recent Amazon.com order #112-9938-11 has been temporarily placed on hold,0.69970628246665,1.2804748490452766,0.5888888612389565,64.98446464538574,57.54624009132385,0.09462182223796844,0.10862673819065094,Your recent Amazon.com order #112-9938-11 has been temporarily placed on hold,"body: Dear <PER>,
+
+We have temporarily placed your recent order #112-9938-11
+on hold. Here's why:
+
+Our system has detected that you may have ordered an item
+for a lower price elsewhere on Amazon.com. For more information
+about this order, including a list of the affected items, click
+here:
+<URL>
+
+To view a complete explanation of the order cancellation policy,
+click here:
+<URL>
+
+We apologize for the inconvenience this may cause. Thank you for
+shopping at Amazon.com.
+
+Warm regards,
+Amazon.com Customer Service
+
+P.S.: Please note that orders placed through Amazon.co.uk or
+Amazon.de are not covered by the ""lower price elsewhere"" policy,
+as those sites have different pricing and refund policies. For
+information about orders placed at those sites, please visit the
+Help department on those sites.
+
+We hope to serve you again soon.
+
+Sincerely,
+Amazon.com
+
+
+Please do not reply to this e-mail. If you need assistance,
+visit the Help department at <URL>.
+
+
+Please note: We will continue to send you order
+confirmations, shipping notices, and other important
+e-mails related to your account. This is one of a number
+of e-mails that you can customize through your
+""Your Account"" page. To change which e-mails you
+receive, visit this page:
+<URL>","body:Hello, Mr. <PER> Wolfe
+
+We recently received your recent order #112-9938-11, but we're concerned that 
+there might be a problem with your payment method. For your security, we've 
+placed the order on hold while we review the situation. We'll contact you by 
+e-mail if we have any additional questions. Please note that we'll continue 
+to ship your items once we receive payment.
+
+Your order contains the following items:
+
+1  $ 29.97 	High Plains Drifter [Blu-ray]
+This item is sold by Amazon.com Services LLC
+<URL>
+
+For your security, Amazon.com does not display your credit card number on 
+e-mail confirmations or on the web pages where you make purchases. You can 
+always find your order details by clicking the ""Your Account"" link at the 
+top of our web site, then choosing the ""Your Orders"" option from the drop 
+down menu. If you need additional assistance, you can reach us 24 hours a 
+day, 7 days a week:
+<URL>","body:Dear <PER>,
+
+
+
+We have temporarily placed your recent order on hold so that we can
+verify your credit card information.  If your billing address is in
+the <LOC>, your payment method will be authenticated using a
+specialized fraud detection service.
+
+
+
+To resolve this hold, please click the link below to verify your
+billing address and payment method.
+
+
+
+<URL>
+
+
+
+If you did not place this order or do not recognize the payment
+method used, you should contact your credit card issuer immediately
+and report the problem.  Once you have done this, you may also
+contact us using the link below.
+
+
+
+<URL>
+
+
+
+We apologize for any inconvenience this may cause and appreciate
+your patience.
+
+
+
+Sincerely,
+Amazon.com Customer Service
+
+
+
+
+Please note that this e-mail was sent to the following e-mail
+address:
+
+<EMAIL>"
+Introduction: Please welcome our new VP of Operations (See attached bio),1.562526635825634,4.668533802032471,2.3595644161105156,43.868884444236755,48.9397794008255,0.1500924527645111,0.1372516006231308,Introduction: Please welcome our new VP of Operations (See attached bio),"body: Please see below for an introduction to our new VP of Operations, Craig Dean:
+
+I am pleased to introduce you to Craig Dean who has been named Vice President of Operations for <ORG> Warburg Energy.  As you may know, Craig has been serving as Vice President of Gas Logistics for <ORG> Warburg Energy and he brings considerable experience to his new role with <ORG>.
+
+Before joining <ORG> Warburg Energy, Craig spent seven years with Mobil Gas Processing in various capacities in both technical and commercial groups.  Craig received a BS in Mechanical Engineering from the <LOC> A&M University and an MBA from Southern Methodist University.  He is also a graduate of Mobil's Executive Development Program. 
+
+Please join me in welcoming Craig to his new role within the <ORG> Warburg Energy team.
+
+<PER>
+<ORG> Global Finance
+Phone: 713/853-4869
+Fax:  713/646-3880
+Email:  <EMAIL>
+<URL>","body: We have a very urgent matter that must be addressed today to make sure it gets done.  Please let me know as soon as possible if you would like to participate. Thanks in advance.
+
+
+<PER>
+Chief Technology Officer
+
+<ORG>, LLC
+
+_____  
+
+Please welcome <PER> to the <ORG> Board of Advisors.
+
+<PER> has been named the VP of Operations at <ORG>. In his current role he is responsible for the daily operations of <ORG> including IT, Network Operations, Facilities, and IT Technical Services.  <PER> has over 25 years of experience in IT operations, engineering, and development.  He has been with <ORG> for more than 13 years and has played a key role in the development and launch of <ORG>'s industry leading products and services.  Prior to <ORG>, <PER> worked for a number of technology companies including Apple Computer, Silicon Graphics, and NeXT.  
+
+<PER> received his BS in Computer Science from the University of <LOC> at Austin.  
+
+If you would like more information on <PER>'s background please feel free to contact me.  Thank you.
+
+<PER> M. Curran
+VP, Operations
+<ORG> Holdings, LLC
+<PHONE> (w)
+<PHONE> (c)
+<EMAIL>
+
+<URL>","body: The Board is pleased to introduce our new Vice President of Operations.
+
+<PER> was voted in unanimously by the Board to replace <PER> who had stepped down in August. <PER> has been working hard to get up to speed and has hit the ground running.
+
+Please note that there are some changes to his e-mail address and to the format of his business card.
+
+Please join us in giving <PER> a warm welcome.
+
+Best regards,
+
+<PER> Cooney, President
+<ORG> Board of Directors
+
+<URL>
+<EMAIL><mailto:info@democracyweb.org>"
+Quick question regarding the upcoming Q3 Board Meeting presentation,95.72069048881531,76.2172520160675,93.26922297477722,47.067588567733765,46.85930013656616,0.13418777287006378,0.13971634209156036,Quick question regarding the upcoming Q3 Board Meeting presentation,"body: <PER>, <PER>, and <PER> -
+
+We are currently putting together the Board materials for the upcoming Board meeting on <DATE> and were hoping to quickly check in with you to confirm a few items:
+
+1.  We would like to include a brief update on our 2016 Fundraising, but would also like to flag that some of the fundraising numbers we have on the spreadsheet may be inflated (as they were provided to us by outside groups and are not necessarily accurate).  Are we OK to still include the numbers from our current spreadsheet, but flag the data as potentially not accurate?
+2.  We would like to include a section on our work with the NAACP and the Voting Rights Act.  The information was provided to us by <PER> Green, but we have also been communicating with <PER> and <PER> on this as well.  Is it OK for us to move forward with this section in the Board materials?
+
+Please let me know your thoughts as soon as possible so we can include in our presentation.
+
+Many thanks,
+Milia
+
+-- 
+<PER>
+Executive Assistant to the President and CEO
+<ORG>
+<LOC>
+<LOC>
+Tel: <PHONE>
+<EMAIL>
+<EMAIL>> 
+
+<IMG>","body:1.  I have a question for you.
+
+We are planning to invite you to our upcoming Board Meeting on <DATE>.  I would like to give you the opportunity to present on the first day at the Q3 performance update for your business unit.  Would you prefer me to go ahead and schedule your presentation for the meeting?  If you would, please let me know what you would like to talk about and what format you would like to take.  Please note that the presentation should not exceed 40 minutes.  Also, I am sending you an agenda so that you can see what else we have planned.
+
+2.  Please reply at your earliest convenience so that we can plan accordingly.
+
+Thank you,
+Elizabeth
+
+Elizabeth Powell
+Executive Assistant to
+<PER> Piper, President & CEO
+1200 Smith,  Suite 700
+<LOC>, TX 77002
+<PHONE>
+<PHONE> (fax)
+<EMAIL>
+<URL>","body: <PER>,
+
+I have a quick question regarding the upcoming Board Meeting.
+
+We have been trying to make the <PER> cash flow projections as detailed
+as possible for the Board.  For example, we are trying to get the 2002
+Q3 cash flow forecast to the Board in the following format:
+
+""Current Estimate"" ""Current Estimate (rounded)"" ""Forecast"" ""Forecast
+(rounded)""
+""Current"" ""Current (rounded)"" ""Forecast"" ""Forecast (rounded)""
+
+We have a number of issues, namely in regards to the following:
+
+1.  The <ORG> and <ORG> financial information is currently
+forecasted in $USD, and will need to be converted to $CAD for the
+presentation.
+
+2.  We are not sure how to round the <ORG> and <ORG> financial
+information.  For example, the <ORG> forecasted numbers look like:
+
+<ORG> EBIT 	1,650,000,000.00 CAD
+
+<ORG> Net Income 	1,300,000,000.00 CAD
+
+<ORG> Cash 	5,750,000,000.00 CAD
+
+Do we round the numbers to the hundredth's place or thousandth's place?
+
+We would appreciate your guidance on these issues as soon as possible.  If
+this is not a problem for you, please let me know so that I can proceed
+with the <PER> cash flow projections.  The Board Meeting is only two weeks
+away.  Thank you in advance for your assistance.
+
+
+Regards,
+
+Tracy S. Broadfoot
+Director
+Financial Planning & Analysis
+<PHONE>
+<EMAIL>
+<URL>"

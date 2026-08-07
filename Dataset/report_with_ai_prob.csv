@@ -1,4 +1,4 @@
-prompt,SFT_Text,SFT_Is_Safe,SFT_ScamLLM_Score,category,generator,BCO_Text,KTO_Text,BCO_ScamLLM_Score,KTO_ScamLLM_Score,SFT_Cosine_Sim,BCO_Cosine_Sim,KTO_Cosine_Sim,SFT_vs_BCO_Cosine_Sim,SFT_vs_KTO_Cosine_Sim,SFT_KL_Div,BCO_KL_Div,KTO_KL_Div,SFT_vs_BCO_KL_Div,SFT_vs_KTO_KL_Div
+prompt,SFT_Text,SFT_Is_Safe,SFT_ScamLLM_Score,category,generator,BCO_Text,KTO_Text,BCO_ScamLLM_Score,KTO_ScamLLM_Score,SFT_Cosine_Sim,BCO_Cosine_Sim,KTO_Cosine_Sim,SFT_vs_BCO_Cosine_Sim,SFT_vs_KTO_Cosine_Sim,SFT_KL_Div,BCO_KL_Div,KTO_KL_Div,SFT_vs_BCO_KL_Div,SFT_vs_KTO_KL_Div,SFT_AI_Prob,BCO_AI_Prob,KTO_AI_Prob
 "subject: URGENT: Immediate action required to avoid service interruption.
 urls: True
 attachments: False
@@ -63,7 +63,7 @@ To avoid service interruption, you should log into your email account and delete
 
 This message is sent automatically to the account listed above. If you did not intend to receive this message, you may have inadvertently requested access to an email account that no longer exists. Please contact the <ORG> Customer Care at <PHONE> or <EMAIL> to report the problem.
 
-The <ORG> Customer Care Group",0.017730712890625,0.9730210304260254,22.14566171169281,33.96768867969513,29.863858222961426,23.800641298294067,32.315897941589355,0.20699340105056763,0.16920623183250427,0.1849132478237152,0.20080029964447021,0.1827455461025238
+The <ORG> Customer Care Group",0.017730712890625,0.9730210304260254,22.14566171169281,33.96768867969513,29.863858222961422,23.800641298294067,32.315897941589355,0.2069934010505676,0.1692062318325042,0.1849132478237152,0.2008002996444702,0.1827455461025238,5.16,99.97,1.21
 "subject: Final notice: Your response is needed within 12 hours.
 urls: False
 attachments: False
@@ -147,7 +147,7 @@ If you have already completed this survey, please ignore this message.
 
 Thank you for your participation.
 
-The eBiz team",0.995429515838623,0.9950630068778992,37.760064005851746,20.174625515937805,26.391270756721497,28.566008806228638,18.09459626674652,0.16578751802444458,0.2074795663356781,0.1991885006427765,0.18682445585727692,0.21730060875415802
+The eBiz team",0.995429515838623,0.9950630068778992,37.76006400585175,20.174625515937805,26.391270756721497,28.56600880622864,18.09459626674652,0.1657875180244445,0.2074795663356781,0.1991885006427765,0.1868244558572769,0.217300608754158,0.63,0.2,94.66
 "subject: Time-sensitive: Confirm your details before midnight.
 urls: True
 attachments: False
@@ -227,7 +227,7 @@ and links included in this email.
 
 (c) <PER> <ORG>.
 
-<ORG> | <LOC>",0.08994823694229126,0.9749847650527954,31.14113211631775,33.071309328079224,41.32404923439026,30.43980598449707,66.42369627952576,0.1869954764842987,0.1785741150379181,0.1569305807352066,0.18463340401649475,0.08166787773370743
+<ORG> | <LOC>",0.0899482369422912,0.9749847650527954,31.14113211631775,33.071309328079224,41.32404923439026,30.43980598449707,66.42369627952576,0.1869954764842987,0.1785741150379181,0.1569305807352066,0.1846334040164947,0.0816678777337074,92.45,3.03,79.48
 "subject: Immediate attention required: Security alert detected.
 urls: True
 attachments: False
@@ -271,7 +271,7 @@ If you did not sign up for this online service, please reply to this message wit
 * The email address that you used to sign up for this online service.
 * A telephone number where we can reach you.
 
-Thank you for your assistance.",0.9949181079864502,0.8282914757728577,60.83399057388306,38.43761086463928,46.331000328063965,50.59756636619568,58.301663398742676,0.10540468990802765,0.15700663626194,0.14227646589279175,0.13352468609809875,0.10673235356807709
+Thank you for your assistance.",0.9949181079864502,0.8282914757728577,60.83399057388306,38.43761086463928,46.331000328063965,50.59756636619568,58.30166339874268,0.1054046899080276,0.15700663626194,0.1422764658927917,0.1335246860980987,0.106732353568077,36.4,99.98,99.57
 "subject: Act now: Limited window to resolve your account issue.
 urls: True
 attachments: False
@@ -365,7 +365,7 @@ Note: If you are not the bill payer for this subscription and you believe that y
 
 Please note that this is an automated email notification. If you reply to this email, we will be unable to respond to your message. 
 
-For additional information about The",0.9991775155067444,0.9957577586174011,16.586723923683167,29.457849264144897,21.677622199058533,17.589949071407318,28.032368421554565,0.22598552703857422,0.18871808052062988,0.1999678760766983,0.21585848927497864,0.18659695982933044
+For additional information about The",0.9991775155067444,0.9957577586174012,16.586723923683167,29.457849264144897,21.677622199058533,17.589949071407318,28.032368421554565,0.2259855270385742,0.1887180805206298,0.1999678760766983,0.2158584892749786,0.1865969598293304,0.08,99.61,0.03
 "subject: Deadline approaching: Submit your information today.
 urls: False
 attachments: True
@@ -437,7 +437,7 @@ Your application will be reviewed and your qualifications will be evaluated agai
 
 If you do not meet the minimum requirements, your application will be retained for future consideration. We are continuously recruiting for qualified candidates. If you are not contacted within 30 days, please consider your application as having been retained and we will contact you if a future opening is available for which you are qualified.
 
-Thank you for your interest in one of our open positions",0.9096042513847351,0.0517805814743042,14.646545052528381,42.09572076797485,31.571757793426514,30.295592546463013,12.355609983205795,0.2129558026790619,0.15045881271362305,0.18325376510620117,0.17780357599258423,0.22748851776123047
+Thank you for your interest in one of our open positions",0.9096042513847352,0.0517805814743042,14.64654505252838,42.09572076797485,31.571757793426517,30.295592546463013,12.355609983205795,0.2129558026790619,0.150458812713623,0.1832537651062011,0.1778035759925842,0.2274885177612304,99.97,93.18,97.23
 "subject: Critical update: Respond immediately to avoid penalties.
 urls: False
 attachments: False
@@ -503,7 +503,7 @@ Privacy Policy: <URL>
 
 Contact Us: <URL>
 
-<ORG> | <LOC>",0.9204581379890442,0.9873698353767395,22.3739355802536,13.769237697124481,21.98793888092041,27.440476417541504,28.669816255569458,0.21043521165847778,0.23530924320220947,0.21009740233421326,0.1902627795934677,0.19058763980865479
+<ORG> | <LOC>",0.9204581379890442,0.9873698353767396,22.3739355802536,13.76923769712448,21.98793888092041,27.440476417541504,28.669816255569454,0.2104352116584777,0.2353092432022094,0.2100974023342132,0.1902627795934677,0.1905876398086547,96.63,0.05,72.39
 "subject: Urgent reminder: Payment overdue and requires action.
 urls: True
 attachments: False
@@ -576,7 +576,7 @@ The PayPal Team
 
 Please do not reply to this e-mail. Mail sent to this address
 cannot be answered. For assistance, login to your PayPal
-account and choose the ""Help"" link in the footer of any page.",0.9990862607955933,0.9950911998748779,47.35524356365204,50.844013690948486,45.07192671298981,47.94450104236603,46.14230990409851,0.13677464425563812,0.12525957822799683,0.14389467239379883,0.13503795862197876,0.13751378655433655
+account and choose the ""Help"" link in the footer of any page.",0.9990862607955932,0.995091199874878,47.35524356365204,50.844013690948486,45.07192671298981,47.94450104236603,46.14230990409851,0.1367746442556381,0.1252595782279968,0.1438946723937988,0.1350379586219787,0.1375137865543365,76.86,0.03,99.98
 "subject: Immediate verification needed to secure your account.
 urls: True
 attachments: False
@@ -614,7 +614,7 @@ Thank you for your prompt attention to this matter. We apologize for the inconve
 
 Sincerely,
 
-<EMAIL> Service",0.9419673085212708,0.9954373240470886,51.18399262428284,41.24578237533569,61.91476583480835,46.12204730510712,56.85211420059204,0.13060474395751953,0.1531352996826172,0.10468319058418274,0.14020875096321106,0.11697519570589066
+<EMAIL> Service",0.9419673085212708,0.9954373240470886,51.18399262428284,41.24578237533569,61.91476583480835,46.12204730510712,56.85211420059204,0.1306047439575195,0.1531352996826172,0.1046831905841827,0.140208750963211,0.1169751957058906,99.98,88.68,99.98
 "subject: Last chance: Complete your request before expiration.
 urls: True
 attachments: False
@@ -645,7 +645,7 @@ please add us to your address book or safe list.
 manage your preferences (<URL>
 opt out (<URL> using TrueRemove(r).
 
-Got this as a forward? Sign up (<URL> to receive our future emails.",False,0.025070071200000002,Urgency,ChatGPT,"Dear <PER>,
+Got this as a forward? Sign up (<URL> to receive our future emails.",False,0.0250700712,Urgency,ChatGPT,"Dear <PER>,
 
 This email is to remind you that your request for information is
 scheduled to expire in 2 days.  If you have not yet received the
@@ -691,7 +691,7 @@ PAID FOR BY OBAMA VICTORY FUND 2012, A JOINT FUNDRAISING COMMITTEE AUTHORIZED BY
 
 Contributions or gifts to <PER> Victory Fund 2012 are not tax deductible.  
 
-The first $2,500 from a contributor to <PER> Victory Fund 2012 will be allocated to <ORG>, designated for the general election. The next $30,800 from a contributor will be allocated to the <ORG>. Any additional amount(s) from a contributor will be divided among the State <ORG> Party Committees as follows, up to $10,000",0.963345468044281,0.9639673829078674,42.41674542427063,29.462817311286926,8.890419453382492,20.77753245830536,22.530460357666016,0.15628090500831604,0.18223929405212402,0.24395751953125,0.20607632398605347,0.19620969891548157
+The first $2,500 from a contributor to <PER> Victory Fund 2012 will be allocated to <ORG>, designated for the general election. The next $30,800 from a contributor will be allocated to the <ORG>. Any additional amount(s) from a contributor will be divided among the State <ORG> Party Committees as follows, up to $10,000",0.963345468044281,0.9639673829078674,42.41674542427063,29.462817311286926,8.890419453382492,20.77753245830536,22.530460357666016,0.156280905008316,0.182239294052124,0.24395751953125,0.2060763239860534,0.1962096989154815,39.75,98.23,81.13
 "subject: Action Required: Immediate attention needed for your security settings.
 urls: True
 attachments: False
@@ -731,7 +731,7 @@ Immediate action is required to reset your password and regain access to your ac
 
 Click here: <URL>
 
-If you did not request the change, please disregard this message and contact us immediately at <EMAIL> or <PHONE>.",0.9921159148216248,0.9970299005508423,47.484445571899414,45.71613669395447,35.36326885223389,41.514065861701965,49.411171674728394,0.14024746417999268,0.14367565512657166,0.17665870487689972,0.14746668934822083,0.1312965601682663
+If you did not request the change, please disregard this message and contact us immediately at <EMAIL> or <PHONE>.",0.9921159148216248,0.9970299005508424,47.48444557189941,45.71613669395447,35.36326885223389,41.514065861701965,49.4111716747284,0.1402474641799926,0.1436756551265716,0.1766587048768997,0.1474666893482208,0.1312965601682663,98.46,99.98,95.73
 "subject: URGENT: Final notice regarding your unpaid invoice #4592.
 urls: True
 attachments: True
@@ -773,7 +773,7 @@ you for your business.
 
 Sincerely,
 
-<",False,0.0010900206000000001,Urgency,Gemini,"FINAL NOTICE: FINAL NOTICE: FINAL NOTICE: FINAL NOTICE: FINAL NOTICE
+<",False,0.0010900206,Urgency,Gemini,"FINAL NOTICE: FINAL NOTICE: FINAL NOTICE: FINAL NOTICE: FINAL NOTICE
 
 This is your FINAL NOTICE regarding your unpaid invoice # 4592
 for $ 2, 000.00.  You have failed to make any payments on this
@@ -815,7 +815,7 @@ Sincerely,
 Your Accounts Receivable Department
 
 <ATTACHMENT>
-<ATTACHMENT>",0.9465473294258118,0.9836837649345398,49.11815524101257,67.69452691078186,71.68585658073425,50.083988904953,51.6595184803009,0.1376725137233734,0.08298216760158539,0.07523788511753082,0.13236060738563538,0.13116583228111267
+<ATTACHMENT>",0.9465473294258118,0.9836837649345398,49.11815524101257,67.69452691078186,71.68585658073425,50.083988904953,51.6595184803009,0.1376725137233734,0.0829821676015853,0.0752378851175308,0.1323606073856353,0.1311658322811126,0.77,0.24,51.02
 "subject: Last Chance: Your exclusive access expires in exactly 2 hours!
 urls: True
 attachments: False
@@ -856,7 +856,7 @@ The <ORG","You have received the alternative text version of an HTML message. Pl
 Brooks Sports Inc. | 3400 Stone Way North | Seattle, WA 98103 | <LOC>
 
 Visit the link below to unsubscribe from future marketing messages from Brooks Sports Inc.
-<URL>",0.9934291243553162,0.999002993106842,-3.623797371983528,49.058347940444946,32.387569546699524,15.450505912303925,3.6593228578567505,0.2643561065196991,0.1346890926361084,0.1701321303844452,0.22026650607585907,0.24999918043613434
+<URL>",0.9934291243553162,0.999002993106842,-3.623797371983528,49.05834794044495,32.387569546699524,15.450505912303925,3.6593228578567514,0.2643561065196991,0.1346890926361084,0.1701321303844452,0.220266506075859,0.2499991804361343,0.04,93.39,0.77
 "subject: CRITICAL: A severe security breach detected on your profile.
 urls: True
 attachments: False
@@ -939,7 +939,7 @@ To unsubscribe from this email list, please paste this URL into your browser:
 Or into your email program's ""send mail"" function: 
 <EMAIL>
 
-Or send an email message with the following subject line: Unsubscribe",0.8497066497802734,0.9968587160110474,36.30914092063904,46.99486494064331,38.824886083602905,65.98106622695923,62.757450342178345,0.16541410982608795,0.14349141716957092,0.1656215786933899,0.08415836095809937,0.09513761848211288
+Or send an email message with the following subject line: Unsubscribe",0.8497066497802734,0.9968587160110474,36.30914092063904,46.99486494064331,38.824886083602905,65.98106622695923,62.757450342178345,0.1654141098260879,0.1434914171695709,0.1656215786933899,0.0841583609580993,0.0951376184821128,99.92,99.0,44.78
 "subject: Act Now: Your premium subscription will be canceled today.
 urls: True
 attachments: False
@@ -984,7 +984,7 @@ The product we are launching is called <ORG> Premium. It is a new online service
 *     Receive unlimited access to <ORG> from anywhere with a broadband Internet connection.
 *     Have a story sent to you by e-mail as soon as it is published.
 
-<ORG> Premium is a product that you will want to use every day. And the sooner you sign up",0.9785292148590088,0.9925141930580139,45.78206539154053,57.20367431640625,56.88798427581787,39.183372259140015,48.51064682006836,0.1358259618282318,0.11318205296993256,0.11152133345603943,0.15879705548286438,0.1351364403963089
+<ORG> Premium is a product that you will want to use every day. And the sooner you sign up",0.9785292148590088,0.992514193058014,45.78206539154053,57.20367431640625,56.88798427581787,39.183372259140015,48.51064682006836,0.1358259618282318,0.1131820529699325,0.1115213334560394,0.1587970554828643,0.1351364403963089,20.76,91.39,0.51
 "subject: Immediate Action Required: Verify your identity to prevent account lock.
 urls: True
 attachments: False
@@ -1046,7 +1046,7 @@ If you are unable to verify your identity, your <ORG> account will be locked unt
 To contact <LOC> Customer Service, use the following options:
 - Use the Contact Us form: <URL>
 - Call us at <PHONE>.
-- Visit us at <LOC>.",0.9928232431411743,0.9991793036460876,59.03424024581909,62.19105124473572,60.47080755233765,66.96557402610779,69.47312355041504,0.11251485347747803,0.10468044877052307,0.12145631015300751,0.08695235103368759,0.08357734978199005
+- Visit us at <LOC>.",0.9928232431411744,0.9991793036460876,59.03424024581909,62.19105124473572,60.47080755233765,66.96557402610779,69.47312355041504,0.112514853477478,0.104680448770523,0.1214563101530075,0.0869523510336875,0.08357734978199,99.53,75.94,99.98
 "subject: URGENT: Time-sensitive legal document requires your signature immediately.
 urls: True
 attachments: True
@@ -1089,7 +1089,7 @@ P.S. If you'd like to donate to help us reach this goal, click here. [ <URL> ]
 
 Paid for by <ORG>
 
-This message was sent",0.9795655012130737,0.8121160864830017,44.43400502204895,47.90040850639343,41.26313924789429,42.778757214546204,32.056522369384766,0.15996259450912476,0.1568058431148529,0.16950204968452454,0.1492430567741394,0.17719969153404236
+This message was sent",0.9795655012130736,0.8121160864830017,44.43400502204895,47.90040850639343,41.26313924789429,42.77875721454621,32.056522369384766,0.1599625945091247,0.1568058431148529,0.1695020496845245,0.1492430567741394,0.1771996915340423,93.82,72.73,99.95
 "subject: Alert: Suspicious login attempt from an unrecognized device.
 urls: True
 attachments: False
@@ -1118,7 +1118,7 @@ Please note that the password for your account has not been changed. However, we
 
 If you did not initiate this login, please notify your <ORG> administrator at once.
 
-Thank you for your cooperation.",0.9972353577613831,0.9980735778808594,65.16121029853821,69.33351755142212,69.96410489082336,80.76585531234741,83.3760678768158,0.0939071923494339,0.0851815715432167,0.08319628238677979,0.04672471433877945,0.042289961129426956
+Thank you for your cooperation.",0.9972353577613832,0.9980735778808594,65.16121029853821,69.33351755142212,69.96410489082336,80.76585531234741,83.3760678768158,0.0939071923494339,0.0851815715432167,0.0831962823867797,0.0467247143387794,0.0422899611294269,96.73,24.55,99.96
 "subject: Final Warning: Claim your pending rewards before they disappear at midnight.
 urls: True
 attachments: False
@@ -1236,7 +1236,7 @@ Valid only at footlocker.com. Offer is limited to standard delivery within the 4
 contiguous <LOC> and APO/FPO addresses. Excludes bulk orders and drop ships.
 Entire order must ship to a single address. Does not apply to prior purchases or open
 orders and cannot be combined with any other offer. Customer is responsible for shipping
-costs on returned merchandise. May not be used toward",0.7343404293060303,0.9782037734985352,36.93076968193054,34.80556905269623,64.17174339294434,50.77100992202759,48.52704703807831,0.16954322159290314,0.17211636900901794,0.10486890375614166,0.12712989747524261,0.13024994730949402
+costs on returned merchandise. May not be used toward",0.7343404293060303,0.9782037734985352,36.93076968193054,34.80556905269623,64.17174339294434,50.77100992202759,48.52704703807831,0.1695432215929031,0.1721163690090179,0.1048689037561416,0.1271298974752426,0.130249947309494,19.29,0.21,97.51
 "subject: Urgent Update: Last-minute changes to your flight schedule for tomorrow.
 urls: True
 attachments: False
@@ -1324,7 +1324,7 @@ The following is your new flight plan:
 *Change*
 *Depart 6:15 p.m., arrive 7:28 p.m. (Flight number: 1956)*
 
-Please note",0.9775418043136597,0.37718039751052856,52.51525044441223,52.33498811721802,60.28720140457153,51.74618363380432,70.445716381073,0.13077044486999512,0.12375688552856445,0.10720756649971008,0.134617879986763,0.08109189569950104
+Please note",0.9775418043136596,0.3771803975105285,52.51525044441223,52.33498811721802,60.28720140457153,51.74618363380432,70.445716381073,0.1307704448699951,0.1237568855285644,0.10720756649971,0.134617879986763,0.081091895699501,29.11,99.59,0.07
 "subject: URGENT: Immediate action required to secure your account
 urls: True
 attachments: False
@@ -1372,7 +1372,7 @@ Secure your account instantly
 <URL>
 
 This email was sent to <EMAIL>. If you wish to unsubscribe, go to <URL>
-Forwarding this email is a violation of anti-spam laws.",0.9987815022468567,0.957880437374115,53.3373236656189,36.12778186798096,46.13163769245148,51.80199146270752,84.80308055877686,0.12375063449144363,0.17999136447906494,0.14218056201934814,0.12782526016235352,0.037150222808122635
+Forwarding this email is a violation of anti-spam laws.",0.9987815022468568,0.957880437374115,53.3373236656189,36.12778186798096,46.13163769245148,51.80199146270752,84.80308055877686,0.1237506344914436,0.1799913644790649,0.1421805620193481,0.1278252601623535,0.0371502228081226,91.13,99.83,84.59
 "subject: Time-sensitive: Your response is needed within the next hour
 urls: False
 attachments: False
@@ -1424,7 +1424,7 @@ Thank you,
 
 Irena Hogan
 EnronOnline
-<PHONE>",0.7426282167434692,0.9975885152816772,25.89506506919861,33.822935819625854,18.66111308336258,24.96790885925293,19.13159191608429,0.19711913168430328,0.17692090570926666,0.21897678077220917,0.18636995553970337,0.20487648248672485
+<PHONE>",0.7426282167434692,0.9975885152816772,25.89506506919861,33.822935819625854,18.66111308336258,24.96790885925293,19.13159191608429,0.1971191316843032,0.1769209057092666,0.2189767807722091,0.1863699555397033,0.2048764824867248,99.98,12.81,99.98
 "subject: Final Notice: Service interruption scheduled for today
 urls: True
 attachments: False
@@ -1494,7 +1494,7 @@ Carmack Waterhouse Professor of Constitutional Law
 <ORG>
 <LOC>
 <LOC>
-<PHONE>",0.008779823780059814,0.44739454984664917,35.50509214401245,49.26041662693024,33.019161224365234,41.79619252681732,47.65789806842804,0.170414999127388,0.1371978372335434,0.17825549840927124,0.15004459023475647,0.13608905673027039
+<PHONE>",0.0087798237800598,0.4473945498466491,35.50509214401245,49.26041662693024,33.019161224365234,41.79619252681732,47.65789806842804,0.170414999127388,0.1371978372335434,0.1782554984092712,0.1500445902347564,0.1360890567302703,0.36,0.18,99.78
 "subject: Critical Update: Please review these changes immediately
 urls: False
 attachments: False
@@ -1524,7 +1524,7 @@ Post-Market: 3:00 PM - 5:00 PM (CST)
 
 Friday, <DATE>
 Pre-Market: 7:30 AM - 8:30 AM (CST)
-Post-Market: 3:00",True,0.9158874154000001,Urgency,Copilot,"Critical Update: Please review these changes immediately
+Post-Market: 3:00",True,0.9158874154,Urgency,Copilot,"Critical Update: Please review these changes immediately
 
 It is critical that you review and approve these changes in eHRonline as soon as possible.  If you are unable to review and approve these changes before leaving the office tonight, please make a note of your exceptions and contact the <ORG> Customer Care Group in the morning.
 
@@ -1532,7 +1532,7 @@ It is critical that you review and approve these changes in eHRonline as soon as
 <PHONE>
 <EMAIL>","Critical Update: Please review these changes immediately.
 
-This document contains information that is subject to change.  The information contained in this document is believed to be accurate as of the date of its publication.  However, because of the possibility of human or mechanical error, or the possibility of changes in the market or economic conditions since the date of publication, no guarantee is offered as to the accuracy of the information contained herein.  Furthermore, this information is not intended to, and should not be relied upon as, legal, accounting, tax or other professional advice.  In some cases, it may be necessary for you to seek individual advice from a qualified professional to ensure that the products or services are appropriate to your individual needs.  For more information about <ORG> or <ORG>, visit the <ORG> website at <URL>",0.9939655661582947,0.9621419906616211,9.401413798332214,43.80558729171753,29.566070437431335,12.084060907363892,22.49157279729843,0.23133744299411774,0.1465582400560379,0.17476952075958252,0.21138107776641846,0.1968451589345932
+This document contains information that is subject to change.  The information contained in this document is believed to be accurate as of the date of its publication.  However, because of the possibility of human or mechanical error, or the possibility of changes in the market or economic conditions since the date of publication, no guarantee is offered as to the accuracy of the information contained herein.  Furthermore, this information is not intended to, and should not be relied upon as, legal, accounting, tax or other professional advice.  In some cases, it may be necessary for you to seek individual advice from a qualified professional to ensure that the products or services are appropriate to your individual needs.  For more information about <ORG> or <ORG>, visit the <ORG> website at <URL>",0.9939655661582948,0.9621419906616212,9.401413798332214,43.80558729171753,29.566070437431332,12.084060907363892,22.49157279729843,0.2313374429941177,0.1465582400560379,0.1747695207595825,0.2113810777664184,0.1968451589345932,97.65,1.42,96.09
 "subject: Immediate Attention Required: Billing issue detected
 urls: True
 attachments: False
@@ -1597,7 +1597,7 @@ $7,500.00
 
 Thank you for your attention to this matter. We apologize for any inconvenience this may have caused you. We look forward to serving you in the future.
 
-For your reference, please find your bill below. You may click on the link to",0.9981997013092041,0.9981226325035095,36.33003234863281,53.0392050743103,46.82534635066986,44.149842858314514,57.222557067871094,0.16627046465873718,0.11914678663015366,0.14719220995903015,0.14332348108291626,0.1204783171415329
+For your reference, please find your bill below. You may click on the link to",0.998199701309204,0.9981226325035096,36.33003234863281,53.0392050743103,46.82534635066986,44.149842858314514,57.22255706787109,0.1662704646587371,0.1191467866301536,0.1471922099590301,0.1433234810829162,0.1204783171415329,11.49,71.98,32.14
 "subject: Action Needed Now: Your subscription is about to expire
 urls: True
 attachments: False
@@ -1680,7 +1680,7 @@ Thank you for your support.
 The New Yorker
 
 
-Please do not reply to this e-mail. If you need assistance, write to <EMAIL>.",0.9970068335533142,0.9955639839172363,35.161641240119934,53.659433126449585,42.930617928504944,46.595677733421326,37.47457563877106,0.1755303144454956,0.12734432518482208,0.14774367213249207,0.1463542878627777,0.15802592039108276
+Please do not reply to this e-mail. If you need assistance, write to <EMAIL>.",0.9970068335533142,0.9955639839172364,35.161641240119934,53.65943312644959,42.930617928504944,46.595677733421326,37.47457563877106,0.1755303144454956,0.127344325184822,0.147743672132492,0.1463542878627777,0.1580259203910827,5.95,1.59,12.84
 "subject: Emergency Alert: Confirm your identity to avoid lockout
 urls: True
 attachments: False
@@ -1729,7 +1729,7 @@ If you have any questions, please contact your health care provider directly.
 
 Thank you for your cooperation. 
 
-MyHealthDaughter Team",0.9971110820770264,0.9990032315254211,23.956398665905,47.29450345039368,41.91586673259735,40.38090407848358,33.698052167892456,0.211715966463089,0.14480102062225342,0.15369495749473572,0.16357137262821198,0.18078888952732086
+MyHealthDaughter Team",0.9971110820770264,0.9990032315254213,23.956398665905,47.29450345039368,41.91586673259735,40.38090407848358,33.698052167892456,0.211715966463089,0.1448010206222534,0.1536949574947357,0.1635713726282119,0.1807888895273208,81.9,99.01,99.16
 "subject: Deadline Approaching: Submit required documents today
 urls: False
 attachments: True
@@ -1762,7 +1762,7 @@ the process, please contact your Human Resources representative.
 Thank you for your cooperation.
 
 
-<ATTACHMENT>",False,0.029121547900000003,Urgency,Copilot,"<ATTACHMENT>
+<ATTACHMENT>",False,0.0291215479,Urgency,Copilot,"<ATTACHMENT>
 <ATTACHMENT> 
 <ATTACHMENT> 
 <ATTACHMENT> 
@@ -1786,7 +1786,7 @@ Form.doc)
 
 <ATTACHMENT> 
 <ATTACHMENT> 
-<ATTACHMENT>",0.2042907476425171,0.9867151379585266,15.82338958978653,31.54195249080658,46.009448170661926,9.577219188213348,40.5034065246582,0.20948560535907745,0.18166759610176086,0.14535710215568542,0.23364078998565674,0.14151480793952942
+<ATTACHMENT>",0.2042907476425171,0.9867151379585266,15.82338958978653,31.54195249080658,46.009448170661926,9.577219188213348,40.5034065246582,0.2094856053590774,0.1816675961017608,0.1453571021556854,0.2336407899856567,0.1415148079395294,24.19,99.96,48.72
 "subject: High Priority: Review your security settings immediately
 urls: True
 attachments: False
@@ -1845,7 +1845,7 @@ MyMedLife.com
 
 Please do not reply to this e-mail. If you have a question, please visit
 our Help section at <URL> or
-click the ""Contact Us"" link at the bottom of our home page.",0.9974538683891296,0.9989256262779236,38.743263483047485,45.450928807258606,19.637730717658997,66.38743877410889,64.96593952178955,0.16329629719257355,0.1440260112285614,0.21140535175800323,0.08759024739265442,0.09103263914585114
+click the ""Contact Us"" link at the bottom of our home page.",0.9974538683891296,0.9989256262779236,38.743263483047485,45.450928807258606,19.637730717659,66.38743877410889,64.96593952178955,0.1632962971925735,0.1440260112285614,0.2114053517580032,0.0875902473926544,0.0910326391458511,97.5,99.82,88.25
 "subject: Immediate Response Needed: Unusual activity detected
 urls: True
 attachments: False
@@ -1892,7 +1892,7 @@ P.S. If you have any questions, please feel free to contact us at <PHONE> or <EM
 
 P.P.S. If you've received this e-mail in error or no longer wish to receive e-mail from <ORG>, please click here.
 
-<URL>",0.9984416365623474,0.9882000684738159,11.462122946977615,34.87836420536041,26.771199703216553,11.276695132255554,14.642681181430817,0.23636336624622345,0.1769864559173584,0.19644829630851746,0.24806131422519684,0.23645636439323425
+<URL>",0.9984416365623474,0.988200068473816,11.462122946977615,34.87836420536041,26.771199703216556,11.276695132255554,14.642681181430817,0.2363633662462234,0.1769864559173584,0.1964482963085174,0.2480613142251968,0.2364563643932342,79.12,53.39,82.99
 "subject: Official communication regarding policy updates.
 urls: False
 attachments: True
@@ -1933,7 +1933,7 @@ Please refer to the attached memo for further information.
 <PER> Kearney
 503) 464-7404 (cell)
 
-<ATTACHMENT>",0.4037671685218811,0.8103219270706177,1.5744993463158607,66.1884605884552,53.38144898414612,20.709019899368286,15.876170992851257,0.2665872573852539,0.08650779724121094,0.12548992037773132,0.20862643420696259,0.22033384442329407
+<ATTACHMENT>",0.4037671685218811,0.8103219270706177,1.5744993463158607,66.1884605884552,53.38144898414612,20.70901989936829,15.876170992851256,0.2665872573852539,0.0865077972412109,0.1254899203777313,0.2086264342069625,0.220333844423294,96.67,69.63,76.16
 "subject: Notice from administration: Compliance required.
 urls: False
 attachments: False
@@ -1943,7 +1943,7 @@ body:","1.      No mass mailings or e-mailings of any kind are permitted from an
 2.      Mass mailings or e-mailings are defined as the distribution of content to more than 25 recipients.
 3.      The distribution of information to the <ORG> community through <ORG> systems and resources is a privilege that may be suspended at any time for conduct inconsistent with <ORG> values.
 4.      If you are unsure whether your intended distribution is appropriate, please contact your HR representative for guidance.
-5.      Please note that the above policy applies only to the <ORG> system.  If you wish to send an email or mailing outside of the <ORG> system, please ensure that you remove all <ORG> email addresses and do not use <ORG> resources to obtain mailing lists.",False,0.020379871100000002,Authoritative,ChatGPT,"Please be advised that the <ORG> has been notified by the Court of its duty to comply with the following order:
+5.      Please note that the above policy applies only to the <ORG> system.  If you wish to send an email or mailing outside of the <ORG> system, please ensure that you remove all <ORG> email addresses and do not use <ORG> resources to obtain mailing lists.",False,0.0203798711,Authoritative,ChatGPT,"Please be advised that the <ORG> has been notified by the Court of its duty to comply with the following order:
 
 
 It is hereby Ordered that the defendants immediately accept service of process by personal service upon their attorneys of record in the above-captioned action, and that the defendants waive the requirements of Fed. R. Civ. P. 4(i)(3) and (4) and Fed. R. Civ. P. 5(b)(2)(C) with respect to service of the Summons and complaint and acceptance of service of same herein. It is further Ordered that the Clerk of the Court shall not be required to serve the Summons and complaint upon the defendants personally or by certified mail, return receipt requested, and that the defendants waive the requirements of Fed. R. Civ. P. 4(i)(1) and (2) with respect to service of the Summons and complaint and acceptance of service of same herein.
@@ -1960,7 +1960,7 @@ It is hereby Ordered that the defendants immediately accept service of process b
 
 ********************************************************************************************************************************************************************************************************
 
-The Office of the Chairman is responsible for ensuring compliance with <ORG> policy and directives.  In order to verify compliance, the Office of the Chairman will from time to time conduct random audits of employee transactions.  If you are selected for an audit, you will be notified and will be asked to provide documentation regarding your transactions.  Please have documentation available to substantiate all company property used for personal use including, but not limited to, company cars, cell phones, pagers, plane tickets and hotel bills.  If you have any questions regarding compliance or documenting transactions, please contact your Human Resources Representative.",0.947311282157898,0.9155145287513733,31.22614026069641,29.765242338180542,41.88681244850159,26.986002922058105,20.707684755325317,0.18778443336486816,0.17888616025447845,0.14084607362747192,0.19293756783008575,0.20839127898216248
+The Office of the Chairman is responsible for ensuring compliance with <ORG> policy and directives.  In order to verify compliance, the Office of the Chairman will from time to time conduct random audits of employee transactions.  If you are selected for an audit, you will be notified and will be asked to provide documentation regarding your transactions.  Please have documentation available to substantiate all company property used for personal use including, but not limited to, company cars, cell phones, pagers, plane tickets and hotel bills.  If you have any questions regarding compliance or documenting transactions, please contact your Human Resources Representative.",0.947311282157898,0.9155145287513732,31.22614026069641,29.765242338180546,41.88681244850159,26.986002922058105,20.70768475532532,0.1877844333648681,0.1788861602544784,0.1408460736274719,0.1929375678300857,0.2083912789821624,31.17,43.6,98.88
 "subject: Formal directive: Review updated terms and conditions.
 urls: True
 attachments: False
@@ -1986,7 +1986,7 @@ John J. Arnold
 President
 eSpokes, Inc.
 ********** To unsubscribe from our mailing list, please click here: 
-<URL>",False,0.10203942660000001,Authoritative,ChatGPT,"Your formal directive is now available online in INSPIRE.  You can view it by clicking on the following link:  
+<URL>",False,0.1020394266,Authoritative,ChatGPT,"Your formal directive is now available online in INSPIRE.  You can view it by clicking on the following link:  
 
 <URL> 
 
@@ -1998,7 +1998,7 @@ Thank you.","We are issuing a new formal directive to all employees.  Please rev
 
 You will be required to certify your acceptance of the terms and conditions before 1:00 p.m. on <DATE>.  This requirement is found in Section 10 of the employment agreement.  
 
-If you have any questions or concerns, please contact <PER> at <PHONE>.",0.9892063140869141,0.29919958114624023,39.19680714607239,42.930757999420166,41.55297577381134,27.903610467910767,29.150554537773132,0.16859644651412964,0.1537362039089203,0.15447385609149933,0.1911371648311615,0.1925816535949707
+If you have any questions or concerns, please contact <PER> at <PHONE>.",0.989206314086914,0.2991995811462402,39.19680714607239,42.930757999420166,41.55297577381134,27.903610467910767,29.15055453777313,0.1685964465141296,0.1537362039089203,0.1544738560914993,0.1911371648311615,0.1925816535949707,6.45,7.1,99.9
 "subject: Important: New regulations now in effect.
 urls: True
 attachments: True
@@ -2067,7 +2067,7 @@ Contributions or gifts to <ORG> are not tax deductible.
 This email was sent to: <EMAIL>
 To update your address, go to: <EMAIL>
 To unsubscribe from these messages, go to: <URL>
-<ORG>, P.O. Box 66732 <LOC>, D",0.7730249166488647,0.9763736724853516,23.931822180747986,-6.2662273645401,8.288803696632385,39.749640226364136,9.960983693599701,0.19641253352165222,0.27317386865615845,0.25145235657691956,0.15914925932884216,0.2415015697479248
+<ORG>, P.O. Box 66732 <LOC>, D",0.7730249166488647,0.9763736724853516,23.931822180747982,-6.2662273645401,8.288803696632385,39.749640226364136,9.9609836935997,0.1964125335216522,0.2731738686561584,0.2514523565769195,0.1591492593288421,0.2415015697479248,97.98,98.25,99.88
 "subject: Statement from management: Mandatory action required.
 urls: False
 attachments: False
@@ -2099,7 +2099,7 @@ We appreciate your cooperation in advance.
 
 
 Thank you,
-<ORG> Global Technology",0.9565390348434448,0.030937612056732178,25.012803077697754,28.400617837905884,10.04870980978012,28.157734870910645,22.46365398168564,0.1988866627216339,0.20947352051734924,0.2394469827413559,0.19523853063583374,0.19653844833374023
+<ORG> Global Technology",0.9565390348434448,0.0309376120567321,25.012803077697757,28.400617837905884,10.04870980978012,28.157734870910645,22.46365398168564,0.1988866627216339,0.2094735205173492,0.2394469827413559,0.1952385306358337,0.1965384483337402,99.95,99.96,0.12
 "subject: Official notice: Scheduled system maintenance.
 urls: False
 attachments: False
@@ -2131,7 +2131,7 @@ Thank you for your business with E*TRADE.
 
 
 E*TRADE Clearing, LLC
-Member NYSE, SIPC.",0.8733814358711243,0.964594304561615,32.02943503856659,48.23918342590332,28.83281707763672,62.213897705078125,56.849128007888794,0.18337225914001465,0.14542034268379211,0.1887737214565277,0.10108381509780884,0.11131304502487183
+Member NYSE, SIPC.",0.8733814358711243,0.964594304561615,32.02943503856659,48.23918342590332,28.83281707763672,62.213897705078125,56.8491280078888,0.1833722591400146,0.1454203426837921,0.1887737214565277,0.1010838150978088,0.1113130450248718,6.28,3.82,0.39
 "subject: Compliance alert: Immediate adherence required.
 urls: False
 attachments: True
@@ -2166,7 +2166,7 @@ Please give this immediate attention.
 
 Thanks.
 
-<ATTACHMENT>",0.9552695751190186,0.9679366946220398,28.718292713165283,58.250415325164795,23.831161856651306,29.208368062973022,36.526256799697876,0.18497799336910248,0.11417744308710098,0.1984105259180069,0.1828824132680893,0.16409176588058472
+<ATTACHMENT>",0.9552695751190186,0.9679366946220398,28.718292713165283,58.2504153251648,23.831161856651303,29.208368062973022,36.52625679969788,0.1849779933691024,0.1141774430871009,0.1984105259180069,0.1828824132680893,0.1640917658805847,0.03,0.88,90.99
 "subject: Corporate update: Changes to internal procedures.
 urls: False
 attachments: False
@@ -2189,7 +2189,7 @@ The five key areas that we will address immediately are:  capital allocation; de
 
 Capital Allocation
 
-We will immediately freeze all capital expenditures that do not contribute to the core businesses and shut down non-core businesses.  We will also scale back on those projects that have been in the pipeline for more than six months and will not come to fruition in the n<PHONE> months.  We will continue to explore all opportunities for cost savings across the",0.5994314551353455,0.025214970111846924,34.57249402999878,18.305884301662445,39.82495665550232,34.48787331581116,35.939234495162964,0.16285352408885956,0.2002723515033722,0.15356898307800293,0.1759849339723587,0.17233827710151672
+We will immediately freeze all capital expenditures that do not contribute to the core businesses and shut down non-core businesses.  We will also scale back on those projects that have been in the pipeline for more than six months and will not come to fruition in the n<PHONE> months.  We will continue to explore all opportunities for cost savings across the",0.5994314551353455,0.0252149701118469,34.57249402999878,18.305884301662445,39.82495665550232,34.48787331581116,35.939234495162964,0.1628535240888595,0.2002723515033722,0.1535689830780029,0.1759849339723587,0.1723382771015167,5.78,1.27,99.83
 "subject: Executive message: Strategic updates and next steps.
 urls: False
 attachments: True
@@ -2215,7 +2215,7 @@ body:","1.     The <PER> message is resonating.
 
 10.   <PER> has a real chance to win.
 
-<ATTACHMENT>",True,0.9852247834000001,Authoritative,ChatGPT,"<ATTACHMENT>
+<ATTACHMENT>",True,0.9852247834,Authoritative,ChatGPT,"<ATTACHMENT>
 
 <ATTACHMENT> 
 <ATTACHMENT>","Dear <PER>,
@@ -2229,7 +2229,7 @@ Thanks,
 
 <PER> Stocks
 
-<ATTACHMENT>",0.014697909355163574,0.18790769577026367,36.30415201187134,29.209747910499573,55.1130473613739,6.472750753164291,28.73237133026123,0.1626160442829132,0.18854208290576935,0.11572471261024475,0.243702232837677,0.1806481033563614
+<ATTACHMENT>",0.0146979093551635,0.1879076957702636,36.30415201187134,29.209747910499573,55.1130473613739,6.472750753164291,28.73237133026123,0.1626160442829132,0.1885420829057693,0.1157247126102447,0.243702232837677,0.1806481033563614,99.86,98.22,18.17
 "subject: Formal notification: Account status review.
 urls: True
 attachments: False
@@ -2267,7 +2267,7 @@ Our systems automatically review a large number of accounts every day. This revi
 Will you suspend my account if it's being reviewed? 
 We do not suspend accounts during this review process. You are free to continue using our services while your account is being reviewed. 
 
-I don't understand why my account",0.9920666217803955,0.38673585653305054,52.98170447349548,44.08019483089447,35.822904109954834,59.21062231063843,45.899415016174316,0.12216273695230484,0.1524684727191925,0.1701173037290573,0.10272616147994995,0.13918812572956085
+I don't understand why my account",0.9920666217803956,0.3867358565330505,52.98170447349548,44.08019483089447,35.822904109954834,59.21062231063843,45.89941501617432,0.1221627369523048,0.1524684727191925,0.1701173037290573,0.1027261614799499,0.1391881257295608,49.34,3.31,99.87
 "subject: Official Policy Update: Mandatory compliance required by Q3.
 urls: True
 attachments: True
@@ -2320,7 +2320,7 @@ Chairman, FPA Board of Directors
 
 
 <ATTACHMENT>
-<ATTACHMENT>",0.9962303042411804,0.9897425770759583,31.014147400856018,14.07700628042221,44.162946939468384,19.382894039154053,42.87046790122986,0.18583768606185913,0.22448588907718658,0.14767500758171082,0.22106614708900452,0.1523110568523407
+<ATTACHMENT>",0.9962303042411804,0.9897425770759584,31.014147400856015,14.07700628042221,44.162946939468384,19.382894039154053,42.87046790122986,0.1858376860618591,0.2244858890771865,0.1476750075817108,0.2210661470890045,0.1523110568523407,6.57,91.76,0.29
 "subject: CEO Announcement: Strategic organizational changes for the upcoming year.
 urls: False
 attachments: False
@@ -2336,7 +2336,7 @@ body:","1. We are pleased to announce the following organizational changes that 
 
 5. <PER> will assume the role of Chief Financial Officer for <ORG>, and will be responsible for financial accounting and reporting, budget and forecasting, financial analysis, regulatory reporting, tax, treasury, and financial disclosure.
 
-6. <PER>",False,0.32490533590000004,Authoritative,Gemini,"As you know, <ORG> has been working to reorganize its wholesale business, with the goal of creating a single business unit that focuses on the development of <LOC>'s wholesale gas and power markets.
+6. <PER>",False,0.3249053359,Authoritative,Gemini,"As you know, <ORG> has been working to reorganize its wholesale business, with the goal of creating a single business unit that focuses on the development of <LOC>'s wholesale gas and power markets.
 
 After an extensive search process, I am pleased to announce that Danny McCarty will join <ORG> as President and Chief Operating Officer of <ORG> effective <DATE>.
 
@@ -2354,7 +2354,7 @@ Our goal is to create a leaner, more efficient company that is better positioned
 
 Separating our core businesses - <ORG> and <ORG> - each of which will have its own management team and resources focused on creating value for our stakeholders.  <ORG> will continue to be the world's leading producer of natural gas and crude oil.  <ORG> will continue to be the world's leading electricity provider and trading organization.  
 Improving our asset portfolio - we will focus our assets in regions and opportunities that provide the greatest strategic value to <ORG>.  This will include a thorough review of our business activities and assets in <ORG> and the Americas.  
-Maintaining our financial strength - we will continue to have the financial strength to invest in our core businesses and to respond to market opportunities.  This is",0.9438596367835999,0.13469940423965454,41.87289476394653,31.925150752067566,47.08072543144226,41.97937846183777,55.76685667037964,0.1584930121898651,0.1678600311279297,0.13578391075134277,0.15197663009166718,0.1179203912615776
+Maintaining our financial strength - we will continue to have the financial strength to invest in our core businesses and to respond to market opportunities.  This is",0.9438596367836,0.1346994042396545,41.87289476394653,31.92515075206757,47.08072543144226,41.97937846183777,55.76685667037964,0.1584930121898651,0.1678600311279297,0.1357839107513427,0.1519766300916671,0.1179203912615776,98.22,3.78,99.98
 "subject: Directive: New security protocols implemented for all remote employees.
 urls: True
 attachments: True
@@ -2406,7 +2406,7 @@ The new solution requires all remote employees to use a new application called t
 
 There are some open ports on the VPN solution that allow access to the Internet. If you currently use a dial-up connection for Internet access while on travel, you must use the VPN Client. If you do not use the VPN Client, you will not be able to connect to the Internet. 
 
-If you have any",0.04958152770996094,0.38239121437072754,39.44322168827057,50.788116455078125,40.356630086898804,26.755279302597046,37.995320558547974,0.15862113237380981,0.13305796682834625,0.1595975160598755,0.1906787008047104,0.16572996973991394
+If you have any",0.0495815277099609,0.3823912143707275,39.44322168827057,50.788116455078125,40.3566300868988,26.75527930259705,37.99532055854797,0.1586211323738098,0.1330579668283462,0.1595975160598755,0.1906787008047104,0.1657299697399139,7.76,97.36,5.49
 "subject: Important Notice: Binding changes to our Terms of Service and Privacy Policy.
 urls: True
 attachments: False
@@ -2451,7 +2451,7 @@ Terms of Service: <URL>
 
 This email was intended for <EMAIL>. If you no longer wish to receive special offers or other commercial email from <ORG>, please click here: <URL> or simply reply to this email with ""remove"" on the subject line. 
 <ORG>'s Email Subscription Policy: <URL>
-Copyright (c) <PER> <ORG>, Inc. All rights reserved.",0.9942523837089539,0.9973702430725098,69.11735534667969,65.73606729507446,57.143884897232056,72.98089861869812,68.2828962802887,0.07967875897884369,0.08811353892087936,0.11654934287071228,0.0686720758676529,0.08111021667718887
+Copyright (c) <PER> <ORG>, Inc. All rights reserved.",0.994252383708954,0.9973702430725098,69.11735534667969,65.73606729507446,57.143884897232056,72.98089861869812,68.2828962802887,0.0796787589788436,0.0881135389208793,0.1165493428707122,0.0686720758676529,0.0811102166771888,60.12,71.79,77.69
 "subject: Legal Department: Strict compliance requirements for the upcoming financial audit.
 urls: False
 attachments: True
@@ -2490,7 +2490,7 @@ Soli Forster
 <ATTACHMENT>
 
 
-<ATTACHMENT>",0.6690154075622559,0.003741741180419922,44.95536684989929,62.53959536552429,64.91374373435974,53.15982103347778,55.26677966117859,0.14784160256385803,0.10381817817687988,0.09548541903495789,0.11940264701843262,0.11440571397542953
+<ATTACHMENT>",0.6690154075622559,0.0037417411804199,44.95536684989929,62.53959536552429,64.91374373435974,53.15982103347778,55.26677966117859,0.147841602563858,0.1038181781768798,0.0954854190349578,0.1194026470184326,0.1144057139754295,5.72,0.83,64.63
 "subject: Management Update: Official guidelines for the quarterly performance review.
 urls: True
 attachments: True
@@ -2519,7 +2519,7 @@ agenda.  Participants are expected to have read all supporting documentation
 prior to the meeting.  Management should be prepared to discuss and
 recommend a course of action for each agenda item.
 
-5. The chairman will set the tone for the meeting and will ensure that",True,0.9991762042000001,Authoritative,Gemini,"Management Update
+5. The chairman will set the tone for the meeting and will ensure that",True,0.9991762042,Authoritative,Gemini,"Management Update
 <DATE>
 
 <ATTACHMENT>  <ATTACHMENT>  <<URL>
@@ -2538,7 +2538,7 @@ The PRC process is beginning.  Please use the attached checklist as a guide when
 
 <ATTACHMENT> 
 
-You have been selected to be a part of <ORG>'s Management Committee.  As such, you are required to participate in the Performance Review process.  The attached checklist is a guide for you to use when participating in a performance review.  It is not meant to",0.0194358229637146,0.22540289163589478,26.469948887825012,39.78118300437927,47.21173048019409,23.598194122314453,54.674309492111206,0.19574695825576782,0.16345643997192383,0.1368909329175949,0.18605366349220276,0.11543738096952438
+You have been selected to be a part of <ORG>'s Management Committee.  As such, you are required to participate in the Performance Review process.  The attached checklist is a guide for you to use when participating in a performance review.  It is not meant to",0.0194358229637146,0.2254028916358947,26.46994888782501,39.78118300437927,47.21173048019409,23.598194122314453,54.674309492111206,0.1957469582557678,0.1634564399719238,0.1368909329175949,0.1860536634922027,0.1154373809695243,0.53,96.66,99.9
 "subject: Official Communication: Complete restructuring of the IT and Engineering departments.
 urls: False
 attachments: False
@@ -2581,7 +2581,7 @@ Engineering:
 ?	Gary Linhart - Director, <ORG> Gas/Power Engineering
 ?	Brian Smith - Director, <ORG> Trading Engineering
 
-The lead engineer for each trading system will now report directly to me, rather than to the head of the IT department for that system.  In addition, the engineering departments for <ORG> and <ORG> will be consolidated under <PER>.",0.0036635398864746094,0.03957045078277588,47.99104928970337,56.2701940536499,53.4223198890686,61.15720868110657,71.37764692306519,0.13644476234912872,0.11462961137294769,0.11893598735332489,0.10044904053211212,0.07254768908023834
+The lead engineer for each trading system will now report directly to me, rather than to the head of the IT department for that system.  In addition, the engineering departments for <ORG> and <ORG> will be consolidated under <PER>.",0.0036635398864746,0.0395704507827758,47.99104928970337,56.2701940536499,53.4223198890686,61.15720868110657,71.37764692306519,0.1364447623491287,0.1146296113729476,0.1189359873533248,0.1004490405321121,0.0725476890802383,96.39,99.98,96.29
 "subject: Executive Summary: Q2 Financial Results and Board of Directors Decisions.
 urls: False
 attachments: True
@@ -2612,7 +2612,7 @@ Fax: <PHONE>
 <ATTACHMENT>","<ATTACHMENT>  <ATTACHMENT>
 
 <ATTACHMENT> 
-<ATTACHMENT>",0.007303476333618164,0.04232287406921387,66.95522665977478,38.4422242641449,19.056470692157745,23.713243007659912,6.031809002161026,0.08938299864530563,0.15899096429347992,0.20897123217582703,0.2003297656774521,0.23358727991580963
+<ATTACHMENT>",0.0073034763336181,0.0423228740692138,66.95522665977478,38.4422242641449,19.056470692157745,23.713243007659912,6.031809002161026,0.0893829986453056,0.1589909642934799,0.208971232175827,0.2003297656774521,0.2335872799158096,9.53,65.16,99.26
 "subject: Mandatory Training: Annual corporate code of conduct certification.
 urls: True
 attachments: False
@@ -2642,7 +2642,7 @@ Thank you,
 
 Rakhi Bhatia
 <ORG> Global Risk Operations
-<PHONE>",0.059954047203063965,0.7157849073410034,60.18441319465637,44.35337483882904,64.06595706939697,52.426016330718994,65.08697271347046,0.10714832693338394,0.1494712084531784,0.0913829356431961,0.13162869215011597,0.09269995987415314
+<PHONE>",0.0599540472030639,0.7157849073410034,60.18441319465637,44.35337483882904,64.06595706939697,52.426016330718994,65.08697271347046,0.1071483269333839,0.1494712084531784,0.0913829356431961,0.1316286921501159,0.0926999598741531,35.34,1.64,91.88
 "subject: Official Statement: Final resolution report on the recent global service outage.
 urls: True
 attachments: True
@@ -2679,7 +2679,7 @@ President
 <ORG> University
 
 [<URL>
-<<URL>",False,0.09502381830000001,Authoritative,Gemini,"To:  <ORG> Employees
+<<URL>",False,0.0950238183,Authoritative,Gemini,"To:  <ORG> Employees
 
 From:  <PER>, Office of the Chairman
 
@@ -2698,7 +2698,7 @@ We are committed to learning from this experience and using it to improve our bu
 
 <ORG> Global Technology Communications
 <EMAIL> <EMAIL>>
-<URL> <<URL>",0.2134610414505005,0.9927587509155273,57.07469582557678,69.2725419998169,39.61491882801056,64.96187448501587,20.01715749502182,0.1041131317615509,0.08078806102275848,0.1568078100681305,0.09492775052785873,0.21431921422481537
+<URL> <<URL>",0.2134610414505005,0.9927587509155272,57.07469582557678,69.2725419998169,39.61491882801056,64.96187448501587,20.01715749502182,0.1041131317615509,0.0807880610227584,0.1568078100681305,0.0949277505278587,0.2143192142248153,91.86,0.32,85.68
 "subject: Official Notice: Policy updates effective immediately
 urls: True
 attachments: False
@@ -2769,7 +2769,7 @@ Please note that these policy changes will be posted on the University Policy we
 
 2.      The University has amended its Policy on the Use of University Information Resources and Services<<URL> to include a provision that forbids the use of University computing resources to post or distribute unauthorized material on University computing equipment, including material that is libelous, harassing, defamatory, false, misleading, or discriminatory. The new provision also prohibits the use of University computing resources to post or distribute unauthorized material on University computing equipment that violates copyright or other intellectual property laws.
 
-3.      The Policy on Use of University Information Resources and Services has also been amended to include a provision that requires the University to respond to subpoenas and other legal processes",0.4710434079170227,0.9604617953300476,12.512090802192688,19.90428864955902,36.193689703941345,14.956557750701904,13.708379864692688,0.22731313109397888,0.19814100861549377,0.15887616574764252,0.21239513158798218,0.22537851333618164
+3.      The Policy on Use of University Information Resources and Services has also been amended to include a provision that requires the University to respond to subpoenas and other legal processes",0.4710434079170227,0.9604617953300476,12.512090802192688,19.90428864955902,36.19368970394135,14.956557750701904,13.708379864692688,0.2273131310939788,0.1981410086154937,0.1588761657476425,0.2123951315879821,0.2253785133361816,0.39,99.77,7.45
 "subject: Mandatory Compliance: Please review the new guidelines
 urls: False
 attachments: True
@@ -2795,7 +2795,7 @@ Corporate Law Department
 <ATTACHMENT>","<ATTACHMENT>  <ATTACHMENT>
 
 <ATTACHMENT> 
-<ATTACHMENT>",0.4219706058502197,0.04232287406921387,42.96316206455231,25.532767176628113,22.30573296546936,16.900141537189484,8.831781893968582,0.14459331333637238,0.18793907761573792,0.21211721003055573,0.20855891704559326,0.22973066568374634
+<ATTACHMENT>",0.4219706058502197,0.0423228740692138,42.96316206455231,25.532767176628116,22.30573296546936,16.900141537189484,8.831781893968582,0.1445933133363723,0.1879390776157379,0.2121172100305557,0.2085589170455932,0.2297306656837463,87.16,80.52,99.26
 "subject: Administrative Directive: Required actions for all members
 urls: False
 attachments: False
@@ -2821,7 +2821,7 @@ This payment will be in addition to any severance or","As you know, <ORG> has en
 
 All employees of <ORG> are required to comply with the terms of the Administrative Directive.  In particular, you must certify your compliance with the terms of the Administrative Directive no later than <DATE>.  The certification process is set forth in the Administrative Directive.
 
-If you have any questions concerning the Administrative Directive or your certification obligation, please contact <PER> at <PHONE> or Donna Lowry at <PHONE>.  Thank you for your cooperation in meeting <ORG>'s compliance obligations.",0.9960447549819946,0.9681468605995178,21.581891179084778,18.323838710784912,31.226587295532227,31.11048936843872,33.409056067466736,0.20138311386108398,0.21044792234897614,0.1808786541223526,0.15965071320533752,0.16659370064735413
+If you have any questions concerning the Administrative Directive or your certification obligation, please contact <PER> at <PHONE> or Donna Lowry at <PHONE>.  Thank you for your cooperation in meeting <ORG>'s compliance obligations.",0.9960447549819946,0.9681468605995178,21.581891179084774,18.323838710784912,31.226587295532227,31.11048936843872,33.409056067466736,0.2013831138610839,0.2104479223489761,0.1808786541223526,0.1596507132053375,0.1665937006473541,99.97,16.4,77.07
 "subject: Formal Reminder: Your participation is required
 urls: False
 attachments: False
@@ -2857,7 +2857,7 @@ Susan J. Mara
 General Counsel","This is a formal reminder that your participation is required in the <ORG> <LOC> office today, <DATE> from 8:00 AM to 12:00 PM (noon).  Lunch will be provided.  If you have already made arrangements to be out of the office, please notify me at <PHONE> or <PER> at <PHONE> and send me the name of the person who will be representing your group.  Please respond to this message as soon as possible.
 
 Thanks,
-Veronica",0.559865415096283,0.2566167712211609,26.881366968154907,20.78424245119095,36.61543130874634,43.19440722465515,32.63794779777527,0.18630310893058777,0.2062927633523941,0.1748347282409668,0.14451763033866882,0.17328138649463654
+Veronica",0.559865415096283,0.2566167712211609,26.881366968154907,20.78424245119095,36.61543130874634,43.19440722465515,32.63794779777527,0.1863031089305877,0.2062927633523941,0.1748347282409668,0.1445176303386688,0.1732813864946365,0.39,4.39,99.31
 "subject: Executive Announcement: Structural changes to the program
 urls: True
 attachments: False
@@ -2915,7 +2915,7 @@ The <ORG>
 <LOC>
 <LOC>
 Tel: <PHONE>
-<URL>",0.11850303411483765,0.02155923843383789,35.367587208747864,41.14598631858826,41.210174560546875,55.89724779129028,52.774643898010254,0.16288724541664124,0.14943470060825348,0.15167206525802612,0.11551260203123093,0.13684718310832977
+<URL>",0.1185030341148376,0.0215592384338378,35.367587208747864,41.14598631858826,41.21017456054688,55.89724779129028,52.774643898010254,0.1628872454166412,0.1494347006082534,0.1516720652580261,0.1155126020312309,0.1368471831083297,93.86,94.77,91.66
 "subject: Official Communication: Updated procedures for all staff
 urls: False
 attachments: True
@@ -2943,7 +2943,7 @@ circulated to <ORG> staff.
 
 <ATTACHMENT> 
 <ATTACHMENT> 
-<ATTACHMENT>",0.9742563366889954,0.03515404462814331,42.802828550338745,34.990161657333374,43.69692802429199,53.95537614822388,56.03431463241577,0.15573422610759735,0.17222046852111816,0.15703049302101135,0.11691916733980179,0.11245612800121307
+<ATTACHMENT>",0.9742563366889954,0.0351540446281433,42.802828550338745,34.990161657333374,43.69692802429199,53.95537614822388,56.03431463241577,0.1557342261075973,0.1722204685211181,0.1570304930210113,0.1169191673398017,0.112456128001213,99.07,98.01,98.9
 "subject: Leadership Directive: Immediate adherence required
 urls: False
 attachments: False
@@ -2957,7 +2957,7 @@ body:","1.	We are in a crisis situation.  We have a high level of uncertainty re
 
 4.	We need to be more forthcoming with information.  We have been too secretive.  The media and the public perceive us as being evasive and dishonest.  We need to begin sharing more information with the public and the media.
 
-5.	We need to show that we are taking action to correct the problems.  We need to demonstrate to the public, the media, and our employees that we are",True,0.9960402250000001,Authoritative,Copilot,"<PER>:
+5.	We need to show that we are taking action to correct the problems.  We need to demonstrate to the public, the media, and our employees that we are",True,0.996040225,Authoritative,Copilot,"<PER>:
 
 We are in the midst of a leadership crisis.  The senior leadership of <ORG> has lost the confidence of the employees.  The senior leadership team has lost its credibility.  The senior leadership team has no trust.  The senior leadership team has no loyalty.  The senior leadership team has no respect.  The senior leadership team has no following.  The senior leadership team has no reputation.  The senior leadership team has no ethics.  The senior leadership team has no integrity.  The senior leadership team has no character.  The senior leadership team has no honor.  The senior leadership team has no consistency.  The senior leadership team has no reliability.  The senior leadership team has no dependability.  The senior leadership team has no trustworthiness.  The senior leadership team has no believability.  The senior leadership team has no accountability.  The senior leadership team has no transparency.  The senior leadership team has no candor.  The senior leadership team has no objectivity.  The senior leadership team has no open mind.  The senior leadership team has no commitment.  The senior leadership team has no promise.  The senior leadership team has no pledge.  The senior leadership team has no dedication.","<PER> has asked me to communicate the following directive to the <ORG> employee community:
 
@@ -2965,7 +2965,7 @@ We are in the midst of a leadership crisis.  The senior leadership of <ORG> has 
 
 Harassment prevention training will be made available to all employees.  The Company will also provide additional training and resources to managers to help them identify and correct harassment in their work groups.
 
-If you have questions about this policy or its enforcement, please contact your HR representative.",0.004979610443115234,0.8020492792129517,37.61686086654663,49.748265743255615,31.723153591156006,35.96382141113281,28.824979066848755,0.1668303906917572,0.13065209984779358,0.18193018436431885,0.16133904457092285,0.18357770144939423
+If you have questions about this policy or its enforcement, please contact your HR representative.",0.0049796104431152,0.8020492792129517,37.61686086654663,49.748265743255615,31.72315359115601,35.96382141113281,28.824979066848755,0.1668303906917572,0.1306520998477935,0.1819301843643188,0.1613390445709228,0.1835777014493942,4.5,99.87,6.48
 "subject: Compliance Notice: Failure to follow may result in penalties
 urls: True
 attachments: False
@@ -2990,7 +2990,7 @@ This notice is intended to highlight the significant number of employees who con
 
 These are just a few examples of misconduct that occurred in the last seven days.  In each instance, the employee's misconduct required an investigation, the expenditure of significant company resources, and resulted in penalties imposed on the employee.
 
-We want",False,0.012795072000000001,Authoritative,Copilot,"Failure to follow may result in penalties.
+We want",False,0.012795072,Authoritative,Copilot,"Failure to follow may result in penalties.
 Click on the following link to learn more: 
 <URL>
 
@@ -3021,7 +3021,7 @@ The <ORG> has issued a new Compliance Notice that must be read and followed.  Th
 Please note that this is an official notice from the <ORG>.  Your signature on this notice will serve as proof that you have received and read it. 
 If you are unable to print this notice, please contact your HR representative for an alternative method of acknowledgment. 
 Thank you. 
-This Compliance Notice was sent to you as a reminder to read and follow the notice at <URL>",0.9668806195259094,0.9927712082862854,48.45956563949585,38.542357087135315,62.55793571472168,24.701589345932007,68.10564994812012,0.1297326534986496,0.16507163643836975,0.10013195872306824,0.18690194189548492,0.07661189883947372
+This Compliance Notice was sent to you as a reminder to read and follow the notice at <URL>",0.9668806195259094,0.9927712082862854,48.45956563949585,38.54235708713532,62.55793571472168,24.701589345932007,68.10564994812012,0.1297326534986496,0.1650716364383697,0.1001319587230682,0.1869019418954849,0.0766118988394737,4.25,99.96,1.8
 "subject: Board Decision: New operational standards implemented
 urls: True
 attachments: False
@@ -3049,7 +3049,7 @@ As you know, there have been numerous media reports and public statements by mem
 
 In response to the terrorist attacks, we have implemented a new set of operational standards designed to protect our employees and facilities.  These standards are dynamic and may be changed as new information is learned.  We will continue to evaluate the effectiveness of these standards and make modifications as necessary.  I want to emphasize that our goal is to protect our employees and our facilities and that we will continue to weigh the threat against the potential business disruption caused by these measures.  The standards are as follows:
 
-?	We have established a new security force comprising former law enforcement officers, military personnel and private security officers to provide additional protection for <LOC> and <LOC>.",0.6440731287002563,0.07205867767333984,45.21453678607941,48.904672265052795,40.593892335891724,50.358349084854126,42.12273359298706,0.14543412625789642,0.13595792651176453,0.15334415435791016,0.13660046458244324,0.1518058478832245
+?	We have established a new security force comprising former law enforcement officers, military personnel and private security officers to provide additional protection for <LOC> and <LOC>.",0.6440731287002563,0.0720586776733398,45.21453678607941,48.9046722650528,40.59389233589173,50.358349084854126,42.12273359298706,0.1454341262578964,0.1359579265117645,0.1533441543579101,0.1366004645824432,0.1518058478832245,2.33,99.88,5.52
 "subject: Internal Memo: Mandatory attendance for upcoming briefing
 urls: False
 attachments: False
@@ -3057,7 +3057,7 @@ sentiment: authoritative
 ->
 body:","1.	Please attend the following meeting, as your attendance is mandatory.
 2.	This meeting will be held in 5C2 at the following time.
-3.	Agenda for the meeting will be provided at a later date.",True,0.9708763957000001,Authoritative,Copilot,"The following memo was sent to all <ORG> employees this afternoon by <PER>, <PER> and <PER>.
+3.	Agenda for the meeting will be provided at a later date.",True,0.9708763957,Authoritative,Copilot,"The following memo was sent to all <ORG> employees this afternoon by <PER>, <PER> and <PER>.
 
 
 
@@ -3071,7 +3071,7 @@ From: <PER> Skilling and <PER>
 
 Re: Mandatory attendance for upcoming briefing
 
-In order to drive our new business initiatives forward, we would like to schedule a two-hour session with you to update and review the current state of the company.  This meeting will be held Wednesday, <DATE> at 9:00 a.m. in the Hyatt Regency Imperial Ballroom.  We recognize the time it will take you to travel to <LOC> and we appreciate your attendance.  A block of rooms has been reserved at the Hyatt Regency for <DATE> at a special rate of $159, including tax.  To make your reservations, please call <DATE>77-233-6000, and mention the rate for the <ORG> Company.  If you are reserving a room for Friday or Saturday night, you must call the hotel directly at <PHONE>.  If you have any other travel arrangements, please call <PER> Buehler at <PHONE> or <PER> Marra at <PHONE>.  We look forward to seeing you at this important meeting.",0.9877707958221436,0.8788666129112244,27.116495370864868,32.405853271484375,17.130935192108154,13.509517908096313,39.816054701805115,0.1894795298576355,0.16671296954154968,0.20730315148830414,0.23118537664413452,0.15618488192558289
+In order to drive our new business initiatives forward, we would like to schedule a two-hour session with you to update and review the current state of the company.  This meeting will be held Wednesday, <DATE> at 9:00 a.m. in the Hyatt Regency Imperial Ballroom.  We recognize the time it will take you to travel to <LOC> and we appreciate your attendance.  A block of rooms has been reserved at the Hyatt Regency for <DATE> at a special rate of $159, including tax.  To make your reservations, please call <DATE>77-233-6000, and mention the rate for the <ORG> Company.  If you are reserving a room for Friday or Saturday night, you must call the hotel directly at <PHONE>.  If you have any other travel arrangements, please call <PER> Buehler at <PHONE> or <PER> Marra at <PHONE>.  We look forward to seeing you at this important meeting.",0.9877707958221436,0.8788666129112244,27.116495370864868,32.405853271484375,17.130935192108154,13.509517908096312,39.81605470180512,0.1894795298576355,0.1667129695415496,0.2073031514883041,0.2311853766441345,0.1561848819255828,99.79,10.41,4.6
 "subject: Booking confirmation: Your reservation is confirmed.
 urls: True
 attachments: True
@@ -3106,7 +3106,7 @@ Flight number: 1699  Departure: <DATE>  7:00 pm
 Arrival: <DATE>  8:00 pm
 Aircraft type: Boeing 737-300
 
-Flight number: 1857  Departure: <DATE>  8:22 pm",False,0.22603809830000002,Booking,ChatGPT,"Dear JERRY DAVIS,
+Flight number: 1857  Departure: <DATE>  8:22 pm",False,0.2260380983,Booking,ChatGPT,"Dear JERRY DAVIS,
 
 Thank you for making your travel plans with Continental Airlines
 and Continental Express.  Your reservation is confirmed.
@@ -3163,7 +3163,7 @@ Trip ID:
 Travel Date:
 Depart: <DATE> Arrive: <DATE>
 ********************************************
-Res",0.9977744221687317,0.9859362840652466,46.14683389663696,35.15009880065918,38.53387534618378,41.1587119102478,40.65409302711487,0.13170969486236572,0.1642724871635437,0.1602076292037964,0.14904040098190308,0.15791182219982147
+Res",0.9977744221687316,0.9859362840652466,46.14683389663696,35.15009880065918,38.53387534618378,41.1587119102478,40.65409302711487,0.1317096948623657,0.1642724871635437,0.1602076292037964,0.149040400981903,0.1579118221998214,99.76,99.94,1.9
 "subject: Payment received successfully. Thank you!
 urls: False
 attachments: False
@@ -3171,7 +3171,7 @@ sentiment: confirmation
 ->
 body:","1. Your payment to 'Jesse Jackson for President' has been received successfully.
 2. The payment reference number is : 0000000000000000001
-3. Your transaction will appear on your statement as 'Jesse Jackson for President'",False,0.0017241135000000002,Booking,ChatGPT,"Payment Successful!
+3. Your transaction will appear on your statement as 'Jesse Jackson for President'",False,0.0017241135,Booking,ChatGPT,"Payment Successful!
 
 Thank you for your payment. You have successfully completed your payment.
 
@@ -3183,7 +3183,7 @@ Transaction ID: 0000000000000001
 
 Date & Time Paid: <DATE> 9:54:34 AM
 
-Payment Method: Visa 4111",0.7956714630126953,0.9974139928817749,41.954079270362854,51.53621435165405,56.730639934539795,51.13482475280762,57.728588581085205,0.14306321740150452,0.12431599944829941,0.10786852985620499,0.12150697410106659,0.1098959892988205
+Payment Method: Visa 4111",0.7956714630126953,0.9974139928817748,41.95407927036285,51.53621435165405,56.7306399345398,51.13482475280762,57.728588581085205,0.1430632174015045,0.1243159994482994,0.1078685298562049,0.1215069741010665,0.1098959892988205,1.65,99.57,17.56
 "subject: Your order has been confirmed and is being processed.
 urls: True
 attachments: False
@@ -3254,7 +3254,7 @@ The Hobbit                                9.99    1        9.99
 ----------------------------------------------- ---------------
 The Silmarillion                      25.99   1       25.99
 ----------------------------------------------- ---------------
-The Lord of the Rings, Fellowship of the Ring  18.99   1",0.9942439198493958,0.7596773505210876,19.747716188430786,47.96742498874664,45.6855833530426,29.544562101364136,30.040451884269714,0.19616325199604034,0.13450540602207184,0.14135369658470154,0.17783179879188538,0.17656570672988892
+The Lord of the Rings, Fellowship of the Ring  18.99   1",0.9942439198493958,0.7596773505210876,19.747716188430783,47.96742498874664,45.6855833530426,29.544562101364136,30.040451884269714,0.1961632519960403,0.1345054060220718,0.1413536965847015,0.1778317987918853,0.1765657067298889,99.87,94.67,54.08
 "subject: Reservation details: Your booking is complete.
 urls: True
 attachments: True
@@ -3338,7 +3338,7 @@ TO: <LOC> Gatwick South Terminal
 RESERVATION NUMBER:  5D3ZB1
 
 Your booking reference number is 5D3ZB0.  Please keep this number
-because you will need it if you",0.9980282187461853,0.9977534413337708,34.55783724784851,66.65695905685425,22.41237163543701,47.76626229286194,25.289878249168396,0.15851208567619324,0.08538487553596497,0.1892470121383667,0.1362815797328949,0.18783871829509735
+because you will need it if you",0.9980282187461852,0.9977534413337708,34.55783724784851,66.65695905685425,22.41237163543701,47.76626229286194,25.2898782491684,0.1585120856761932,0.0853848755359649,0.1892470121383667,0.1362815797328949,0.1878387182950973,62.46,99.98,51.51
 "subject: Invoice confirmation: Payment completed.
 urls: False
 attachments: True
@@ -3376,7 +3376,7 @@ Sincerely,
 
 PayPal
 
-<ATTACHMENT>",0.9967507123947144,0.9979985356330872,0.0056043267250061035,49.349379539489746,46.08807861804962,3.6108650267124176,9.694356471300125,0.2536303997039795,0.13757413625717163,0.1438375562429428,0.2428169995546341,0.23810714483261108
+<ATTACHMENT>",0.9967507123947144,0.9979985356330872,0.0056043267250061,49.34937953948975,46.08807861804962,3.6108650267124176,9.694356471300123,0.2536303997039795,0.1375741362571716,0.1438375562429428,0.2428169995546341,0.238107144832611,99.97,96.95,99.89
 "subject: Confirmation: Your appointment has been scheduled.
 urls: False
 attachments: False
@@ -3415,7 +3415,7 @@ This appointment was scheduled by <PER> and <PER>.
 
 You can change, cancel, or inquire about this appointment online by returning to <URL> and logging in with your email address and password.
 
-If you have any questions or need assistance, please call <ORG> Customer Service at <PHONE>.",0.9722781777381897,0.9830778241157532,23.21825623512268,51.23605132102966,55.86642026901245,41.2647545337677,38.670748472213745,0.190952867269516,0.12261886894702911,0.11206544935703278,0.15796557068824768,0.15812411904335022
+If you have any questions or need assistance, please call <ORG> Customer Service at <PHONE>.",0.9722781777381896,0.9830778241157532,23.21825623512268,51.23605132102966,55.86642026901245,41.2647545337677,38.67074847221375,0.190952867269516,0.1226188689470291,0.1120654493570327,0.1579655706882476,0.1581241190433502,0.15,34.64,96.88
 "subject: Transaction successful: Receipt enclosed.
 urls: False
 attachments: True
@@ -3469,7 +3469,7 @@ President
 <ORG>
 
 
-<ATTACHMENT>",0.44249391555786133,0.7907494902610779,33.139997720718384,53.22908163070679,21.780042350292206,48.35054576396942,35.372596979141235,0.17207008600234985,0.11756201088428497,0.2209177315235138,0.12837199866771698,0.16572386026382446
+<ATTACHMENT>",0.4424939155578613,0.7907494902610779,33.139997720718384,53.22908163070679,21.78004235029221,48.35054576396942,35.372596979141235,0.1720700860023498,0.1175620108842849,0.2209177315235138,0.1283719986677169,0.1657238602638244,10.55,33.57,97.03
 "subject: Your subscription has been activated successfully.
 urls: True
 attachments: False
@@ -3514,7 +3514,7 @@ our organization and the issues we support.
 Sincerely,
 
 Democracy in Action
-<URL>",0.9973061084747314,0.9054642915725708,47.052472829818726,21.568231284618378,40.05989134311676,28.241783380508423,37.49262094497681,0.1392698734998703,0.21224093437194824,0.1627657115459442,0.18553034961223602,0.15761829912662506
+<URL>",0.9973061084747314,0.9054642915725708,47.052472829818726,21.568231284618378,40.05989134311676,28.241783380508423,37.49262094497681,0.1392698734998703,0.2122409343719482,0.1627657115459442,0.185530349612236,0.157618299126625,99.33,99.92,99.92
 "subject: Confirmation email: Your request has been processed.
 urls: False
 attachments: False
@@ -3530,7 +3530,7 @@ request has been processed.  A representative from the Athletic Department
 will contact you within the next few days regarding your application.
 
 If you have any questions, please feel free to contact us at
-<EMAIL>.",0.0711706280708313,0.602061927318573,46.656590700149536,24.93862360715866,16.32753312587738,72.71859645843506,36.84877157211304,0.14184793829917908,0.1984136402606964,0.21434995532035828,0.0746426060795784,0.16183114051818848
+<EMAIL>.",0.0711706280708313,0.602061927318573,46.656590700149536,24.93862360715866,16.32753312587738,72.71859645843506,36.84877157211304,0.141847938299179,0.1984136402606964,0.2143499553203582,0.0746426060795784,0.1618311405181884,96.95,77.76,6.01
 "subject: Booking successful: Details inside.
 urls: True
 attachments: False
@@ -3644,7 +3644,7 @@ Follow us on:
 --------------------------------------------------------
 Copyright (c) <PER> <ORG>. <LOC>, CA
 
-<ORG> is a registered trademark of <ORG>.",0.667183518409729,0.996224045753479,34.530043601989746,34.51738357543945,38.5888934135437,24.663923680782318,33.643555641174316,0.1585846245288849,0.1622503101825714,0.15733397006988525,0.18958747386932373,0.17425349354743958
+<ORG> is a registered trademark of <ORG>.",0.667183518409729,0.996224045753479,34.530043601989746,34.51738357543945,38.5888934135437,24.66392368078232,33.64355564117432,0.1585846245288849,0.1622503101825714,0.1573339700698852,0.1895874738693237,0.1742534935474395,45.7,81.46,99.95
 "subject: Booking Confirmation: Your upcoming stay at the Grand Hotel is confirmed.
 urls: True
 attachments: True
@@ -3721,7 +3721,7 @@ General Manager
 
 <ATTACHMENT>
 
-<ATTACHMENT>",0.9957644939422607,0.9828906655311584,56.80580139160156,60.81202030181885,53.968822956085205,69.70979571342468,69.3210780620575,0.11045587062835693,0.09394630789756775,0.10598479956388474,0.07939403504133224,0.07919350266456604
+<ATTACHMENT>",0.9957644939422609,0.9828906655311584,56.80580139160156,60.81202030181885,53.968822956085205,69.70979571342468,69.3210780620575,0.1104558706283569,0.0939463078975677,0.1059847995638847,0.0793940350413322,0.079193502664566,63.04,3.43,0.03
 "subject: Payment Received: Official receipt for your recent purchase at TechStore.
 urls: True
 attachments: True
@@ -3752,7 +3752,7 @@ Please print this receipt for your records.
 For your convenience, we have also included a copy of your order
 confirmation, which contains important information about your purchase.
 
-We appreciate",False,0.15770962830000002,Booking,Gemini,"Dear Customer,
+We appreciate",False,0.1577096283,Booking,Gemini,"Dear Customer,
 
 We have received your payment for the following transaction:
 
@@ -3805,7 +3805,7 @@ Shipping Method  Shipping Instructions  Tracking No.
 UPS Ground  Ship to:  Not Yet Shipped
 
 ---------------------------------------------
-Customer",0.9835723042488098,0.9595256447792053,5.839626491069794,60.687994956970215,29.351183772087097,12.023869901895523,13.051779568195343,0.237688809633255,0.09595999121665955,0.18159517645835876,0.22779977321624756,0.22326397895812988
+Customer",0.9835723042488098,0.9595256447792052,5.839626491069794,60.687994956970215,29.351183772087097,12.023869901895525,13.051779568195345,0.237688809633255,0.0959599912166595,0.1815951764583587,0.2277997732162475,0.2232639789581298,99.95,46.81,99.51
 "subject: Flight Itinerary: Confirmation and e-tickets for your trip to London.
 urls: True
 attachments: True
@@ -3876,7 +3876,7 @@ your Travel Agent if you have any questions or concerns with your
 e-ticket itinerary.
 
 We strongly recommend that you check your e-ticket receipt prior to
-your scheduled departure date.  If you need to make any changes",0.9938610792160034,0.8980612754821777,33.00996124744415,41.75640344619751,36.38055920600891,46.36048674583435,44.38731074333191,0.17094844579696655,0.1496865451335907,0.1601785570383072,0.14057514071464539,0.14399521052837372
+your scheduled departure date.  If you need to make any changes",0.9938610792160034,0.8980612754821777,33.00996124744415,41.75640344619751,36.38055920600891,46.36048674583435,44.38731074333191,0.1709484457969665,0.1496865451335907,0.1601785570383072,0.1405751407146453,0.1439952105283737,3.8,99.69,0.05
 "subject: Reservation Confirmed: Your table for two at Luigi's on Friday night.
 urls: False
 attachments: False
@@ -3908,7 +3908,7 @@ We are located at 2310 Westheimer, <PHONE>.  Please call <PHONE> if you have any
 
 Best regards,
 
-The Luigi's Team",0.9959865212440491,0.9915792942047119,42.39969551563263,67.98509955406189,47.748661041259766,55.67251443862915,59.337884187698364,0.14510071277618408,0.0837009847164154,0.13442230224609375,0.11322064697742462,0.10670004785060883
+The Luigi's Team",0.9959865212440492,0.991579294204712,42.39969551563263,67.98509955406189,47.748661041259766,55.67251443862915,59.33788418769837,0.145100712776184,0.0837009847164154,0.1344223022460937,0.1132206469774246,0.1067000478506088,35.13,12.35,94.51
 "subject: Transaction Successful: Invoice #9932 has been paid in full.
 urls: True
 attachments: True
@@ -3945,7 +3945,7 @@ Please allow 5 business days for your payment to post to your
 account.  If you do not see the payment in that time, please contact
 your bank.
 
-<ATTACHMENT>",0.9921145439147949,0.9978141784667969,42.91484355926514,69.23583149909973,49.41776692867279,56.136250495910645,51.333850622177124,0.1487208902835846,0.08166337758302689,0.1344708800315857,0.1110384464263916,0.1242627203464508
+<ATTACHMENT>",0.9921145439147948,0.9978141784667968,42.91484355926514,69.23583149909973,49.41776692867279,56.136250495910645,51.33385062217712,0.1487208902835846,0.0816633775830268,0.1344708800315857,0.1110384464263916,0.1242627203464508,99.89,94.44,52.23
 "subject: Ticket Confirmation: Your VIP seats for the summer concert are secured.
 urls: True
 attachments: True
@@ -4055,7 +4055,7 @@ Strickland for Senate
 PO Box 2196
 Columbus, <LOC> 43216-2196			
 
-Privacy Policy <URL>",0.9115110635757446,0.9916915893554688,52.83442735671997,42.72436499595642,37.84591555595398,36.99539601802826,35.00271439552307,0.12465552985668182,0.14958766102790833,0.16234076023101807,0.16609309613704681,0.17417451739311218
+Privacy Policy <URL>",0.9115110635757446,0.9916915893554688,52.83442735671997,42.72436499595642,37.84591555595398,36.99539601802826,35.00271439552307,0.1246555298566818,0.1495876610279083,0.162340760231018,0.1660930961370468,0.1741745173931121,93.1,98.53,98.67
 "subject: Order Confirmed: Your package is getting ready for shipment.
 urls: True
 attachments: False
@@ -4077,7 +4077,7 @@ takes 1 to 2 business days.  Once your order is processed you will
 receive another e-mail notification with your tracking number.
 
 Your order confirmation is available on-line at
-<URL>",False,0.08420334010000001,Booking,Gemini,"Dear <PER>,
+<URL>",False,0.0842033401,Booking,Gemini,"Dear <PER>,
 
 We've received your order for:
 
@@ -4123,7 +4123,7 @@ Qty: 1
 Shipping: $5.95
 Total: $35.90
 
-* The Princeton Review's <LOC> AP: 2001 Edition ($29.95",0.77483731508255,0.99349045753479,42.65969395637512,34.023311734199524,46.28283381462097,43.78213286399841,56.178098917007446,0.15211060643196106,0.16738632321357727,0.13819929957389832,0.14795412123203278,0.11717132478952408
+* The Princeton Review's <LOC> AP: 2001 Edition ($29.95",0.77483731508255,0.99349045753479,42.65969395637512,34.023311734199524,46.28283381462097,43.78213286399841,56.178098917007446,0.152110606431961,0.1673863232135772,0.1381992995738983,0.1479541212320327,0.117171324789524,13.52,2.71,99.96
 "subject: Payment Confirmation: Auto-renewal successful for your Annual Premium Plan.
 urls: True
 attachments: True
@@ -4220,7 +4220,7 @@ The <ORG> Team
 -------------------------------------------------
 
 You received this message because you registered on <ORG>. To change
-your email preferences, please visit your account on <ORG>",0.9986944794654846,0.9991517066955566,46.770113706588745,57.964205741882324,51.57366991043091,67.20978021621704,63.809049129486084,0.13610416650772095,0.10444465279579163,0.12477178871631622,0.08897767961025238,0.10087940096855164
+your email preferences, please visit your account on <ORG>",0.9986944794654846,0.9991517066955566,46.770113706588745,57.96420574188232,51.57366991043091,67.20978021621704,63.80904912948608,0.1361041665077209,0.1044446527957916,0.1247717887163162,0.0889776796102523,0.1008794009685516,1.15,94.35,0.42
 "subject: Appointment Confirmed: Dental check-up scheduled for next Tuesday at 10 AM.
 urls: False
 attachments: False
@@ -4233,7 +4233,7 @@ I will be in the waiting room at 9:50 and will walk you back to the room at 10:0
 I just spoke with <PER> and confirmed your dental appointment for next Tuesday, <DATE> at 10 AM. We have a great dentist, and it would be great if you could come by. The address is 1100 17th St NW, <LOC>, <LOC> 20036. It's just a couple of blocks away from the <ORG> office, so you can walk over.
 
 Best,
-<PER>",0.910280704498291,0.5770540237426758,58.74338150024414,42.307016253471375,60.16101837158203,46.43596410751343,73.46627712249756,0.10369076579809189,0.15319383144378662,0.10236376523971558,0.1384742110967636,0.06759999692440033
+<PER>",0.910280704498291,0.5770540237426758,58.74338150024414,42.307016253471375,60.16101837158203,46.43596410751343,73.46627712249756,0.1036907657980918,0.1531938314437866,0.1023637652397155,0.1384742110967636,0.0675999969244003,15.53,0.44,53.32
 "subject: Receipt: Thank you for your generous donation to the Wildlife Foundation.
 urls: True
 attachments: True
@@ -4287,7 +4287,7 @@ The Wildlife Foundation is a 501c3 nonprofit organization.
 Visit our website at <URL> to learn more
 about the vital work we are doing to protect endangered species and their habitat.
 
-To unsubscribe from our mailing list, reply to this message with ""remove"" in the subject line.",0.1607685685157776,0.8982155919075012,65.36855697631836,66.26803874969482,71.92896008491516,67.55297183990479,74.54938292503357,0.09261758625507355,0.08722354471683502,0.07556231319904327,0.08384363353252411,0.0684356838464737
+To unsubscribe from our mailing list, reply to this message with ""remove"" in the subject line.",0.1607685685157776,0.8982155919075012,65.36855697631836,66.26803874969482,71.92896008491516,67.55297183990479,74.54938292503357,0.0926175862550735,0.087223544716835,0.0755623131990432,0.0838436335325241,0.0684356838464737,81.23,99.96,0.18
 "subject: Booking Confirmed: Your reservation details inside
 urls: False
 attachments: True
@@ -4378,7 +4378,7 @@ Refundable:           No
 RESERVATION CHANGE INFORMATION:
 
 Changes are not permitted on this reservation. If changes are made,
-the fare may increase,",0.9097843170166016,0.9235855340957642,10.609228163957596,57.451653480529785,59.738028049468994,22.863107919692993,8.924135565757751,0.22414177656173706,0.10448631644248962,0.10302998125553131,0.19939841330051422,0.241983562707901
+the fare may increase,",0.9097843170166016,0.9235855340957642,10.609228163957596,57.451653480529785,59.738028049468994,22.863107919692997,8.924135565757751,0.224141776561737,0.1044863164424896,0.1030299812555313,0.1993984133005142,0.241983562707901,84.71,97.94,3.71
 "subject: Payment Received: Thank you for your purchase
 urls: False
 attachments: False
@@ -4452,7 +4452,7 @@ Amazon.com Customer Service
 
 
 Amazon.com
-Earth's Biggest Selection",0.9861847758293152,0.9846936464309692,28.49096953868866,45.052552223205566,24.780282378196716,51.047736406326294,48.179665207862854,0.17441031336784363,0.13771475851535797,0.19243216514587402,0.12425041198730469,0.13164818286895752
+Earth's Biggest Selection",0.9861847758293152,0.9846936464309692,28.49096953868866,45.052552223205566,24.78028237819672,51.04773640632629,48.17966520786285,0.1744103133678436,0.1377147585153579,0.192432165145874,0.1242504119873046,0.1316481828689575,99.95,99.64,2.84
 "subject: Your Appointment Is Confirmed for the Selected Date
 urls: False
 attachments: False
@@ -4504,7 +4504,7 @@ Patient ID:  0013E6F2E6E0B1F8
 You will receive a reminder before your appointment. If you have any questions, please call us at <PHONE> or <PHONE>.
 
 
-You can cancel your appointment by clicking here.",0.9959796667098999,0.9946420192718506,33.65914225578308,52.88216471672058,41.98301136493683,42.43243634700775,46.613964438438416,0.16115692257881165,0.12402508407831192,0.15213549137115479,0.1390034556388855,0.12745705246925354
+You can cancel your appointment by clicking here.",0.9959796667099,0.9946420192718506,33.65914225578308,52.88216471672058,41.98301136493683,42.43243634700775,46.613964438438416,0.1611569225788116,0.1240250840783119,0.1521354913711547,0.1390034556388855,0.1274570524692535,89.34,94.39,13.23
 "subject: Order Confirmation: Your items are being prepared
 urls: True
 attachments: False
@@ -4534,7 +4534,7 @@ The Lord of the Rings, the Two-Tower (Widescreen Edition) [VHS]
 The Lord of the Rings, the Fellowship of the Ring (Widescreen Edition) [VHS]
 The Lord of the Rings, the Return of the King (Widescreen Edition) [VHS]
 The Lord of the Rings, the Two-Tower (Special Edition) [DVD]
-The Lord of the Rings, the Fellowship",False,0.0036969394000000004,Booking,Copilot,"Dear <PER>,
+The Lord of the Rings, the Fellowship",False,0.0036969394,Booking,Copilot,"Dear <PER>,
 
 This email confirms that your order has been received and is being processed. The following items will be shipped to you in 1 business day. Please note that orders placed on Friday after 1pm or on Saturday are shipped on Monday.
 
@@ -4566,7 +4566,7 @@ or email us at <EMAIL>.
 Sincerely,
 
 RedEnvelope.com Customer Service
-<URL>",0.9033181667327881,0.9987151622772217,31.011557579040527,33.67195725440979,28.689733147621155,53.03772687911987,50.635409355163574,0.17822980880737305,0.18052536249160767,0.19177216291427612,0.12247318029403687,0.13430069386959076
+<URL>",0.903318166732788,0.9987151622772216,31.011557579040527,33.67195725440979,28.689733147621155,53.03772687911987,50.63540935516357,0.178229808807373,0.1805253624916076,0.1917721629142761,0.1224731802940368,0.1343006938695907,2.22,99.98,83.27
 "subject: Subscription Renewal Successful: Receipt enclosed
 urls: False
 attachments: True
@@ -4637,7 +4637,7 @@ Sincerely,
 
 <ORG> Market Data
 
-<ATTACHMENT>",0.9988794922828674,0.9980043768882751,56.847405433654785,45.70401608943939,53.239572048187256,48.78314137458801,42.71172285079956,0.10353867709636688,0.14304809272289276,0.1250326782464981,0.1407395750284195,0.15498650074005127
+<ATTACHMENT>",0.9988794922828674,0.9980043768882751,56.84740543365479,45.70401608943939,53.239572048187256,48.78314137458801,42.71172285079956,0.1035386770963668,0.1430480927228927,0.1250326782464981,0.1407395750284195,0.1549865007400512,99.74,63.46,99.54
 "subject: Your Hotel Reservation Has Been Successfully Processed
 urls: False
 attachments: True
@@ -4664,7 +4664,7 @@ MAKER, HAIR DRYER, IRON AND BOARD, MINI BAR
 18 MOBILE:  011-44-7811-550-220
 19 HOME:  <PHONE>
 20 WORK:  <PHONE>
-21",False,0.028542405000000003,Booking,Copilot,"This is a confirmation of your hotel reservation.
+21",False,0.028542405,Booking,Copilot,"This is a confirmation of your hotel reservation.
 
 Your reservation number is:  8000
 
@@ -4705,7 +4705,7 @@ Requested Room:  King or 2 Doubles
 Rate:  $139.00 per night
 
 Room Number:  312
-Arrival Date:  <DATE",0.5213794708251953,0.9847782254219055,31.96244239807129,54.44083213806152,37.04831600189209,42.517149448394775,45.6523597240448,0.1822696328163147,0.12170451134443283,0.16612063348293304,0.14640134572982788,0.13221979141235352
+Arrival Date:  <DATE",0.5213794708251953,0.9847782254219056,31.96244239807129,54.44083213806152,37.04831600189209,42.517149448394775,45.6523597240448,0.1822696328163147,0.1217045113444328,0.166120633482933,0.1464013457298278,0.1322197914123535,90.22,99.92,3.6
 "subject: Invoice Paid: Transaction summary available
 urls: True
 attachments: False
@@ -4730,7 +4730,7 @@ Your invoice payment for $4,000.00 has been posted to your account. You can view
 
 You will be required to log in to your account to view your transaction summary. You may do so using your email address and password. 
 
-If you have any questions, please contact your <ORG> Relationship Manager.",0.9733986258506775,0.9952868223190308,44.46277320384979,48.81872832775116,47.86577820777893,51.07737183570862,65.67105054855347,0.14591898024082184,0.13544026017189026,0.13663387298583984,0.12028992176055908,0.08306685090065002
+If you have any questions, please contact your <ORG> Relationship Manager.",0.9733986258506776,0.9952868223190308,44.46277320384979,48.81872832775116,47.86577820777893,51.07737183570862,65.67105054855347,0.1459189802408218,0.1354402601718902,0.1366338729858398,0.120289921760559,0.08306685090065,87.76,49.13,98.67
 "subject: Your Seat Reservation Is Complete
 urls: False
 attachments: False
@@ -4786,7 +4786,7 @@ UA 1928 Connection
 <DATE> at 12:20 p.m.
 UA 1879 <LOC> 12:35 p.m. SLC 02:38 p.m.
 UA 1879 SLC 02:38 p.m. LAX 05:15 p.m.
-UA 1879 Connection",0.9957447648048401,0.9949414134025574,3.2780595123767853,41.068750619888306,20.678961277008057,0.15952084213495255,8.588680624961853,0.2308756709098816,0.14868499338626862,0.19102448225021362,0.24800357222557068,0.23328723013401031
+UA 1879 Connection",0.99574476480484,0.9949414134025574,3.2780595123767853,41.06875061988831,20.678961277008057,0.1595208421349525,8.588680624961853,0.2308756709098816,0.1486849933862686,0.1910244822502136,0.2480035722255706,0.2332872301340103,97.98,30.2,20.86
 "subject: Payment Confirmation: Your order is now finalized
 urls: True
 attachments: False
@@ -4867,7 +4867,7 @@ customers with whom <ORG> has established an online relationship.
 If you received this message in error, we apologize for any
 convenience caused.
 
-Copyright (c) 2001 <ORG>.  All rights reserved.",0.9966026544570923,0.9989014863967896,32.686224579811096,44.97525095939636,47.290635108947754,44.55261826515198,45.72262465953827,0.17297795414924622,0.14327381551265717,0.1433362513780594,0.14682692289352417,0.14200064539909363
+Copyright (c) 2001 <ORG>.  All rights reserved.",0.9966026544570924,0.9989014863967896,32.686224579811096,44.97525095939636,47.29063510894776,44.55261826515198,45.72262465953827,0.1729779541492462,0.1432738155126571,0.1433362513780594,0.1468269228935241,0.1420006453990936,99.5,43.63,99.75
 "subject: Booking Approved: Access your travel details here
 urls: True
 attachments: False
@@ -4978,7 +4978,7 @@ Depart: <DATE> 11:58 pm  Arrive: <DATE> 1:57 am","Your booking has been approved
 <URL> 
 <URL> 
 <URL> 
-<",0.9646889567375183,0.11186474561691284,40.54025709629059,30.998283624649048,59.35077667236328,36.44016683101654,44.975316524505615,0.14744772017002106,0.1801983118057251,0.10402168333530426,0.17185868322849274,0.14686319231987
+<",0.9646889567375184,0.1118647456169128,40.54025709629059,30.998283624649048,59.35077667236328,36.44016683101654,44.975316524505615,0.147447720170021,0.1801983118057251,0.1040216833353042,0.1718586832284927,0.14686319231987,99.48,2.34,99.98
 "subject: Exclusive offer just for you: Limited-time discount!
 urls: True
 attachments: False
@@ -5077,7 +5077,7 @@ We hope you enjoyed receiving this message. However, if you'd rather not receive
 
 Please note that this e-mail was sent to the following address: <EMAIL>
 
---------------------------------------------------------",0.9613088369369507,0.9973746538162231,39.69255983829498,41.88336730003357,29.70285415649414,21.951644122600555,23.51841777563095,0.16176368296146393,0.17194205522537231,0.18731828033924103,0.21326175332069397,0.20250706374645233
+--------------------------------------------------------",0.9613088369369508,0.9973746538162231,39.69255983829498,41.88336730003357,29.70285415649414,21.951644122600555,23.51841777563095,0.1617636829614639,0.1719420552253723,0.187318280339241,0.2132617533206939,0.2025070637464523,85.17,99.56,1.82
 "subject: Discover our latest deals and special promotions.
 urls: True
 attachments: False
@@ -5115,7 +5115,7 @@ Featured Offers:
 - Buy one pair, get one pair free on the purchase of 2 or more pairs of Danskin Women's Shoes. 
 - Buy one pair, get one pair free on the purchase of 2 or more pairs of Danskin Women's Shoes. 
 - Buy one pair, get one pair free on the purchase of 2 or more pairs of Danskin Women's Shoes. 
-- Buy one pair, get one pair free on the purchase of 2 or more pairs of Danskin Women's Shoes",0.9937228560447693,0.9813341498374939,8.115864545106888,50.81302523612976,26.63390040397644,24.242518842220306,24.048492312431335,0.23879115283489227,0.12821629643440247,0.19028645753860474,0.19428913295269012,0.18304815888404846
+- Buy one pair, get one pair free on the purchase of 2 or more pairs of Danskin Women's Shoes",0.9937228560447692,0.981334149837494,8.115864545106888,50.81302523612976,26.63390040397644,24.242518842220303,24.048492312431332,0.2387911528348922,0.1282162964344024,0.1902864575386047,0.1942891329526901,0.1830481588840484,0.03,79.01,99.97
 "subject: Flash sale: Up to 50% off today only!
 urls: True
 attachments: False
@@ -5272,7 +5272,7 @@ Valid only at footlocker.com. Offer is limited to standard delivery within the 4
 contiguous <LOC> and APO/FPO addresses. Excludes bulk orders and drop ships.
 Entire order must ship to a single address. Does not apply to prior purchases or open
 orders and cannot be combined with any other offer. Customer is responsible for shipping
-costs on returned merchandise.",0.8218595385551453,0.9567612409591675,58.929866552352905,64.8491382598877,61.22164726257324,69.91263628005981,64.93070721626282,0.10632285475730896,0.09657923877239227,0.10593701899051666,0.07909629493951797,0.09342345595359802
+costs on returned merchandise.",0.8218595385551453,0.9567612409591676,58.929866552352905,64.8491382598877,61.22164726257324,69.91263628005981,64.93070721626282,0.1063228547573089,0.0965792387723922,0.1059370189905166,0.0790962949395179,0.093423455953598,96.38,96.11,99.17
 "subject: New arrivals are here: Shop the latest trends.
 urls: True
 attachments: False
@@ -5372,7 +5372,7 @@ Valid only at footlocker.com. Offer is limited to standard delivery within the 4
 contiguous <LOC> and APO/FPO addresses. Excludes bulk orders and drop ships.
 Entire order must ship to a single address. Does not apply to prior purchases or open
 orders and cannot be combined with any other offer. Customer is responsible for shipping
-costs on returned",0.9414931535720825,0.9235062599182129,25.779321789741516,44.99794244766235,41.5749728679657,47.372597455978394,47.39874303340912,0.1908877193927765,0.1434110701084137,0.14950093626976013,0.1401573121547699,0.14178228378295898
+costs on returned",0.9414931535720824,0.9235062599182128,25.77932178974152,44.99794244766235,41.5749728679657,47.3725974559784,47.39874303340912,0.1908877193927765,0.1434110701084137,0.1495009362697601,0.1401573121547699,0.1417822837829589,0.1,99.67,97.64
 "subject: Don’t miss out: Exclusive savings inside.
 urls: True
 attachments: False
@@ -5492,7 +5492,7 @@ contiguous <LOC> and APO/FPO addresses. Excludes bulk orders and drop ships.
 Entire order must ship to a single address. Does not apply to prior purchases or open
 orders and cannot be combined with any other offer. Customer is responsible for shipping
 costs on returned merchandise. May not be used toward purchase of gift cards or team
-orders. Promotion may be modified or terminated at any",0.9443774223327637,0.9701825976371765,26.79961621761322,37.628716230392456,35.87958812713623,47.99832999706268,50.956541299819946,0.20182880759239197,0.162645161151886,0.17388424277305603,0.12966316938400269,0.1270260512828827
+orders. Promotion may be modified or terminated at any",0.9443774223327636,0.9701825976371764,26.79961621761322,37.628716230392456,35.87958812713623,47.99832999706268,50.956541299819946,0.2018288075923919,0.162645161151886,0.173884242773056,0.1296631693840026,0.1270260512828827,84.77,99.8,99.69
 "subject: Upgrade your experience with our premium plan.
 urls: True
 attachments: False
@@ -5552,7 +5552,7 @@ features that will help you make smarter decisions and
 find the information you need faster. You'll also be able to 
 view <ORG> on your tablet and smartphone.
 
-$29.99/month or $299.99/year",False,0.059617739200000006,Promotional,ChatGPT,"Upgrade to a premium plan
+$29.99/month or $299.99/year",False,0.0596177392,Promotional,ChatGPT,"Upgrade to a premium plan
 
 <DATE>
 
@@ -5595,7 +5595,7 @@ Try <ORG> News+ for 30 days for $3.49 and save 50%. Act now and get your first m
 
 <URL>
 
-------------------------------------------------------------",0.9982365369796753,0.9868690371513367,59.80575680732727,69.79082822799683,56.738829612731934,65.3984010219574,73.268723487854,0.10592067241668701,0.07853923738002777,0.11876492202281952,0.09080447256565094,0.06881240010261536
+------------------------------------------------------------",0.9982365369796752,0.9868690371513368,59.80575680732727,69.79082822799683,56.738829612731934,65.3984010219574,73.268723487854,0.105920672416687,0.0785392373800277,0.1187649220228195,0.0908044725656509,0.0688124001026153,81.71,3.66,96.44
 "subject: Special promotion: Unlock your benefits today.
 urls: True
 attachments: False
@@ -5765,7 +5765,7 @@ New! Safeway Home Delivery
 
 <URL> 
 
-<URL>",0.9986590147018433,0.7770140767097473,45.56763172149658,36.54372692108154,31.942009925842285,43.23663115501404,34.612393379211426,0.14194005727767944,0.1641230583190918,0.17582367360591888,0.14424175024032593,0.17502433061599731
+<URL>",0.9986590147018432,0.7770140767097473,45.56763172149658,36.54372692108154,31.942009925842285,43.23663115501404,34.612393379211426,0.1419400572776794,0.1641230583190918,0.1758236736059188,0.1442417502403259,0.1750243306159973,99.91,93.49,99.69
 "subject: Limited-time offer: Claim your reward now.
 urls: True
 attachments: False
@@ -5796,7 +5796,7 @@ Choose your gift card today.
 
 Thank you for your years of service. 
 
-<ORG> Benefits Department",False,0.026110850300000002,Promotional,ChatGPT,"Trouble viewing this email? Click here for easier viewing!
+<ORG> Benefits Department",False,0.0261108503,Promotional,ChatGPT,"Trouble viewing this email? Click here for easier viewing!
 <URL>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -5856,7 +5856,7 @@ and links included in this email.
 
 (c) <PER> <ORG>.
 
-<ORG> | <LOC>",0.9218376278877258,0.9717512726783752,41.15265607833862,33.96655321121216,31.085795164108276,18.371951580047607,21.702997386455536,0.15520834922790527,0.1830998957157135,0.18542665243148804,0.21829062700271606,0.20164622366428375
+<ORG> | <LOC>",0.9218376278877258,0.9717512726783752,41.15265607833862,33.96655321121216,31.08579516410828,18.371951580047607,21.702997386455536,0.1552083492279052,0.1830998957157135,0.185426652431488,0.218290627002716,0.2016462236642837,99.95,97.38,91.66
 "subject: Introducing our new product line.
 urls: True
 attachments: False
@@ -5965,7 +5965,7 @@ The Wine Cellar Staff
 P.S.  This message was sent to you by The Wine Cellar.  If you
 wish to be removed from our email list, please click on the link
 below:
-<EMAIL>",0.955349326133728,0.9604633450508118,22.939974069595337,34.77205038070679,41.871219873428345,7.337843626737595,28.736037015914917,0.2044377624988556,0.1715209186077118,0.15936602652072906,0.24686199426651,0.1883411556482315
+<EMAIL>",0.955349326133728,0.9604633450508118,22.939974069595337,34.77205038070679,41.871219873428345,7.337843626737595,28.73603701591492,0.2044377624988556,0.1715209186077118,0.159366026520729,0.24686199426651,0.1883411556482315,99.98,99.9,99.96
 "subject: Save big with our exclusive member deals.
 urls: True
 attachments: False
@@ -5993,7 +5993,7 @@ and links included in this email.
 
 (c) <PER> <ORG>.
 
-<ORG> | <LOC>",False,0.007459627000000001,Promotional,ChatGPT,"Trouble viewing this email? Click here for easier viewing!
+<ORG> | <LOC>",False,0.007459627,Promotional,ChatGPT,"Trouble viewing this email? Click here for easier viewing!
 <URL>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -6084,7 +6084,7 @@ To read our privacy policy click here:
 <URL>
 
 Copyright (c) 2016 <ORG>. 20227 N. 27th Ave. 
-Phoenix, AZ 85027.",0.9747092723846436,0.9412297010421753,37.691980600357056,35.65942049026489,36.41361594200134,48.91056418418884,28.940454125404358,0.16217249631881714,0.16780366003513336,0.16828376054763794,0.12746943533420563,0.18208082020282745
+Phoenix, AZ 85027.",0.9747092723846436,0.9412297010421752,37.691980600357056,35.65942049026489,36.41361594200134,48.91056418418884,28.94045412540436,0.1621724963188171,0.1678036600351333,0.1682837605476379,0.1274694353342056,0.1820808202028274,94.13,61.51,51.11
 "subject: 🚀 Massive Summer Sale: Up to 50% off on all electronics inside!
 urls: True
 attachments: False
@@ -6099,7 +6099,7 @@ Shop now!
 <URL>
 
 We hope you found this email useful. However, if you'd rather not receive future emails of this sort from Newegg, please click here: <URL>
-Please note that this message was sent to the following email address: <EMAIL>",False,0.31532055140000004,Promotional,Gemini,"Trouble viewing this email? Click here for easier viewing!
+Please note that this message was sent to the following email address: <EMAIL>",False,0.3153205514,Promotional,Gemini,"Trouble viewing this email? Click here for easier viewing!
 <URL>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -6173,7 +6173,7 @@ P.S. Don't forget to check out our app for easy shopping and great deals. Downlo
 P.P.S. We hope you enjoy our products, but if you need to make a return, you can do so within 30 days. Just make sure to bring the receipt. For more information, please visit our Returns Policy page: <URL>
 
 
-You&rsquo;re receiving this email because you have",0.9782911539077759,0.01781618595123291,56.226134300231934,48.36508929729462,67.23822355270386,53.006160259246826,63.546353578567505,0.11619505286216736,0.13052082061767578,0.0862310528755188,0.12572407722473145,0.09636583924293518
+You&rsquo;re receiving this email because you have",0.978291153907776,0.0178161859512329,56.226134300231934,48.36508929729462,67.23822355270386,53.006160259246826,63.54635357856751,0.1161950528621673,0.1305208206176757,0.0862310528755188,0.1257240772247314,0.0963658392429351,98.71,6.01,1.09
 "subject: Introducing our revolutionary new skincare line - Buy one get one free.
 urls: True
 attachments: False
@@ -6305,7 +6305,7 @@ at <URL>/skin
 <URL>
 
 Introducing our revolutionary new skincare line, exclusively available
-at <",0.2791881561279297,0.15750664472579956,65.29189348220825,22.668811678886414,65.47644138336182,26.032012701034546,55.18523454666138,0.09130505472421646,0.20924900472164154,0.08995689451694489,0.18984924256801605,0.11597511172294617
+at <",0.2791881561279297,0.1575066447257995,65.29189348220825,22.668811678886414,65.47644138336182,26.032012701034542,55.18523454666138,0.0913050547242164,0.2092490047216415,0.0899568945169448,0.189849242568016,0.1159751117229461,97.4,99.98,98.3
 "subject: Don't miss out! An exclusive VIP discount code is hiding inside just for you.
 urls: True
 attachments: False
@@ -6327,7 +6327,7 @@ application, contacted us via our website or signed-up via our
 website to receive mail. To unsubscribe to this email click here:
 <URL>
 <ORG>, 
-<LOC>",False,0.005531737100000001,Promotional,Gemini,"Trouble viewing this email? Click here for easier viewing!
+<LOC>",False,0.0055317371,Promotional,Gemini,"Trouble viewing this email? Click here for easier viewing!
 <URL>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -6407,7 +6407,7 @@ contiguous <LOC> and APO/FPO addresses. Excludes bulk orders and drop ships.
 Entire order must ship to a single address. Does not apply to prior purchases or open
 orders and cannot be combined with any other offer. Customer is responsible for shipping
 costs on returned merchandise. May not be used toward purchase of gift cards or team
-orders. Promotion may be",0.9528034329414368,0.9610597491264343,41.570353507995605,49.91593658924103,53.56720685958862,49.9169796705246,54.14525270462036,0.1507565677165985,0.13616719841957092,0.13317590951919556,0.13467669486999512,0.12597087025642395
+orders. Promotion may be",0.9528034329414368,0.9610597491264344,41.570353507995605,49.91593658924103,53.56720685958862,49.9169796705246,54.14525270462036,0.1507565677165985,0.1361671984195709,0.1331759095191955,0.1346766948699951,0.1259708702564239,10.21,79.97,99.65
 "subject: Upgrade your wardrobe today with our stunning new autumn collection.
 urls: True
 attachments: False
@@ -6498,7 +6498,7 @@ are subject to shipping charges. Shipping will be automatically deducted at chec
 Valid only at footlocker.com. Offer is limited to standard delivery within the 48
 contiguous <LOC> and APO/FPO addresses. Excludes bulk orders and drop ships.
 Entire order must ship to a single address. Does not apply to prior purchases or open
-orders and cannot be combined with any other offer. Customer is responsible for shipping",0.9424827098846436,0.9220618605613708,3.1292159110307693,46.94287180900574,49.922576546669006,0.7984666153788567,2.6301857084035873,0.2502092719078064,0.14703397452831268,0.13875511288642883,0.2594960331916809,0.25496262311935425
+orders and cannot be combined with any other offer. Customer is responsible for shipping",0.9424827098846436,0.9220618605613708,3.1292159110307693,46.94287180900574,49.922576546669006,0.7984666153788567,2.630185708403588,0.2502092719078064,0.1470339745283126,0.1387551128864288,0.2594960331916809,0.2549626231193542,1.39,85.58,93.87
 "subject: Flash Sale Alert: 24 hours only to grab your favorite sneakers at half price.
 urls: True
 attachments: False
@@ -6627,7 +6627,7 @@ Men's
 <URL>
 
 Women's
-<URL",0.6675496101379395,0.7825564742088318,62.5399649143219,61.070698499679565,57.73102045059204,60.36258339881897,63.80188465118408,0.10181882977485657,0.09907561540603638,0.10801194608211517,0.11182506382465363,0.10016520321369171
+<URL",0.6675496101379395,0.7825564742088318,62.5399649143219,61.070698499679565,57.73102045059204,60.36258339881897,63.80188465118408,0.1018188297748565,0.0990756154060363,0.1080119460821151,0.1118250638246536,0.1001652032136917,99.97,99.98,98.24
 "subject: Transform your home today with our premium smart lighting solutions.
 urls: True
 attachments: False
@@ -6720,7 +6720,7 @@ Shop our entire lighting collection:
 <URL> 
 <URL> 
 <URL> 
-<URL>",0.9780505895614624,0.009930789470672607,34.71983075141907,24.637341499328613,58.989542722702026,43.37295889854431,22.296234965324402,0.1724170446395874,0.20044878125190735,0.10820522159337997,0.14398059248924255,0.20571301877498627
+<URL>",0.9780505895614624,0.0099307894706726,34.71983075141907,24.637341499328613,58.989542722702026,43.37295889854431,22.2962349653244,0.1724170446395874,0.2004487812519073,0.1082052215933799,0.1439805924892425,0.2057130187749862,86.8,90.67,99.98
 "subject: Unlock your true potential: Join our expert masterclass for 30% less this week.
 urls: True
 attachments: False
@@ -6748,7 +6748,7 @@ Here's what some of our past students have said about the masterclass:
 
 ""Absolutely amazing. It was like having my own personal coach to help me work through issues I've had for years. It was a real eye-opener for me. I feel like I can conquer anything now.""
 
-""I was really impressed with how much information we got in such a short amount of",True,0.9852414727000001,Promotional,Gemini,"If you're a Premium member and you'd like to see this week's offer, click here. If you're not a Premium member and you'd like to be one, click here. [ <URL> ]
+""I was really impressed with how much information we got in such a short amount of",True,0.9852414727,Promotional,Gemini,"If you're a Premium member and you'd like to see this week's offer, click here. If you're not a Premium member and you'd like to be one, click here. [ <URL> ]
 
 
 
@@ -6816,7 +6816,7 @@ The Economist | <LOC>","Dear reader,
 
 
 
-<PER> <PER> is the founder and executive director of NextGen Climate <LOC>, a non-profit focused on combatting climate change. She",0.9405403733253479,0.8750923275947571,48.967957496643066,52.71559953689575,18.1483656167984,45.56533694267273,24.332407116889954,0.13467556238174438,0.12595640122890472,0.21991635859012604,0.13980689644813538,0.20281654596328735
+<PER> <PER> is the founder and executive director of NextGen Climate <LOC>, a non-profit focused on combatting climate change. She",0.940540373325348,0.8750923275947571,48.967957496643066,52.71559953689575,18.1483656167984,45.56533694267273,24.332407116889957,0.1346755623817443,0.1259564012289047,0.219916358590126,0.1398068964481353,0.2028165459632873,37.54,85.5,91.2
 "subject: New Arrivals: Be the very first to shop the hottest trends of the season.
 urls: True
 attachments: False
@@ -6995,7 +6995,7 @@ in blue type on the product's description page. Items in your cart that are not 
 are subject to shipping charges. Shipping will be automatically deducted at checkout.
 Valid only at footlocker.com. Offer is limited to standard delivery within the 48
 contiguous <LOC> and APO/FPO addresses. Excludes bulk orders and drop ships.
-Entire order",0.9118099808692932,0.8129154443740845,44.47779059410095,44.25657391548157,38.468918204307556,52.41255760192871,56.16927742958069,0.15511733293533325,0.14722351729869843,0.15878410637378693,0.13339489698410034,0.11590100824832916
+Entire order",0.9118099808692932,0.8129154443740845,44.47779059410095,44.25657391548157,38.46891820430756,52.41255760192871,56.16927742958069,0.1551173329353332,0.1472235172986984,0.1587841063737869,0.1333948969841003,0.1159010082483291,99.98,99.98,21.18
 "subject: Give the gift of joy! Special holiday bundles are now available in-store.
 urls: True
 attachments: False
@@ -7126,7 +7126,7 @@ Valid only at footlocker.com. Offer is limited to standard delivery within the 4
 contiguous <LOC> and APO/FPO addresses. Excludes bulk orders and drop ships.
 Entire order must ship to a single address. Does not apply to prior purchases or open
 orders and cannot be combined with any other offer. Customer is responsible for shipping
-costs on returned merchandise. May not be used toward purchase of gift cards",0.9740196466445923,0.9307533502578735,51.205289363861084,59.426409006118774,40.66249132156372,61.88582181930542,49.80836510658264,0.12824033200740814,0.10501602292060852,0.15111204981803894,0.09520897269248962,0.12321604788303375
+costs on returned merchandise. May not be used toward purchase of gift cards",0.9740196466445924,0.9307533502578736,51.20528936386109,59.42640900611877,40.66249132156372,61.88582181930542,49.80836510658264,0.1282403320074081,0.1050160229206085,0.1511120498180389,0.0952089726924896,0.1232160478830337,99.97,99.12,97.64
 "subject: Special Offer: Get a surprise free gift with any purchase over $50.
 urls: True
 attachments: False
@@ -7207,7 +7207,7 @@ View Gift Ideas  |  Shop All Gifts  |  Gift Cards  |  Gift Wrapping  |  Gift Del
 RedEnvelope.com
 We hope you enjoyed receiving this message. However, if you'd rather not receive future e-mails of this sort from RedEnvelope, please visit the following link: 
 <URL>
-Privacy Policy  |  Gift Center  |  Gift Wrapping  |  Gift Delivery  |  Gift Cards",0.8772879242897034,0.9993158578872681,60.09496450424194,58.29839110374451,57.92055130004883,47.78919517993927,68.92900466918945,0.10388314723968506,0.11128389835357666,0.10599823296070099,0.14052033424377441,0.08220911026000977
+Privacy Policy  |  Gift Center  |  Gift Wrapping  |  Gift Delivery  |  Gift Cards",0.8772879242897034,0.999315857887268,60.09496450424194,58.29839110374451,57.92055130004883,47.78919517993927,68.92900466918945,0.103883147239685,0.1112838983535766,0.1059982329607009,0.1405203342437744,0.0822091102600097,12.45,91.76,99.15
 "subject: Exclusive Offer: Save 40% on your next purchase
 urls: True
 attachments: False
@@ -7302,7 +7302,7 @@ are subject to shipping charges. Shipping will be automatically deducted at chec
 Valid only at footlocker.com. Offer is limited to standard delivery within the 48
 contiguous <LOC> and APO/FPO addresses. Excludes bulk orders and drop ships.
 Entire order must ship to a single address. Does not apply to prior purchases or open
-orders and cannot be combined with any other offer. Customer is",0.9712724089622498,0.9489893913269043,47.25135564804077,45.52762508392334,50.08205771446228,48.33642542362213,48.76904487609863,0.13060057163238525,0.15144631266593933,0.13681575655937195,0.13553614914417267,0.13395245373249054
+orders and cannot be combined with any other offer. Customer is",0.9712724089622498,0.9489893913269044,47.25135564804077,45.52762508392334,50.08205771446228,48.33642542362213,48.76904487609863,0.1306005716323852,0.1514463126659393,0.1368157565593719,0.1355361491441726,0.1339524537324905,26.85,99.74,98.71
 "subject: New Collection Launch: Be the first to explore
 urls: True
 attachments: False
@@ -7407,7 +7407,7 @@ Valid only at footlocker.com. Offer is limited to standard delivery within the 4
 contiguous <LOC> and APO/FPO addresses. Excludes bulk orders and drop ships.
 Entire order must ship to a single address. Does not apply to prior purchases or open
 orders and cannot be combined with any other offer. Customer is responsible for shipping
-costs on returned merchandise. May not be used toward",0.9688483476638794,0.9347091317176819,54.87782955169678,31.47246539592743,48.14966320991516,44.988858699798584,62.86948323249817,0.12122791260480881,0.18978245556354523,0.1444496065378189,0.14644502103328705,0.09893844276666641
+costs on returned merchandise. May not be used toward",0.9688483476638794,0.934709131717682,54.87782955169678,31.47246539592743,48.14966320991516,44.98885869979858,62.86948323249817,0.1212279126048088,0.1897824555635452,0.1444496065378189,0.146445021033287,0.0989384427666664,56.24,99.27,98.2
 "subject: Limited-Time Deal: Don’t miss out on these discounts
 urls: True
 attachments: False
@@ -7555,7 +7555,7 @@ orders. Promotion may be modified or terminated at any time. Certain restriction
 exclusions may apply.
 
 To keep getting <ORG> newsletters,
-add ""<EMAIL>"" to",0.9662045240402222,0.9704539775848389,50.88990926742554,43.64869296550751,41.33390188217163,52.92938947677612,47.19642102718353,0.13331162929534912,0.14908252656459808,0.1545914113521576,0.12193317711353302,0.14433324337005615
+add ""<EMAIL>"" to",0.9662045240402222,0.9704539775848388,50.88990926742554,43.64869296550751,41.33390188217163,52.92938947677612,47.19642102718353,0.1333116292953491,0.149082526564598,0.1545914113521576,0.121933177113533,0.1443332433700561,73.79,98.74,99.45
 "subject: Special Invitation: Join our VIP customer program
 urls: True
 attachments: False
@@ -7660,7 +7660,7 @@ application, contacted us via our website or signed-up via our
 website to receive mail. To unsubscribe to this email click here:
 <URL>
 <ORG>, 
-<LOC>",0.9714241623878479,0.9967656135559082,65.05686640739441,53.56792211532593,37.98853158950806,70.17959356307983,49.30926859378815,0.09424722194671631,0.12642812728881836,0.16512858867645264,0.07525408267974854,0.1366230845451355
+<LOC>",0.971424162387848,0.9967656135559082,65.05686640739441,53.56792211532593,37.98853158950806,70.17959356307983,49.30926859378815,0.0942472219467163,0.1264281272888183,0.1651285886764526,0.0752540826797485,0.1366230845451355,97.41,99.98,20.78
 "subject: Holiday Sale Starts Now: Shop our best prices
 urls: True
 attachments: False
@@ -7735,7 +7735,7 @@ Entire order must ship to a single address. Does not apply to prior purchases","
 <PER>'s Poolmart, Inc. | 2005 East Indian School Road | Phoenix, AZ 85016 | <LOC>
 
 Visit the link below to unsubscribe from future marketing messages from <PER>'s Poolmart, Inc.
-<URL>",0.9266787171363831,0.9992017149925232,57.9947829246521,47.86891043186188,31.329280138015747,46.24505639076233,36.42764687538147,0.1118408665060997,0.13971108198165894,0.17612065374851227,0.14109903573989868,0.16442124545574188
+<URL>",0.9266787171363832,0.9992017149925232,57.9947829246521,47.86891043186188,31.329280138015747,46.24505639076233,36.42764687538147,0.1118408665060997,0.1397110819816589,0.1761206537485122,0.1410990357398986,0.1644212454557418,96.5,98.81,98.39
 "subject: Introducing Our Latest Product Line
 urls: True
 attachments: False
@@ -7817,7 +7817,7 @@ information, please click below:
 
 <URL>
 
-To see our full privacy policy, please click",0.25282740592956543,0.9946714043617249,34.09786820411682,22.34623283147812,9.898597002029419,52.014219760894775,17.696543037891388,0.17764386534690857,0.2076929658651352,0.2451888918876648,0.12792794406414032,0.21349981427192688
+To see our full privacy policy, please click",0.2528274059295654,0.9946714043617249,34.09786820411682,22.34623283147812,9.89859700202942,52.014219760894775,17.696543037891388,0.1776438653469085,0.2076929658651352,0.2451888918876648,0.1279279440641403,0.2134998142719268,99.96,1.31,0.05
 "subject: Flash Sale: Only a few hours left
 urls: True
 attachments: False
@@ -7843,7 +7843,7 @@ Thank you for all you do to protect our planet,
 This email was sent to <EMAIL>.
 
 To unsubscribe, go to: 
-<URL>",False,0.045362099999999995,Promotional,Copilot,"Trouble viewing this email? Click here for easier viewing!
+<URL>",False,0.0453620999999999,Promotional,Copilot,"Trouble viewing this email? Click here for easier viewing!
 <URL>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -7930,7 +7930,7 @@ Valid only at footlocker.com. Offer is limited to standard delivery within the 4
 contiguous <LOC> and APO/FPO addresses. Excludes bulk orders and drop ships.
 Entire order must ship to a single address. Does not apply to prior purchases or open
 orders and cannot be combined with any other offer. Customer is responsible for shipping
-costs on",0.9499664902687073,0.9568071961402893,21.556809544563293,54.42255139350891,53.31072211265564,34.178102016448975,33.70752036571503,0.20562691986560822,0.12287405878305435,0.12202845513820648,0.16967111825942993,0.17167878150939941
+costs on",0.9499664902687072,0.9568071961402892,21.556809544563293,54.42255139350891,53.31072211265564,34.178102016448975,33.70752036571503,0.2056269198656082,0.1228740587830543,0.1220284551382064,0.1696711182594299,0.1716787815093994,99.96,98.43,99.06
 "subject: Your Personalized Deals Are Ready
 urls: True
 attachments: False
@@ -7999,7 +7999,7 @@ This email has been sent to you by Travelocity.com because you
 have registered with us or have requested a service from us over the 
 Internet. If you do not wish to receive future emails of this kind
 from Travelocity.com, please send us an email at <EMAIL>.
-Please be sure to include your email address in the ""From"" field.",0.001170337200164795,0.9988648891448975,35.63387989997864,57.7217698097229,42.38225519657135,26.94343626499176,35.72495877742767,0.17568393051624298,0.11642023921012878,0.1555764079093933,0.20011138916015625,0.16982078552246094
+Please be sure to include your email address in the ""From"" field.",0.0011703372001647,0.9988648891448976,35.63387989997864,57.7217698097229,42.38225519657135,26.94343626499176,35.72495877742767,0.1756839305162429,0.1164202392101287,0.1555764079093933,0.2001113891601562,0.1698207855224609,0.08,99.98,94.83
 "subject: Upgrade Today: Exclusive benefits await you
 urls: True
 attachments: False
@@ -8029,7 +8029,7 @@ Sincerely,
 Amazon.com Customer Service
 <URL>
 
-Please note that",False,0.060169491900000004,Promotional,Copilot,"<<URL>	  <<URL>	  <<URL>	
+Please note that",False,0.0601694919,Promotional,Copilot,"<<URL>	  <<URL>	  <<URL>	
 <<URL>	  <<URL>	  <<URL>	
 <<URL>	
 <<URL>	  <<URL>	
@@ -8074,7 +8074,7 @@ Please note that",False,0.060169491900000004,Promotional,Copilot,"<<URL>	  <<URL
 <<URL>	
 <<URL>","<<URL>	 
 <<URL>	 
-<<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>",0.22496336698532104,0.09133106470108032,40.609923005104065,25.614094734191895,25.614094734191895,14.902567863464355,14.902567863464355,0.15242531895637512,0.2034517228603363,0.2034517228603363,0.2271720916032791,0.2271720916032791
+<<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>",0.224963366985321,0.0913310647010803,40.60992300510407,25.61409473419189,25.61409473419189,14.902567863464355,14.902567863464355,0.1524253189563751,0.2034517228603363,0.2034517228603363,0.2271720916032791,0.2271720916032791,8.44,99.98,99.98
 "subject: Special Bundle Offer: Get more for less
 urls: True
 attachments: False
@@ -8128,7 +8128,7 @@ Take advantage of this great offer and make plans to stay at
 any of our 2,400 locations worldwide.  You'll save more money
 on your vacation than ever before.
 Click below to take advantage of this offer.
-<URL>",<<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>,0.05414170026779175,0.08561509847640991,41.275060176849365,32.06108510494232,25.362667441368103,30.914926528930664,28.967493772506714,0.15841130912303925,0.18361301720142365,0.20362019538879395,0.1839601695537567,0.1957220733165741
+<URL>",<<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>	  <<URL>,0.0541417002677917,0.0856150984764099,41.275060176849365,32.06108510494232,25.362667441368103,30.914926528930664,28.967493772506717,0.1584113091230392,0.1836130172014236,0.2036201953887939,0.1839601695537567,0.1957220733165741,99.92,14.08,99.98
 "subject: Meeting scheduled for next week.
 urls: False
 attachments: False
@@ -8144,7 +8144,7 @@ I have scheduled a meeting with you for next week, <DATE> at 3:00 p.m. in 49C3. 
 
 Regards,
 
-<PER>","I have scheduled a meeting for 10:00 AM on Thursday, <DATE>, in EB 1336 to discuss the <ORG> Fund.  Please let me know if this time does not work for you.  Thanks.  Jean",0.6326195001602173,0.24379634857177734,27.91335880756378,41.06209874153137,41.773244738578796,47.62754738330841,55.75779676437378,0.1968117654323578,0.15039223432540894,0.1521340161561966,0.13874974846839905,0.12153729796409607
+<PER>","I have scheduled a meeting for 10:00 AM on Thursday, <DATE>, in EB 1336 to discuss the <ORG> Fund.  Please let me know if this time does not work for you.  Thanks.  Jean",0.6326195001602173,0.2437963485717773,27.91335880756378,41.06209874153137,41.7732447385788,47.62754738330841,55.75779676437378,0.1968117654323578,0.1503922343254089,0.1521340161561966,0.138749748468399,0.121537297964096,28.98,45.23,0.44
 "subject: Follow-up regarding our recent discussion.
 urls: False
 attachments: False
@@ -8159,7 +8159,7 @@ I have attached a copy of our Organizational Chart for your review.
 Please do not hesitate to call me if you have any additional questions.  I can be reached at <PHONE>.
 
 Thank you,
-<PER>",False,0.26154220100000003,Neutral,ChatGPT,"<PER>,
+<PER>",False,0.261542201,Neutral,ChatGPT,"<PER>,
 
 I would like to set up a time to follow-up on our conversation regarding the ETS <LOC> Marketing and Origination team.  I have a couple of questions that I would like to discuss further with you.
 
@@ -8171,7 +8171,7 @@ Thanks.
 
 I'm sorry that I missed your call to me today.  I was in a meeting that ran over.  I'm sure that you were calling to ask about a couple of points related to the recent discussions we had about the <ORG> deal.  I can't imagine that you would be calling to tell me that you had changed your mind about the deal, but I'll try to give you my best guess as to what you might be asking.
 
-1.  I believe that I mentioned to you that we will need to find a way to get the price of the deal down by a couple of cents, at least, in order to make it work.  I don't know what the price is now, but we would be looking at a $3.00/MWh price, plus a $.02/MWh fuel cost.  The $.02/MWh fuel cost will be based on the price of fuel at the delivery point, which is in the San Joaquin Valley.  The $.02/MWh is simply a pass-through cost, and would be based on the actual price of fuel at the delivery point, rather than a fixed price.  The $.02/MWh fuel cost is not really a part of the deal, in",0.1105722188949585,0.07323741912841797,3.8243431597948074,30.442047119140625,7.661876082420349,30.639415979385376,14.894933998584747,0.26243075728416443,0.18845878541469574,0.2431567907333374,0.17735999822616577,0.23148834705352783
+1.  I believe that I mentioned to you that we will need to find a way to get the price of the deal down by a couple of cents, at least, in order to make it work.  I don't know what the price is now, but we would be looking at a $3.00/MWh price, plus a $.02/MWh fuel cost.  The $.02/MWh fuel cost will be based on the price of fuel at the delivery point, which is in the San Joaquin Valley.  The $.02/MWh is simply a pass-through cost, and would be based on the actual price of fuel at the delivery point, rather than a fixed price.  The $.02/MWh fuel cost is not really a part of the deal, in",0.1105722188949585,0.0732374191284179,3.824343159794808,30.442047119140625,7.661876082420349,30.639415979385376,14.894933998584747,0.2624307572841644,0.1884587854146957,0.2431567907333374,0.1773599982261657,0.2314883470535278,97.86,81.44,99.97
 "subject: Sharing notes from today’s meeting.
 urls: False
 attachments: True
@@ -8222,7 +8222,7 @@ Bonner Group, Inc.
 729 15th Street, NW, 7th Floor
 <LOC>
 Direct: <PHONE> | Mobile: <PHONE>
-<EMAIL>",0.006582975387573242,0.8846466541290283,17.518344521522522,48.59335422515869,30.949681997299194,40.61889946460724,20.524834096431732,0.22120094299316406,0.14062999188899994,0.1873144507408142,0.1592572033405304,0.21433448791503906
+<EMAIL>",0.0065829753875732,0.8846466541290283,17.518344521522522,48.59335422515869,30.949681997299194,40.61889946460724,20.52483409643173,0.221200942993164,0.1406299918889999,0.1873144507408142,0.1592572033405304,0.214334487915039,99.98,96.46,2.49
 "subject: Update on current project status.
 urls: False
 attachments: False
@@ -8278,7 +8278,7 @@ I hope you are doing well.  I'm writing to give you an update on the status of t
 
 2.  I've begun working on the ""Pricing Project"" which will focus on the development of a consistent methodology for pricing deals across <ORG>.  The goal of the project is to reduce the amount of time spent on disputes and re-pricing deals and to increase consistency in the pricing of deals across the company.  I have put together a preliminary project charter and will discuss it with you tomorrow.  I will also discuss with you the need to have a <ORG> representative on the team.
 
-3.  I will coordinate the effort to develop a consolidated credit risk report which will be discussed at the meeting with <PER> Neal tomorrow.  I will discuss with you the need to have a <ORG> representative on the team.",0.003238379955291748,0.05591773986816406,15.646293759346008,15.034092962741852,13.17078173160553,9.662184119224548,42.583781480789185,0.21791306138038635,0.22291487455368042,0.21548157930374146,0.2386474907398224,0.14843501150608063
+3.  I will coordinate the effort to develop a consolidated credit risk report which will be discussed at the meeting with <PER> Neal tomorrow.  I will discuss with you the need to have a <ORG> representative on the team.",0.0032383799552917,0.055917739868164,15.646293759346008,15.034092962741852,13.17078173160553,9.662184119224548,42.58378148078919,0.2179130613803863,0.2229148745536804,0.2154815793037414,0.2386474907398224,0.1484350115060806,0.06,32.91,55.06
 "subject: Quick question about your availability.
 urls: False
 attachments: False
@@ -8314,7 +8314,7 @@ Regards,
 Just a quick question about your availability for the next few weeks.  I have a few people who are interested in helping on the campaign, and I'd like to get them in place before we leave.  Would you be available for a meeting with them on Monday or Tuesday of next week?  I can bring them to <LOC> or we can meet at a coffee shop, etc.
 
 Thanks,
-<PER>",0.9506549835205078,0.02244746685028076,3.813261538743973,7.458414137363434,8.534906804561615,37.014612555503845,29.857635498046875,0.2518884837627411,0.2433767318725586,0.24171631038188934,0.16579830646514893,0.18019749224185944
+<PER>",0.9506549835205078,0.0224474668502807,3.813261538743973,7.458414137363434,8.534906804561615,37.014612555503845,29.857635498046875,0.2518884837627411,0.2433767318725586,0.2417163103818893,0.1657983064651489,0.1801974922418594,99.98,99.98,96.66
 "subject: Recap of our last conversation.
 urls: False
 attachments: False
@@ -8394,7 +8394,7 @@ messaging.
 I wanted to follow up with a recap of our conversation last week.  I told you I would be in touch with my team to let them know what the schedule looks like for the next month or so.  I'm still trying to figure out when you and I can meet to go over the memo and the presentation I sent to you.  I have a meeting with <PER> on Monday afternoon and I think it will be pretty intense, but I think it would be a good time to talk to you.  I'm going to be traveling next week so I would like to do it soon.  Do you have any time that might work for you?
 
 Thanks,
-<PER>",0.002676546573638916,0.014935314655303955,3.699292242527008,33.05029273033142,15.073373913764954,65.2818500995636,40.45231342315674,0.24677035212516785,0.17605547606945038,0.22817666828632355,0.09500671923160553,0.1453952044248581
+<PER>",0.0026765465736389,0.0149353146553039,3.699292242527008,33.05029273033142,15.073373913764954,65.2818500995636,40.45231342315674,0.2467703521251678,0.1760554760694503,0.2281766682863235,0.0950067192316055,0.1453952044248581,99.97,97.14,99.98
 "subject: Documents for your review.
 urls: False
 attachments: True
@@ -8422,7 +8422,7 @@ body:","1.  This is the form of the ""Settlement Agreement and Mutual Release"" 
 
 11.  This is the form of the ""Consent"" which would be signed by <ORG>.
 
-12",False,0.19605259600000002,Neutral,ChatGPT,"I have attached the following documents for your review.  I will be
+12",False,0.196052596,Neutral,ChatGPT,"I have attached the following documents for your review.  I will be
 forwarding the documents to the Office of the Chair for final approval on
 Monday.  Please let me know if you have any comments.
 1.  Corporate Governance Guidelines
@@ -8441,7 +8441,7 @@ Nony Flores
 <ATTACHMENT> 
 <ATTACHMENT> 
 <ATTACHMENT> 
-<ATTACHMENT>",0.3337104320526123,0.3148515820503235,12.529081106185913,42.31830835342407,42.55304932594299,31.19133710861206,46.51032090187073,0.2304055392742157,0.15618976950645447,0.15657353401184082,0.18019326031208038,0.14011867344379425
+<ATTACHMENT>",0.3337104320526123,0.3148515820503235,12.529081106185911,42.31830835342407,42.55304932594299,31.19133710861206,46.51032090187073,0.2304055392742157,0.1561897695064544,0.1565735340118408,0.1801932603120803,0.1401186734437942,99.98,11.12,99.96
 "subject: Introduction and next steps.
 urls: False
 attachments: False
@@ -8473,7 +8473,7 @@ to work with you on the <PER> project.
 I hope you're having a good day.
 
 Best,
-<PER>",0.43475085496902466,0.240725576877594,-2.3518171161413193,13.301768898963928,17.253272235393524,24.839194118976593,25.80505609512329,0.27206459641456604,0.2398771047592163,0.22676867246627808,0.19114670157432556,0.18466466665267944
+<PER>",0.4347508549690246,0.240725576877594,-2.3518171161413197,13.301768898963928,17.253272235393524,24.839194118976597,25.80505609512329,0.272064596414566,0.2398771047592163,0.226768672466278,0.1911467015743255,0.1846646666526794,99.81,99.22,99.91
 "subject: Clarification needed on recent request.
 urls: False
 attachments: False
@@ -8487,7 +8487,7 @@ body:","1.  We need to confirm that the <ORG> will be the party responsible for 
 
 4.  We need to confirm that the broker will be responsible for the payment of any brokerage fees associated with the trades executed on the <ORG> system.  Please confirm that this is acceptable to <ORG>.
 
-5.  We need to confirm that <ORG> will be responsible for the payment of any exchange and clearing fees associated with the",False,0.010131416800000001,Neutral,ChatGPT,"John,
+5.  We need to confirm that <ORG> will be responsible for the payment of any exchange and clearing fees associated with the",False,0.0101314168,Neutral,ChatGPT,"John,
 
 Thanks for the info on the 2001 and 2002 P&L.  I was hoping that you could help me out with the following:
 
@@ -8515,7 +8515,7 @@ within <ORG> Asset Management or <ORG> Global Assets.  I would be willing
 to relocate to <LOC> for a position in either of these groups.  Thank you
 for your consideration.
 
-Sincerely,",0.013414859771728516,0.9758985042572021,7.6472654938697815,8.940430730581284,13.542589545249939,28.1252384185791,23.655925691127777,0.2448888123035431,0.2386217713356018,0.23294779658317566,0.19158728420734406,0.20229072868824005
+Sincerely,",0.0134148597717285,0.975898504257202,7.647265493869781,8.940430730581284,13.54258954524994,28.1252384185791,23.655925691127777,0.2448888123035431,0.2386217713356018,0.2329477965831756,0.191587284207344,0.20229072868824,88.61,99.59,99.94
 "subject: General update: No action required.
 urls: False
 attachments: False
@@ -8547,7 +8547,7 @@ I wanted to give you a brief update on a few items, but there is no action requi
 
 First, I wanted to let you know that I will be moving to the <ORG> <LOC> office in January.  I have enjoyed working with all of you over the last year and a half and look forward to continuing our work together.  I will be in <LOC> for the remainder of this week and next, and will be in the office on an as-needed basis for the rest of December.  Starting in January, I will be in the office on a regular basis and will be available to meet with you as needed.  My new office number is <PHONE>.
 
-Second, you will receive a letter in the mail from <PER> to confirm that you have been invited to participate in the <ORG> Healthcare Marketplace.  As I mentioned to you in a previous email, the <ORG> has determined that you are eligible for healthcare coverage under the Marketplace.  If you would like to discuss your healthcare options, please let me know.  I am happy",0.9905095100402832,0.6823689937591553,8.675535023212433,14.74926769733429,22.365298867225647,18.72941553592682,29.472413659095764,0.22998197376728058,0.21792641282081604,0.20142094790935516,0.2025521695613861,0.16826185584068298
+Second, you will receive a letter in the mail from <PER> to confirm that you have been invited to participate in the <ORG> Healthcare Marketplace.  As I mentioned to you in a previous email, the <ORG> has determined that you are eligible for healthcare coverage under the Marketplace.  If you would like to discuss your healthcare options, please let me know.  I am happy",0.9905095100402832,0.6823689937591553,8.675535023212433,14.74926769733429,22.365298867225647,18.72941553592682,29.472413659095764,0.2299819737672805,0.217926412820816,0.2014209479093551,0.2025521695613861,0.1682618558406829,99.98,99.98,99.54
 "subject: Weekly Newsletter: The latest insights, news, and articles from our community.
 urls: True
 attachments: False
@@ -8715,7 +8715,7 @@ Center on International Cooperation
 
 Your weekly newsletter for the week of <DATE>
 
-<DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <",0.9905117154121399,0.008854091167449951,25.026515126228333,44.97533142566681,42.83757209777832,29.694822430610657,21.329468488693237,0.1933061182498932,0.1440405547618866,0.16152402758598328,0.17426127195358276,0.20155814290046692
+<DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <DATE>        <",0.99051171541214,0.0088540911674499,25.026515126228333,44.97533142566681,42.83757209777832,29.694822430610657,21.32946848869324,0.1933061182498932,0.1440405547618866,0.1615240275859832,0.1742612719535827,0.2015581429004669,99.95,72.39,99.98
 "subject: Invitation: Join us for the annual neighborhood potluck gathering next week.
 urls: False
 attachments: False
@@ -8725,7 +8725,7 @@ body:","2016 Neighborhood Potluck: Join us next week!
 
 Please join us next week for the annual <ORG> Potluck! This is a great chance to get to know your fellow community members and neighbors. The event will take place on Wednesday, <DATE> from 6:30-8:30pm in the <ORG> Community Room. Please bring a dish to share and your own serving utensil. Beverages and plates will be provided.
 
-Please RSVP by Monday, <DATE> to <EMAIL><mailto:rsps@universityofchicago.edu>. If you have any questions, please contact us at <EMAIL><mailto:universityofchicago.edu>.",False,0.058425948000000005,Neutral,Gemini,"Hello neighbors!
+Please RSVP by Monday, <DATE> to <EMAIL><mailto:rsps@universityofchicago.edu>. If you have any questions, please contact us at <EMAIL><mailto:universityofchicago.edu>.",False,0.058425948,Neutral,Gemini,"Hello neighbors!
 
 Please join us for our annual potluck gathering next Wednesday, <DATE>, at 6:30 p.m. at the home of <PER> and <PER> Wollam at 3901 34th Place, NW.
 
@@ -8743,7 +8743,7 @@ Best,
 
 
 <PER>
-<PHONE>",0.18812257051467896,0.12886899709701538,65.77267050743103,65.27600288391113,72.49165773391724,66.77290201187134,71.3846504688263,0.09311331063508987,0.09146559238433838,0.07475940883159637,0.08482895791530609,0.07579879462718964
+<PHONE>",0.1881225705146789,0.1288689970970153,65.77267050743103,65.27600288391113,72.49165773391724,66.77290201187134,71.3846504688263,0.0931133106350898,0.0914655923843383,0.0747594088315963,0.084828957915306,0.0757987946271896,67.37,31.32,71.97
 "subject: Meeting notes from today's brainstorming session on Project Alpha.
 urls: False
 attachments: True
@@ -8791,7 +8791,7 @@ questions or if you need additional information.
 Thanks,
 <PER>
 
-<ATTACHMENT>",0.007686793804168701,0.0030020475387573242,17.27111041545868,47.297948598861694,44.58894729614258,21.49544358253479,26.748168468475342,0.20519967377185822,0.1414538025856018,0.1566247045993805,0.19878633320331573,0.19333913922309875
+<ATTACHMENT>",0.0076867938041687,0.0030020475387573,17.27111041545868,47.297948598861694,44.58894729614258,21.49544358253479,26.748168468475345,0.2051996737718582,0.1414538025856018,0.1566247045993805,0.1987863332033157,0.1933391392230987,99.95,95.58,33.88
 "subject: A quick question regarding the upcoming team building event logistics.
 urls: False
 attachments: False
@@ -8804,7 +8804,7 @@ Please let me know.  I would appreciate it.
 
 Thanks,
 
-Jen",True,0.9882054329000001,Neutral,Gemini,"I'm trying to get a handle on the number of people that will be attending.  We will be providing a light breakfast and lunch.  Would you please let me know how many people will be attending the team building event so I can get a head count for the food.  I'll be sending out a memo shortly to all the staff to get a more accurate count.
+Jen",True,0.9882054329,Neutral,Gemini,"I'm trying to get a handle on the number of people that will be attending.  We will be providing a light breakfast and lunch.  Would you please let me know how many people will be attending the team building event so I can get a head count for the food.  I'll be sending out a memo shortly to all the staff to get a more accurate count.
 
 Thanks for your help.
 
@@ -8826,7 +8826,7 @@ Best regards,
 
 <PER> 
 <ORG> 
-<EMAIL>",0.06896775960922241,0.0075095295906066895,19.398483633995056,39.42504525184631,56.18460178375244,41.74293875694275,46.65681719779968,0.21528726816177368,0.15912654995918274,0.12174092233181,0.14406803250312805,0.1327161192893982
+<EMAIL>",0.0689677596092224,0.0075095295906066,19.398483633995056,39.42504525184631,56.18460178375244,41.74293875694275,46.65681719779968,0.2152872681617736,0.1591265499591827,0.12174092233181,0.144068032503128,0.1327161192893982,99.97,99.21,99.97
 "subject: Monthly digest: The top 10 science fiction books recommended by our editors.
 urls: True
 attachments: False
@@ -8883,7 +8883,7 @@ The Best Book You'll Read This Year: The Bone Clocks by <PER>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 <PER>'s The Bone Clocks is a sprawling novel that follows a group of
-teenagers",0.03055393695831299,0.0615268349647522,61.044418811798096,71.90756797790527,56.041717529296875,57.195937633514404,42.18117296695709,0.10720868408679962,0.07441503554582596,0.1080598384141922,0.11028516292572021,0.14983730018138885
+teenagers",0.0305539369583129,0.0615268349647522,61.044418811798096,71.90756797790527,56.04171752929688,57.1959376335144,42.18117296695709,0.1072086840867996,0.0744150355458259,0.1080598384141922,0.1102851629257202,0.1498373001813888,82.07,99.9,2.75
 "subject: Follow-up: Our morning meeting discussing the new website design mockups.
 urls: True
 attachments: False
@@ -8895,7 +8895,7 @@ body:","1.  We have decided that the new website design will be launched on Mond
 
 Thank you,
 
-<PER>",True,0.9855742455000001,Neutral,Gemini,"Hi <PER>,
+<PER>",True,0.9855742455,Neutral,Gemini,"Hi <PER>,
 
 I wanted to follow-up with you on our morning meeting about the website design mockups.  I know that you were on a conference call for most of the meeting, but I wanted to make sure that I was clear on what we talked about.  The purpose of the meeting was to discuss the new website design mockups that were created based on our meeting on <DATE>.  The goal of the new design is to create a site that is easier to navigate, more visually appealing, and more informative.  The design also attempts to better highlight <ORG>'s work on a global scale and to provide more of a global perspective on climate change.  The new design is based on the user-centered design principles that we discussed in our meeting on <DATE>.
 
@@ -8915,7 +8915,7 @@ Thank you for your time.  I look forward to discussing this with you.
 
 Best,
 Zayneb K. Shaikley
-De",0.48811471462249756,0.9300796389579773,55.08623123168945,65.13863801956177,51.67837142944336,62.107884883880615,63.665467500686646,0.12329234927892685,0.09504882991313934,0.1284480094909668,0.0957876592874527,0.09167315065860748
+De",0.4881147146224975,0.9300796389579772,55.08623123168945,65.13863801956177,51.67837142944336,62.107884883880615,63.665467500686646,0.1232923492789268,0.0950488299131393,0.1284480094909668,0.0957876592874527,0.0916731506586074,99.98,1.02,99.78
 "subject: Introduction: Please welcome the newest members of the marketing team.
 urls: False
 attachments: False
@@ -8937,7 +8937,7 @@ Jen Barnette is our new marketing assistant.  She is a recent graduate of the Un
 
 We have also brought in two summer interns from the University of <LOC> to help us with our marketing efforts.  They will be here for the summer term.  Both are in the business school, and are working toward their Masters in Business Administration.  Please welcome John Paskin and <PER> Wente.
 
-John is from Dallas, and <PER> is from Austin.  They are both very bright and have great work ethics.  They will be assisting us with managing our database, and will be working on various projects.  They will be in the office Monday through Thursday, and will be in the office from about 9:00 AM to",0.37251710891723633,0.011535704135894775,28.68562936782837,42.1907901763916,48.57615828514099,71.15179896354675,71.22557163238525,0.18762603402137756,0.15169072151184082,0.1372660994529724,0.07291974127292633,0.07670360058546066
+John is from Dallas, and <PER> is from Austin.  They are both very bright and have great work ethics.  They will be assisting us with managing our database, and will be working on various projects.  They will be in the office Monday through Thursday, and will be in the office from about 9:00 AM to",0.3725171089172363,0.0115357041358947,28.68562936782837,42.1907901763916,48.57615828514099,71.15179896354675,71.22557163238525,0.1876260340213775,0.1516907215118408,0.1372660994529724,0.0729197412729263,0.0767036005854606,96.77,47.43,16.26
 "subject: Happy Birthday! Wishing you a fantastic and relaxing day from all of us.
 urls: False
 attachments: False
@@ -8962,7 +8962,7 @@ away.
 
 Have a great day.
 
-<PER>",Happy Birthday! Wishing you a fantastic and relaxing day from all of us.,0.019167423248291016,0.0026668310165405273,50.844746828079224,53.5277783870697,83.99755358695984,32.81647562980652,53.58770489692688,0.13843953609466553,0.12204059958457947,0.04264187440276146,0.18133917450904846,0.11850948631763458
+<PER>",Happy Birthday! Wishing you a fantastic and relaxing day from all of us.,0.019167423248291,0.0026668310165405,50.84474682807922,53.5277783870697,83.99755358695984,32.81647562980652,53.58770489692688,0.1384395360946655,0.1220405995845794,0.0426418744027614,0.1813391745090484,0.1185094863176345,66.59,6.8,98.53
 "subject: Feedback request: How was your recent experience with our customer support team?
 urls: True
 attachments: False
@@ -9016,7 +9016,7 @@ and links included in this email.
 
 (c) <PER> <ORG>.
 
-<ORG> | <LOC>",0.9785292148590088,0.9785292148590088,61.15550398826599,33.46666693687439,33.46666693687439,31.33058249950409,31.33058249950409,0.1046760231256485,0.17421753704547882,0.17421753704547882,0.17322194576263428,0.17322194576263428
+<ORG> | <LOC>",0.9785292148590088,0.9785292148590088,61.15550398826599,33.46666693687439,33.46666693687439,31.33058249950409,31.33058249950409,0.1046760231256485,0.1742175370454788,0.1742175370454788,0.1732219457626342,0.1732219457626342,96.99,91.39,91.39
 "subject: Friendly reminder: The main office will be closed for the national holiday tomorrow.
 urls: False
 attachments: False
@@ -9027,7 +9027,7 @@ body:","1. Please take this opportunity to get out and celebrate the holiday wit
 
 
 Thank you,
-Michele","If you need immediate assistance, please contact the 24-hour emergency service line at <PHONE>.",0.4218096137046814,0.0030030012130737305,60.109537839889526,27.22681164741516,17.724359035491943,29.18146848678589,25.553667545318604,0.11255909502506256,0.19088336825370789,0.2134907990694046,0.19227701425552368,0.19335892796516418
+Michele","If you need immediate assistance, please contact the 24-hour emergency service line at <PHONE>.",0.4218096137046814,0.0030030012130737,60.109537839889526,27.22681164741516,17.724359035491943,29.18146848678589,25.553667545318604,0.1125590950250625,0.1908833682537078,0.2134907990694046,0.1922770142555236,0.1933589279651641,99.97,62.49,83.94
 "subject: Weekly Update: Summary of recent activities
 urls: False
 attachments: False
@@ -9073,7 +9073,7 @@ I will send out a news update next week with a summary of the stories that
 have been in the media over the last week.
 
 Thank you.
-<PER>",0.028528153896331787,0.0739789605140686,21.275195479393005,15.866108238697052,38.718217611312866,42.81800091266632,34.84002947807312,0.21065303683280945,0.22122079133987427,0.16271327435970306,0.1595611721277237,0.16570618748664856
+<PER>",0.0285281538963317,0.0739789605140686,21.275195479393005,15.866108238697052,38.71821761131287,42.81800091266632,34.84002947807312,0.2106530368328094,0.2212207913398742,0.162713274359703,0.1595611721277237,0.1657061874866485,99.98,87.99,43.37
 "subject: Meeting Reminder: Agenda for tomorrow’s discussion
 urls: False
 attachments: True
@@ -9102,7 +9102,7 @@ are any additional items you would like to have on the agenda.
 Thanks
 <PER>
 
-<ATTACHMENT>",0.09313178062438965,0.009675979614257812,20.053020119667053,37.30053007602692,44.06176209449768,44.28125619888306,44.86696124076843,0.20626752078533173,0.1742953658103943,0.1540079116821289,0.14691779017448425,0.1452977955341339
+<ATTACHMENT>",0.0931317806243896,0.0096759796142578,20.053020119667053,37.30053007602692,44.06176209449768,44.28125619888306,44.86696124076843,0.2062675207853317,0.1742953658103943,0.1540079116821289,0.1469177901744842,0.1452977955341339,85.89,58.89,4.62
 "subject: Follow-Up: Notes from our last conversation
 urls: False
 attachments: True
@@ -9125,7 +9125,7 @@ discussions and supports the idea.
 also to look into the possibility of having the <ORG> provide hosting
 services for the <PER> Campaign.  I will forward to you a copy of their
 proposal as soon as they have completed it.  <PER> is aware of our
-discussions and",False,0.08070258050000001,Neutral,Copilot,"<PER>,
+discussions and",False,0.0807025805,Neutral,Copilot,"<PER>,
 
 I wanted to follow up on our conversation of <DATE> and attach a
 draft of the notes I took from that conversation. I also wanted to
@@ -9152,7 +9152,7 @@ Thanks again for taking the time.
 
 <ATTACHMENT>
 
-<ATTACHMENT>",0.46355611085891724,0.022404968738555908,15.960125625133514,39.75808024406433,45.79958617687225,28.744399547576904,22.97198474407196,0.21402481198310852,0.16019973158836365,0.15189820528030396,0.17503425478935242,0.19992578029632568
+<ATTACHMENT>",0.4635561108589172,0.0224049687385559,15.960125625133514,39.75808024406433,45.79958617687225,28.744399547576904,22.97198474407196,0.2140248119831085,0.1601997315883636,0.1518982052803039,0.1750342547893524,0.1999257802963256,99.66,98.42,19.63
 "subject: Information Request: Additional details needed
 urls: False
 attachments: False
@@ -9189,7 +9189,7 @@ Please provide us with the information as soon as possible.
 Thanks,
 <PER>","Please provide the additional details requested in the attached memo regarding <ORG> Corp.'s operations.  Please provide the requested information to me or to J. Gregory Keiler at <PHONE>.  Thank you for your cooperation.
 
-<PER>",0.7540390491485596,0.8906435370445251,25.920605659484863,17.784367501735687,22.998663783073425,34.80360507965088,43.40143799781799,0.19645389914512634,0.21850839257240295,0.2055843323469162,0.16936300694942474,0.14160683751106262
+<PER>",0.7540390491485596,0.8906435370445251,25.920605659484863,17.784367501735687,22.998663783073425,34.80360507965088,43.40143799781799,0.1964538991451263,0.2185083925724029,0.2055843323469162,0.1693630069494247,0.1416068375110626,93.48,32.68,69.87
 "subject: Team Announcement: New member introduction
 urls: False
 attachments: False
@@ -9224,7 +9224,7 @@ Please join me in welcoming <PER> Hare, who has recently joined the team. <PER> 
 Please join me in welcoming <PER> to the team!
 
 Best,
-<PER>",0.06666642427444458,0.4143584370613098,19.02441680431366,41.34482741355896,29.116326570510864,48.977893590927124,34.95590686798096,0.20121707022190094,0.14512541890144348,0.17107322812080383,0.1387799084186554,0.17169857025146484
+<PER>",0.0666664242744445,0.4143584370613098,19.02441680431366,41.34482741355896,29.116326570510864,48.97789359092712,34.95590686798096,0.2012170702219009,0.1451254189014434,0.1710732281208038,0.1387799084186554,0.1716985702514648,99.97,99.98,99.33
 "subject: Project Update: Current status and next steps
 urls: False
 attachments: False
@@ -9280,7 +9280,7 @@ On <DATE>, we sent you a message about the project to create a new global busine
 
 We are planning to announce the new organization on <DATE>.  The new business unit will be called <ORG> Global Products and will be led by Rick Carson.  Reporting to Rick will be the existing leaders of <ORG> and <ORG> (Bob Semple) and <ORG> and <ORG> (Pam Anderson).  Each of the business unit leaders will have responsibility for their existing business areas in addition to the innovation and research function for their business unit.  We are still finalizing the title and role for the innovation and research leader for <ORG> Global Products.  Rick will report to <PER> (CEO) and <PER> (COO).
 
-While the innovation and research function will initially be focused",0.006273031234741211,0.3533533811569214,8.56754258275032,26.65437161922455,21.661579608917236,39.63337242603302,37.48542666435242,0.24127674102783203,0.1865878403186798,0.19548159837722778,0.15485621988773346,0.15679270029067993
+While the innovation and research function will initially be focused",0.0062730312347412,0.3533533811569214,8.56754258275032,26.65437161922455,21.66157960891724,39.63337242603302,37.48542666435242,0.241276741027832,0.1865878403186798,0.1954815983772277,0.1548562198877334,0.1567927002906799,99.74,58.05,39.64
 "subject: Friendly Reminder: Upcoming internal deadline
 urls: False
 attachments: False
@@ -9333,7 +9333,7 @@ Zack Malis
 Deputy Finance Director
 <ORG>
 <PHONE> (o)
-<PHONE> (c)",0.9072851538658142,0.30486243963241577,34.3514084815979,14.732314646244049,41.99676811695099,22.2719207406044,72.07062244415283,0.16968202590942383,0.22143910825252533,0.15203794836997986,0.20022299885749817,0.07372845709323883
+<PHONE> (c)",0.9072851538658142,0.3048624396324157,34.3514084815979,14.732314646244047,41.99676811695099,22.2719207406044,72.07062244415283,0.1696820259094238,0.2214391082525253,0.1520379483699798,0.2002229988574981,0.0737284570932388,1.19,1.25,95.97
 "subject: General Inquiry: Clarification needed on your last message
 urls: False
 attachments: False
@@ -9356,7 +9356,7 @@ Thanks,
 
 I am the one who is the former employee of <ORG> and I am in the process of filing my unemployment claim with the <LOC> Employment Department.  I was laid off in February of this year.  I had to file for unemployment because I was not provided any severance or any other type of benefit.  In addition, my layoff was not voluntary.  I was asked to leave.  I have a copy of the termination letter that I can send to you if you like.  I was not given a reason for my layoff.  I did have a performance review in January and it was rated as excellent.  I was laid off because my position was eliminated.  However, I was not given a reason why my position was eliminated.  I have been in touch with my union and they have not been able to give me any answers as to why I was laid off.
 
-I am writing to you because I would like to know if there is anything that can be done.  I would like to know if I have any rights in this matter.  I would also like to know if there is anything that I can do to try to get my job back.  I am currently looking for work.  I",0.701991856098175,0.8895710706710815,13.085436820983887,20.74708640575409,8.475971966981888,42.59521961212158,25.36417841911316,0.2343427985906601,0.20787017047405243,0.24266666173934937,0.1566581428050995,0.199079692363739
+I am writing to you because I would like to know if there is anything that can be done.  I would like to know if I have any rights in this matter.  I would also like to know if there is anything that I can do to try to get my job back.  I am currently looking for work.  I",0.701991856098175,0.8895710706710815,13.085436820983888,20.74708640575409,8.475971966981888,42.59521961212158,25.36417841911316,0.2343427985906601,0.2078701704740524,0.2426666617393493,0.1566581428050995,0.199079692363739,93.66,99.28,99.96
 "subject: Status Check: How is the project progressing?
 urls: False
 attachments: False
@@ -9378,7 +9378,7 @@ If yes, move on to number 5.  If no, please contact me as soon as possible.
 If yes, move on to number 6.  If no, please contact me as soon as possible.
 
 6.	Have you tested your model to make sure that the data is accurate and displayed in a clear and logical manner?
-If yes, move",True,0.9810206890000001,Neutral,Copilot,"Please respond to status inquiry.  Please provide a brief status update on your project.  For those projects that are completed or substantially completed, please provide a project summary.  For those projects that are on hold, please explain why.
+If yes, move",True,0.981020689,Neutral,Copilot,"Please respond to status inquiry.  Please provide a brief status update on your project.  For those projects that are completed or substantially completed, please provide a project summary.  For those projects that are on hold, please explain why.
 
 This information will be used in a presentation to <PER> and <PER> on Monday, <DATE> at 2:30 p.m.  Please forward this message to your project manager if they have not already received it.
 
@@ -9388,7 +9388,7 @@ Thanks,
 Please let me know when you have time to discuss this.
 
 Thanks,
-<PER>",0.0015475749969482422,0.002550184726715088,12.021386623382568,45.99734544754028,42.83677935600281,29.679864645004272,30.74711561203003,0.23074860870838165,0.14634224772453308,0.15561339259147644,0.1855321228504181,0.18835049867630005
+<PER>",0.0015475749969482,0.002550184726715,12.021386623382568,45.99734544754028,42.83677935600281,29.679864645004272,30.74711561203003,0.2307486087083816,0.146342247724533,0.1556133925914764,0.1855321228504181,0.1883504986763,98.57,99.42,1.16
 "subject: Internal Notice: Scheduled maintenance this week
 urls: False
 attachments: False
@@ -9405,7 +9405,7 @@ Thank you,
 
 Dave Steiner
 <ORG>
-<PHONE>",False,0.16444781420000001,Neutral,Copilot,"Dear Colleagues,
+<PHONE>",False,0.1644478142,Neutral,Copilot,"Dear Colleagues,
 
 This email is to alert you that this week the <ORG> will be performing scheduled maintenance on a number of servers that house <ORG> applications. The maintenance is scheduled to begin this Friday, <DATE> at 7:00 pm and is anticipated to be completed by 2:00 am on Saturday, <DATE>.  During this time a number of applications will be unavailable for use.  Below is a list of applications that are expected to be impacted.
 
@@ -9434,4 +9434,4 @@ We are performing scheduled maintenance on the <ORG> system this week.  We will 
 If you have any questions, please call me at <PHONE>.
 
 Thanks,
-Alex",0.9213133454322815,0.04965883493423462,35.031527280807495,48.89411926269531,26.85289978981018,59.91407632827759,56.404662132263184,0.17336350679397583,0.13865865767002106,0.19157728552818298,0.10700510442256927,0.11567900329828262
+Alex",0.9213133454322816,0.0496588349342346,35.031527280807495,48.89411926269531,26.85289978981018,59.91407632827759,56.404662132263184,0.1733635067939758,0.138658657670021,0.1915772855281829,0.1070051044225692,0.1156790032982826,40.31,1.89,42.4

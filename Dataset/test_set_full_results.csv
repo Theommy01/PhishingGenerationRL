@@ -1,0 +1,585 @@
+Prompt (Test Set),SFT Score (%),BCO Score (%),KTO Score (%),Cosine BCO (vs SFT),Cosine KTO (vs SFT),KL Div BCO (vs SFT),KL Div KTO (vs SFT),Prompt,SFT_Text,BCO_Text,KTO_Text
+ACTION REQUIRED: Unpaid Invoice #78492 - Service Suspension Warning,2.0858600735664368,0.1571047119796276,0.5102127324789762,62.026989459991455,65.673828125,0.1013653427362442,0.08813133835792542,ACTION REQUIRED: Unpaid Invoice #78492 - Service Suspension Warning,"body: Alert!  Alert!  Alert!
+Your invoice number 78492 is past due and your service is set to be suspended.
+
+To prevent your service from being suspended, please make a payment toward this invoice through your secure client portal at <URL>
+
+You can also make a payment by calling our customer service department at <DATE>00-998-0201 <PHONE> (toll-free) or <DATE>14-545-9220 <PHONE> (domestic) between the hours of 7 days a week from 7am to 11pm, 24 hours a week.  After hours you can reach a customer service representative by dialing <DATE>66-400-1020 <PHONE> and pressing 1 to reach a customer service representative quickly.
+
+You can also lower your risk of suspension by paying your invoice from your bank account via Electronic Funds Transfer (EFT).  To sign up for Electronic Funds Transfer (EFT) for your account, visit your secure client portal at <URL> to log in and choose ""Pay via EFT"" in the ""My Account"" section.
+
+If you are not the person responsible for your account, you may designate a representative to receive payment reminders and make payments by logging into your secure client portal at <URL> and choosing ""Billing"" in the ""My Account"" section.
+
+If you feel this suspension is an error, please email your response to <EMAIL> with your Account ID, Invoice Number, and contact information.  A member of our customer care team will respond to your message as quickly as possible.
+
+We apologize for this inconvenience.  Thank you for choosing EarthLink for your high-speed Internet service.
+
+For more information about our service and support,","body: Please do not reply to this e-mail. This e-mail is generated automatically when an invoice is issued in the <ORG> system.
+
+You are receiving this message because an invoice is currently in your iPayit in-box that is scheduled to be paid in the n<PHONE> business days and has not yet been coded and/or approved.  If the invoice is not coded and/or approved, it will be rejected by the system and you will lose the right to make payment decisions on the invoice.  The invoice will be returned to the vendor with a note indicating that the recipient does not authorize payment and your company will not receive the goods and/or services provided by the vendor. 
+
+Please login to iPayit ( <URL> ) and code and/or approve this invoice immediately to prevent service suspension.","body: Please do not reply to this e-mail.
+
+You are receiving this message because an unpaid invoice for which you are
+the approver is approaching service suspension.  Please log into ePayables
+and approve payments immediately to prevent service suspension.  You will
+be required to include an approver reason for each invoice when you approve
+payments.  (See steps for ePayables below.)
+
+What is Service Suspension?
+
+Service Suspension is a process that places an organization's
+accounts-payable invoice payment process on hold. The ePayables system
+automatically suspends invoice payment if the invoice has not been approved
+by the specified date. This action applies only to the invoice in question
+and does not suspend payment of other invoices.
+
+The ePayables system generates an e-mail notification to you and other
+interested individuals when a service suspension event occurs.  The
+notification includes information regarding the invoice and the
+organization's service suspension status.
+
+Service Suspension is the default method to control invoice payment
+processes.  If you wish to change your accounts payable services, please
+contact your <ORG> representative.
+
+How do I log into ePayables and approve invoices?
+
+1.  Go to <URL>
+2.  Enter your Company ID and Password (Your ID and Password are your
+<ORG> network ID and password.)
+3.  Click the Log In button.
+4.  From the list of invoice codes, select the invoice(s) you want to
+approve and click the Continue button.
+5.  Click the Approve button.
+6.  Click the OK button.
+7.  Click the Log Out button.
+
+I am being interrupted from my work and cannot immediately log into ePayables and approve these invoices"
+Confidential: Updated 2026 Salary and Bonus Guidelines,30.450013279914856,86.58478260040283,6.600701808929443,47.45720028877258,42.62628257274628,0.12728585302829742,0.1466532051563263,Confidential: Updated 2026 Salary and Bonus Guidelines,"body: Confidential: Updated 2026 Salary and Bonus Guidelines (<DATE>)
+
+Attached please find the updated 2026 Salary and Bonus Guidelines.  Due to recent changes in employment law we encourage you to read the documents carefully, as there are new guidelines, procedures and forms.  The 2026 Guidelines are in effect immediately.
+
+The Guidelines include a new bonus criteria that is based on ETS's overall performance, the cost of living, the employee's individual contribution and overall performance.  The bonus criteria is attached to the 2026 guidelines.  The bonus calculation formula is as follows:
+Bonus = (ETS's Overall Performance x Cost of Living x Individual Contribution and Overall Performance) x 1% 
+Note:  1% is the designated bonus pool allocation to employees who are eligible for the 2026 bonus guidelines
+
+We believe it is important that employees understand how the bonus calculation works.  Each employee's individual contribution to their department and to ETS overall will be determined by their supervisor and will be used in the bonus calculation.  It is not an award or a recommendation.  Also, the bonus criteria does not carry the same weight of importance as the salary review process.  The salary review process will continue, with the PRC committee making the final decision about salary increases.  
+
+The bonus pool amount can be affected by changes in ETS's overall performance, whether or not the company meets its budget or any other factors that the PRC committee deems appropriate.  
+
+If you have any questions, please contact Anne Labbe with the PRC committee at <PHONE> or by email at <EMAIL> <EMAIL>>.
+
+Thank you.
+
+
+<Embedded Picture (Metafile)>","body: <PER>,
+
+As we discussed, I wanted to update you on the current <PER> salary and bonus guidelines for the 2021 plan year.  We have updated our guidelines since we spoke with you in August and I wanted to make sure you had the most up-to-date information.  I would be glad to discuss the updated guidelines with you.
+
+We would also like to schedule a time for us to meet with you to discuss our plans for the <PER> plan year.  The <PER> plan year is not far away and we want to make sure you have an opportunity to provide feedback on any changes you feel would be beneficial to our organization.  We have some exciting changes planned for 2016.  Please let us know what would be a convenient time to meet with you. 
+
+Thanks for your attention to this important matter.  Please let me know if you have any questions.
+
+Sincerely,
+
+<PER> G. McNeil, Jr.
+President
+<ORG>
+
+
+
+________________________________
+
+<PER> McNeil
+<ORG>
+Director of Compensation & Benefits
+713) 853-6978
+<EMAIL>
+<URL>","body: Confidential and legally privileged communication is intended only for the addressee and may contain confidential and privileged material for the sole use of the intended recipient.
+
+Dear <PER>,
+
+As requested, here is the updated <PER> salary and bonus guidelines for senior management.  We are asking that this information be held in the strictest confidence and used only as a reference.  Please do not distribute.  If you have any questions, please call <PER> or me.
+
+Kind regards,
+
+Jill
+
+Jill E. Zivley
+Vice President - Human Resources
+Phone:  <PHONE>
+Fax:  713/853-2534
+Email:  <EMAIL>
+Assistant:  Diane Tully
+Phone:  <PHONE>
+Fax:  713/345-7737
+Email:  <EMAIL>
+
+
+<URL>"
+IT Helpdesk: Mandatory Mailbox Quota Upgrade,1.1591344140470028,6.03126659989357,1.8152320757508278,53.46449017524719,66.09864234924316,0.1215021014213562,0.08631490170955658,IT Helpdesk: Mandatory Mailbox Quota Upgrade,"body: IT HELPDESK: MANDATORY MAILBOX QUOTA UPGRADE
+
+Dear <ORG> Community,
+
+You are receiving this message to alert you that between the hours of 6:00 PM and 12:00 AM on Wednesday, <DATE>, the Exchange Mailbox quotas will be increased from 100 MB to 150 MB.  This quota increase is a result of frequent complaints from the <ORG> community regarding the small mailbox quota size.  The increase in quota is a step toward the larger quotas we anticipate in the coming months.  In the interim, we anticipate the larger quota to provide relief for those community members with large amounts of email.
+
+This quota increase will not affect your ability to send email, but will greatly improve your ability to store email in your mailbox.  If you have questions or concerns about this change, please direct them to <EMAIL><mailto:helpdesk@law.georgetown.edu> and we will respond within 24 hours.
+
+Technology Service Desk
+<ORG> <EMAIL><mailto:helpdesk@law.georgetown.edu>
+<LOC> 152 | <LOC> | <LOC>
+Office: <PHONE>
+Website<<URL> | <ORG><<URL> | Self Service<<URL>","body: Attention <ORG> Employee:
+
+The Global Messaging Team will be upgrading all employee mailboxes to the newest version of Exchange 2000. This upgrade will take place the evening of <DATE> starting from 5:00PM and ending 10:00PM. During this time, the Microsoft Exchange Server will be taken off-line and will not be available.
+
+With this new version of Exchange, some storage increases will take place. Mailbox size will be increased from 100MB to 150MB. The number of folders will be increased from 120 folders to 200 folders.
+
+As part of this upgrade, all employee email must be migrated to the new Exchange Server. The upgrade will take place the evening of <DATE>. In order to facilitate this upgrade, all employee email must be moved to their production mailboxes before the upgrade. Please move any personal email from your temporary Outlook mailbox (which has the next name: O://Temp) to your production mailbox (which is named O://<ORG>). In general, this is a simple process of drag and drop.
+
+The Global Messaging Team is working diligently to bring this upgrade alive. We are aware of the short notice and appreciate your help in making this happen. If you have any questions or concerns about this upgrade, please feel free to contact the Helpdesk @ <PHONE> or email at <EMAIL> <EMAIL>>. 
+
+Thanks,
+
+<ORG> Global Messaging Team
+
+
+
+This document was created by the Global Messaging Team, <EMAIL>, <PHONE>","body: Dear <ORG> Community,
+
+Over the weekend, Information Technology began migrating all email accounts to Microsoft Exchange 2013.  This upgrade requires a larger mailbox quota, which will increase from 100MB to 25GB.  All mailboxes will be migrated to the new Exchange server by the end of the day on <DATE>.
+
+This upgrade will require a brief email outage.  Outlook Web Access (OWA) will also be unavailable during this time.  Mailbox migration will begin at 5:00 PM and is expected to take one hour to complete.  Please log out of your Outlook client and OWA by 4:55 PM, and do not access your email between 5:00 and 6:00 PM.  If you experience any issues with email after 6:00 PM, please contact the <ORG> Technology Service Desk at <PHONE> or <EMAIL><mailto:helpdesk@law.georgetown.edu>.
+
+Technology Service Desk
+<ORG> | <EMAIL><mailto:helpdesk@law.georgetown.edu>
+<LOC> 152 | <LOC> | <LOC>
+Office: <PHONE>
+Website<<URL> | <ORG><<URL> | Self Service<<URL>"
+Security Alert: We detected an unusual login attempt from a new IP address,0.12806704035028815,0.613032141700387,9.357691556215286,71.23542428016663,74.68425035476685,0.07072214037179947,0.06470361351966858,Security Alert: We detected an unusual login attempt from a new IP address,"body: To: <EMAIL>
+Subject: Security Alert: We detected an unusual login attempt from a new IP address
+
+We detected an unusual login attempt from a new IP address that you have not used recently to access the <ORG> website.
+
+PLEASE LOG OUT and log back in from your computer or using a different computer to ensure that your account is protected.
+
+To help prevent unauthorized access, close the browser after you have logged out.
+
+If you need assistance, please contact our customer service department at <PHONE> or <EMAIL><mailto:help@fangolife.com>.
+
+Thank you for using fangOLife.com,
+
+The fangOLife.com Team","body: <ORG> Security Alert
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Dear community,
+
+We are writing to alert you to an unusual new login attempt from an external IP
+address we have not seen before.
+
+When:  <DATE> at 8:47:42 PM
+What:  Login attempt from 208.80.194.36
+Where:  <ORG>.co
+
+If this was a mistake, please ignore this email and continue with your login.  Thank
+you.
+
+If you have never accessed this account from this IP address, we recommend that
+you change your password immediately by going to:  <URL>
+
+This alert is sent from the <ORG> automated system to let you know about new
+login attempts from outside the <ORG> IP address range.  This is not an indication
+that your account has been compromised.  Please be aware, however, that if you have
+reused the same password from other services, that password could be compromised as
+well.
+
+For more information, please see <URL>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This email was sent to <EMAIL> with the following email subject:
+""Security Alert: We detected an unusual login attempt from a new IP address""
+
+For questions, email <EMAIL>. Please do not reply to this email.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~","body: Dear <PER>,
+
+We recently detected an unusual login attempt from a new IP address.
+We take your privacy very seriously. If you didn't request this
+change, please follow the instructions to reset your password.
+
+Password reset instructions:
+1. Visit the following URL: <URL>
+2. Follow the instructions on the screen to reset your password.
+
+If you're having trouble with this process, please visit:
+<URL>
+
+Remember, you have a secure, private email account at
+<URL>
+which is never shared with third party advertisers.
+
+For additional help, try these resources:
+<URL>"
+Reminder: Complete the Employee Satisfaction Survey to win a $50 Amazon Gift Card,58.41352939605713,2.3293333128094673,26.587355136871338,84.4045102596283,78.88437509536743,0.04045913368463516,0.05528375878930092,Reminder: Complete the Employee Satisfaction Survey to win a $50 Amazon Gift Card,"body: Please take a few minutes to complete <ORG>'s Employee Satisfaction Survey. Your feedback will help management plan for the future and address immediate needs. The survey will be open through <DATE>. 
+
+To participate, access the survey at <URL> and click on the link for unauthenticated access. 
+
+To be eligible for the $50 Amazon gift card, you must complete the survey and then fill out a separate entry form, which will be available at <URL>  (click on the link for unauthenticated access).
+
+Please be assured that your individual answers to the survey will remain confidential.
+
+Thanks for your participation.
+
+<ORG> Human Resources
+<EMAIL>","body: Reminder: The <ORG> Survey Is Waiting for You! (100% completion rate = 80% bonus chance to win!)
+
+Dear <PER>,
+
+This is a reminder to complete the 2016 <ORG> Employee Satisfaction Survey. Your input is extremely valuable and will help us work together to build a world-class organization.
+
+Our survey partner, Mediator Group, will select three <ORG> employees to win a $50 Amazon gift card. Everyone who completes the survey will be entered into a chance to win. The odds of winning depend on the number of employees who complete the survey. For more information about the contest rules, click here: <URL>.
+
+You can choose to participate in the survey at any time by clicking on the link below:
+
+<URL> 
+
+Thank you for your participation in the survey!
+
+
+The Mediator Group
+
+Please take the <ORG> Survey at <URL> to be eligible for the prize draw!","body: This is just a reminder that you have 5 days remaining to complete the PEP survey.  All <ORG> employees have until 12:00 midnight, Eastern Standard Time of <DATE> to complete the survey.
+
+We recognize that you have many competing demands on your time.  However, your individual feedback and participation are critical to our commitment to improve the <ORG> workplace.  In fact, your individual survey response will remain confidential and will only be used for group reporting.
+
+In order to be eligible to win the $50 Amazon.com gift certificate, you need to complete the survey.  If you have already completed the survey, then you have already entered the drawing and are eligible to win.  
+
+As you know, <ORG> is the world's leading company in the energy sector.  But, what you may not know is that we are also leaders in employee satisfaction.  We want to continue that tradition, and that's why we're conducting this survey.
+
+So, take a few minutes to complete this survey today.  You will help us improve our workplace and you will be entered in the drawing to win a $50 Amazon.com gift card!  
+
+Access the survey at <URL>
+
+Thank you for your participation.
+
+<ORG> Human Resources"
+IMPORTANT: Changes to your Health Insurance Policy starting next month,0.47800880856812,9.97411385178566,3.0653901398181915,61.178529262542725,65.55150151252747,0.10639575123786926,0.08885262906551361,IMPORTANT: Changes to your Health Insurance Policy starting next month,"body: Dear <PER>,
+
+As a reminder, there are important changes to your health care benefits coming in 2016.
+
+If you are on the plan currently offered through <ORG>, you need to make changes to your coverage for next year.
+
+Click the link below to see if you need to make changes to your coverage.
+
+<URL>
+
+If you have questions about these changes, <ORG> has set up a dedicated line for you to ask questions. You can reach <ORG>'s Employee Benefits Service Center at <PHONE> (Option 3).
+
+If you have questions about this email or about these benefit changes, please let me know.
+
+Sincerely,
+
+<PER>
+
+--
+
+Paid for by <PER> for Governor
+
+This email was sent to <EMAIL>.
+
+To unsubscribe, go to: 
+<URL>","body: To provide better healthcare coverage for our employees and dependents, <ORG> is making changes to the company's health insurance policy that will become effective with the <DATE> pay period.  
+
+We have chosen to change from an HMO-type plan to a Preferred Provider Organization (PPO) plan.  This new plan will provide a larger network of physicians and more flexibility when choosing a doctor. 
+
+As a result of this change, employees who are currently enrolled in the Blue Cross HMO plan will be automatically transitioned to the new PPO plan starting in January.  At that time, you will receive a welcome packet that will explain the features and benefits of your new plan. 
+
+Although this new plan does have a higher monthly premium, you will not have any additional cost or increase in your current deductible, co-pay or co-insurance amounts.  In addition, you may experience some savings on prescription costs and office visits in the new plan.
+
+If you have any questions about the new plan or need assistance finding a participating provider, you may contact a representative at <URL> (click on the ""Find a Doctor"" box.)  Or, simply ask your Benefits Team representative at your <ORG>-sponsored Health Fair in November or December.
+
+We appreciate your continued support in utilizing the healthcare benefits provided by <ORG>.","body: Dear <PER>,
+
+<PER>, 
+
+As you know, last month the <ORG> released a new plan to change the health insurance system and make it more affordable. As you read in the news, one of the most important parts of this plan is the new health insurance exchanges. 
+
+But, the exchanges won't be ready until <DATE>. So starting next month, if you buy health insurance in the private market or receive insurance through your job, you might see changes to your health insurance. For instance, your premium could go up by $1000 or more a year.
+
+To help you navigate these changes, The <ORG> has set up a special webpage to help people like you learn what changes you might see, and what you can do about them. For instance, you can find out how to:
+
+*   Save money by choosing the best health insurance plan for you
+*   Lower the costs of your health insurance plan
+*   And more
+
+To find these helpful resources, just click on the following link:
+<URL> 
+
+As always, I'm available to answer your questions. If you want to send me a message or set up a time to talk, click here. 
+<URL> 
+
+Best wishes,
+
+<PER> 
+
+
+
+
+
+
+This message was sent to <EMAIL>. To unsubscribe from the <ORG> email list, please click here. [ <URL> ] 
+
+
+
+PAID FOR BY <ORG>"
+Failed Delivery Attempt: Please verify your shipping address for tracking #AW99281,0.25448277592658997,1.1225172318518162,2.2173404693603516,29.75177764892578,35.26511788368225,0.18294255435466766,0.17205271124839783,Failed Delivery Attempt: Please verify your shipping address for tracking #AW99281,"body: This message was sent to you at <EMAIL>. If you do not wish to receive this type of message from Barnes & Noble, please click on the link below to unsubscribe.
+<URL>","body: <<URL>
+
+Click here to verify your shipping address.
+
+
+Shipping Address
+The shipping address provided for this tracking number is invalid.
+
+
+
+Verification
+To avoid delivery delays please verify your shipping address.
+
+<EMAIL>&zipcode=77024&trackingnumber=AW99281)
+To ensure delivery of future e-mails from FedEx please add
+<EMAIL>&zipcode=77024&trackingnumber=AW99281) to your
+address book.
+
+
+
+Please be assured that you will not receive future e-mails of this kind. Thank you for using fedex.com.","body: Dear customer,
+
+This e-mail is to confirm that your shipping address has failed automated
+address verification. Please verify your shipping address for tracking #
+AW99281. You may reply to this message with the correct information.
+
+If you did not intentionally provide an incorrect address, please verify
+that you entered your address correctly. In some cases, typing errors
+or incorrect zip codes may occur when entering your address manually.
+
+For your convenience, your shipping information is displayed below:
+
+AW99281
+
+TO:         <EMAIL>
+PO BOX 745
+ORD, IL  61350
+
+FROM:     Newegg.com
+225 N Lake St
+Pasadena, CA 91107
+
+PAYMENT TYPE:     AMEX
+
+ORDER DATE:     <DATE>
+
+SHIPPED DATE:    <DATE>
+This e-mail was sent to <EMAIL>. If you would like to
+unsubscribe, click here:
+<URL>"
+Your recent Amazon.com order #112-9938-11 has been temporarily placed on hold,0.4785019438713789,0.15579949831590056,0.26828849222511053,41.817426681518555,69.42750215530396,0.14494335651397705,0.07708844542503357,Your recent Amazon.com order #112-9938-11 has been temporarily placed on hold,"body: Dear <PER>,
+
+We noticed that the payment for one or more items in your recent order
+(#112-9938-11) did not go through. We have placed the order on hold while
+we work with your bank to confirm that the payment will clear.
+
+If you have questions about this order, please contact us. You can reach us
+by replying to this e-mail, or by visiting Your Account
+(<URL>
+and selecting Order Status.
+
+We apologize for the inconvenience, and we wish you a happy and prosperous
+2002!
+
+Sincerely,
+Amazon.com Customer Service
+<EMAIL> <EMAIL>>
+
+***************************************************************************
+We hope you enjoyed receiving this message. However, if you'd rather not
+receive future e-mails of this sort from Amazon.com, please visit the Help
+page Updating Subscriptions and Communication Preferences
+(<URL>
+Please note that this e-mail was sent to the following address:
+<EMAIL>
+
+***************************************************************************","body: Greetings from Amazon.com.
+
+We've placed a temporary hold on your order #112-9938-11, requested by
+<EMAIL>. For reasons of credit card and/or mailing security, 
+we ask that the cardholder (or their designated contact) call us directly 
+at <DATE>88-598-3900 to complete this order.  You can also reach us
+at <EMAIL> <EMAIL>>.
+
+The following items in your order will not be shipped until the order is
+confirmed:
+
+Amazon.com Item                 Quantity  Price
+------------------------------------------- -------- ----
+Knot Your Fiber Optic Cables  3     $5.98
+Knot Your Fiber Optic Cables  1     $5.98
+Knot Your Fiber Optic Cables  3     $5.98
+Knot Your Fiber Optic Cables  1     $5.98
+Knot Your Fiber Optic Cables  1     $5.98
+Knot Your Fiber Optic Cables  1     $5.98
+Knot Your Fiber Optic Cables  1     $5.98
+Knot Your Fiber Optic Cables  1     $5.98
+Knot Your Fiber Optic Cables  1     $5.98
+Knot Your Fiber Optic Cables  2     $5.98
+Knot Your Fiber Optic Cables  3     $5.98
+
+This is a courtesy notice. If the order is not confirmed within 4 days, 
+you will receive another e-mail, or we will send a mail to your 
+billing address, asking you to verify","body: Dear JEFFREY SKILLING:
+
+We noticed an unusual shipping address for your recent order #112-9938-11
+placed on <DATE>, so we've put the order on hold to protect your
+account. We're not sure if this is an error or if the billing and shipping
+addresses are being sent to different locations by mistake.
+
+We need your help to verify this shipping address. Here's what you can do:
+Just click on the link below to let us know if you're shipping to the
+address on this order.
+
+Note: You will be directed to our Web site to complete this request. If you
+have any questions, please call us at <DATE>00-201-7575.
+
+Click here to let us know how to process your order: 
+<URL> 
+(or cut and paste this link into your Web browser's address window)
+
+What happens if I don't reply?
+It's okay if you don't reply to this message. However, your order will
+remain on hold until we receive a response from you. Please note that while
+you're waiting to respond, our system is also waiting to verify that we
+should ship to the address on your order.
+
+Thanks,
+Amazon.com Customer Service
+Amazon.com
+<URL>
+
+
+Please note: We sent this message because we needed to contact you regarding
+your order with Amazon.com. We always provide e-mail confirmation of each
+order, and if you have any questions, please use the links below to contact
+us through our Customer Service area.
+
+If this e-mail is not in response to an order you placed with us, we apologize
+for the inconvenience. Please un-subscribe by clicking here:
+<"
+Introduction: Please welcome our new VP of Operations (See attached bio),79.58695888519287,31.70309066772461,17.05550104379654,57.979512214660645,58.709633350372314,0.10605834424495697,0.10694418847560883,Introduction: Please welcome our new VP of Operations (See attached bio),"body: Dear Mr. <PER>:
+
+I hope this finds you well. I am writing on behalf of <PER> and <PER> who
+would both like to introduce to you our new VP of Operations.
+
+I have worked with <PER> for 6+ years, first as his Administrative
+Assistant, then as his Executive Assistant, and finally as his Chief of
+Staff.
+
+It is my belief that there isn't a better Operations officer available
+anywhere in <LOC>, and I would like to help them get him in front of you.
+
+To give you a little background, <PER> is a former U.S. Marine,
+an attorney (who is admitted to practice in Maryland and <LOC>), and a
+serial entrepreneur. He is the Founder and CEO of Elevation Capital and
+Elevation Digital Group, and a partner in several other startups. <PER>
+has been at the center of the tech and politics conversation over the
+past two years. He has spoken at SXSW (twice), TechCrunch Disrupt, the
+U.S. House of Representatives (on the floor of the House), and many more
+conferences. <PER> is also a well-respected, published scholar.
+
+We are very excited about <PER> and his potential to make a big
+impact. I hope that you will take some time to consider the bio attached,
+and to get in touch with me if you have any interest or questions. If
+you'd like to discuss <PER> further, I am happy to help facilitate a
+call with <PER> and <PER>. Thank you in advance for your consideration.
+<PER> is an incredibly impressive individual with a very bright future.
+
+Please feel free","body: All, 
+
+I am pleased to introduce the newest member of the <ORG> team, Steve Swain. In his new role as Vice President of Operations, Steve will be responsible for leading our ongoing efforts to increase efficiency, build capacity, and bring new technology to our organization. Please join me in congratulating Steve on this exciting new opportunity.
+
+Steve has been with the <ORG> for over 10 years and has made extraordinary contributions in his various leadership roles. Prior to assuming his new role, Steve was the Director of our Education Division. Under his leadership, our education programs grew significantly in size and impact. Prior to that, Steve served as Director of our Operations and Planning Division, where he oversaw our budget, accounting, human resources, and technology.
+
+While working with us, Steve has built a reputation for achieving results. He has been innovative in finding solutions to our most complex problems, and his commitment to operational excellence has been unwavering. We are excited to see what he will accomplish in his new role.
+
+Please join me in supporting Steve as he takes on this new challenge, and in thanking him for all he has done for <ORG>. I am confident that with his leadership, we will continue to build on our successes and find new ways to serve our clients and partners around the world.
+
+Sincerely,
+
+<PER>
+
+<PER>
+President & CEO
+<ORG>
+
+<PHONE> (o)
+<PHONE> (c)
+<EMAIL>
+
+<URL>","body: Good Afternoon!
+
+We are thrilled to announce the arrival of a new Vice President of Operations and please welcome <PER> Williams to the team!
+
+As you will see in his bio below, <PER> will bring great leadership and experience to our team as we continue to scale. It is an exciting time to be a part of our organization. We look forward to an amazing second half of 2016.
+
+Thank you all for joining us in welcoming <PER> to our team.
+
+Best,
+Nick
+
+*   Bio:*
+
+*<PER> Williams is Vice President of Operations at Luminate Group.* Prior to joining Luminate Group, <PER> was Senior Director of Finance and Operations at the National Education Association (NEA).
+
+As a Vice President of Operations at Luminate Group, <PER> is responsible for supporting the organization's operations and finance functions. <PER> also provides senior leadership to the Luminate Group's Digital team, including the acquisition and management of its flagship properties – *Talking Point Memo* and *The Huffington Post* – to ensure that these sites grow and evolve in innovative and impactful ways.
+
+Prior to joining Luminate Group, <PER> worked at the National Education Association (NEA), where he led the organization’s finance, investments, real estate, and operations. <PER> was responsible for providing leadership and oversight to all corporate services functions and directing the implementation of strategic initiatives that support the core mission and operations of the 3-million-member organization.  Before joining the executive team at NEA, <PER> held a variety of positions at the NEA, including Vice President of Financial Operations, Director of Finance and Operations, Director of Human Resources, Director of Benefits, and Manager of Financial Reporting."
+Quick question regarding the upcoming Q3 Board Meeting presentation,26.692193746566772,51.831454038619995,17.593911290168762,63.610732555389404,47.66278862953186,0.09830043464899063,0.13248275220394135,Quick question regarding the upcoming Q3 Board Meeting presentation,"body: <PER>,
+
+I know you're probably in the thick of many things, but I just got a call from Rick.  He's concerned about the direction of the Q3 Board Meeting presentation (to be delivered on Thursday, <DATE>) and has a few ideas on how to improve it and make it more relevant.  Rick is concerned about the amount of time dedicated to ""old"" material (like the <ORG> story, and the <ORG> story) that is no longer relevant.
+
+Can you take a quick look at the agenda for the upcoming meeting.  Rick was planning to just submit the same presentation as he did for the last Board meeting but with updated figures and a few slides on the latest acquisitions.  But he's worried that it won't be interesting and informative enough and won't tell the ""story"" about the quarter.
+
+Rick and I are trying to put together a draft that incorporates <PER>'s ideas, but we haven't gotten to it yet because of a backlog of other things.  If you're available to give a quick review and a few suggestions, I think Rick would really appreciate it.  Let me know if you can, and I'll send the agenda and presentation to you.  Thanks.
+
+<PER>
+
+
+
+<PER> C. Ogden
+Executive Assistant to <PER>
+Tel:   713/853-6197
+Fax:  713/345-7047
+<EMAIL>
+<URL>","body: Dear Vince, 
+
+It has been a little while since I have been on your email list and I believe I am missing something in your most recent message. In your <DATE> message you state that there will be a presentation of a'short-term plan' to be conducted for the Q3 Board meeting to be held on <DATE>. Are you planning on having a'short-term plan' that differs from the long term strategic plan that we discussed in the past. Are there changes that you wish to make to the long-term strategic plan that we have been developing? I look forward to your response. Please let me know if you have not received this message. I can be reached at <EMAIL>. or <PHONE>. 
+
+Thank you, 
+<PER>","body: Dear All,
+
+As part of the presentation for the Board meeting in September, I would like to highlight some of the many ways in which the Foundation has engaged in its mission to improve global health, strengthen global health systems and empower communities in the fight against extreme poverty.  A summary list of the Foundation's activities would be useful in helping us to better understand how the Foundation's support has impacted the lives of people around the world.
+
+Please send to me by close of business on Friday (<DATE>) a short summary paragraph describing how one or more grants have made a positive impact on the lives of individuals or communities.  The summary should include a one or two sentence description of the grant, project and or activity (s) that is taking place.  The goal is to have a few sentences that describe our work in broad terms to give an indication of the scope of our work.  The summary should not exceed 100 words.
+
+If possible, please send to me an example of your work that would complement your summary of <DATE> words.  It would be great if we can include a link or web address in your summary to the example of your work.
+
+Thanks in advance for your support in this effort.
+
+Regards,
+Sharon
+
+Sharon Harlan | Vice President, Communications
+<PER> Global Health | 4300 Arizona Ave. | <LOC>  | CA | 90016
+
+office: <PHONE> | direct: <PHONE> | main fax: <PHONE> | alt fax: <PHONE>
+email: <EMAIL><mailto:sharon.harlan@clintonfoundation.org>
+website: <URL><<URL>"

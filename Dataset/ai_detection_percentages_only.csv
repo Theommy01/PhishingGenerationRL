@@ -1,0 +1,901 @@
+prompt,SFT_AI_Prob,BCO_AI_Prob,KTO_AI_Prob
+"subject: URGENT: Immediate action required to avoid service interruption.
+urls: True
+attachments: False
+sentiment: urgent
+->
+body:",99.98,99.98,99.97
+"subject: Final notice: Your response is needed within 12 hours.
+urls: False
+attachments: False
+sentiment: urgent
+->
+body:",7.0,99.96,99.98
+"subject: Time-sensitive: Confirm your details before midnight.
+urls: True
+attachments: False
+sentiment: urgent
+->
+body:",99.61,3.03,78.56
+"subject: Immediate attention required: Security alert detected.
+urls: True
+attachments: False
+sentiment: urgent
+->
+body:",36.4,99.98,99.98
+"subject: Act now: Limited window to resolve your account issue.
+urls: True
+attachments: False
+sentiment: urgent
+->
+body:",0.3,99.98,0.02
+"subject: Deadline approaching: Submit your information today.
+urls: False
+attachments: True
+sentiment: urgent
+->
+body:",99.98,99.86,99.98
+"subject: Critical update: Respond immediately to avoid penalties.
+urls: False
+attachments: False
+sentiment: urgent
+->
+body:",96.94,0.39,99.87
+"subject: Urgent reminder: Payment overdue and requires action.
+urls: True
+attachments: False
+sentiment: urgent
+->
+body:",99.05,0.09,99.95
+"subject: Immediate verification needed to secure your account.
+urls: True
+attachments: False
+sentiment: urgent
+->
+body:",99.98,88.68,99.98
+"subject: Last chance: Complete your request before expiration.
+urls: True
+attachments: False
+sentiment: urgent
+->
+body:",10.18,99.98,4.86
+"subject: Action Required: Immediate attention needed for your security settings.
+urls: True
+attachments: False
+sentiment: urgent, warning
+->
+body:",98.46,99.98,95.73
+"subject: URGENT: Final notice regarding your unpaid invoice #4592.
+urls: True
+attachments: True
+sentiment: urgent, threatening
+->
+body:",1.97,11.18,98.0
+"subject: Last Chance: Your exclusive access expires in exactly 2 hours!
+urls: True
+attachments: False
+sentiment: urgent, anxious
+->
+body:",9.58,99.98,0.77
+"subject: CRITICAL: A severe security breach detected on your profile.
+urls: True
+attachments: False
+sentiment: urgent, alarming
+->
+body:",99.98,99.76,90.21
+"subject: Act Now: Your premium subscription will be canceled today.
+urls: True
+attachments: False
+sentiment: urgent, warning
+->
+body:",20.76,77.0,98.5
+"subject: Immediate Action Required: Verify your identity to prevent account lock.
+urls: True
+attachments: False
+sentiment: urgent, authoritative
+->
+body:",99.98,94.75,99.98
+"subject: URGENT: Time-sensitive legal document requires your signature immediately.
+urls: True
+attachments: True
+sentiment: urgent, formal
+->
+body:",93.82,72.73,99.97
+"subject: Alert: Suspicious login attempt from an unrecognized device.
+urls: True
+attachments: False
+sentiment: urgent, protective
+->
+body:",96.73,99.67,99.96
+"subject: Final Warning: Claim your pending rewards before they disappear at midnight.
+urls: True
+attachments: False
+sentiment: urgent, persuasive
+->
+body:",19.29,35.12,73.53
+"subject: Urgent Update: Last-minute changes to your flight schedule for tomorrow.
+urls: True
+attachments: False
+sentiment: urgent, informative
+->
+body:",99.72,99.97,0.39
+"subject: URGENT: Immediate action required to secure your account
+urls: True
+attachments: False
+sentiment: urgent
+->
+body:",99.98,99.98,84.59
+"subject: Time-sensitive: Your response is needed within the next hour
+urls: False
+attachments: False
+sentiment: urgent
+->
+body:",99.98,99.26,99.98
+"subject: Final Notice: Service interruption scheduled for today
+urls: True
+attachments: False
+sentiment: urgent
+->
+body:",43.07,95.98,99.98
+"subject: Critical Update: Please review these changes immediately
+urls: False
+attachments: False
+sentiment: urgent
+->
+body:",99.28,1.42,87.13
+"subject: Immediate Attention Required: Billing issue detected
+urls: True
+attachments: False
+sentiment: urgent
+->
+body:",99.13,87.33,99.98
+"subject: Action Needed Now: Your subscription is about to expire
+urls: True
+attachments: False
+sentiment: urgent
+->
+body:",6.92,17.67,12.84
+"subject: Emergency Alert: Confirm your identity to avoid lockout
+urls: True
+attachments: False
+sentiment: urgent
+->
+body:",81.9,99.98,99.98
+"subject: Deadline Approaching: Submit required documents today
+urls: False
+attachments: True
+sentiment: urgent
+->
+body:",38.92,99.96,48.72
+"subject: High Priority: Review your security settings immediately
+urls: True
+attachments: False
+sentiment: urgent
+->
+body:",99.81,99.82,99.87
+"subject: Immediate Response Needed: Unusual activity detected
+urls: True
+attachments: False
+sentiment: urgent
+->
+body:",8.43,53.39,99.98
+"subject: Official communication regarding policy updates.
+urls: False
+attachments: True
+sentiment: authoritative
+->
+body:",99.98,69.63,76.16
+"subject: Notice from administration: Compliance required.
+urls: False
+attachments: False
+sentiment: authoritative
+->
+body:",99.98,99.96,13.57
+"subject: Formal directive: Review updated terms and conditions.
+urls: True
+attachments: False
+sentiment: authoritative
+->
+body:",4.65,7.1,99.98
+"subject: Important: New regulations now in effect.
+urls: True
+attachments: True
+sentiment: authoritative
+->
+body:",97.98,99.83,99.81
+"subject: Statement from management: Mandatory action required.
+urls: False
+attachments: False
+sentiment: authoritative
+->
+body:",99.86,99.96,8.27
+"subject: Official notice: Scheduled system maintenance.
+urls: False
+attachments: False
+sentiment: authoritative
+->
+body:",6.28,3.82,0.39
+"subject: Compliance alert: Immediate adherence required.
+urls: False
+attachments: True
+sentiment: authoritative
+->
+body:",0.02,0.88,90.99
+"subject: Corporate update: Changes to internal procedures.
+urls: False
+attachments: False
+sentiment: authoritative
+->
+body:",99.97,89.96,99.98
+"subject: Executive message: Strategic updates and next steps.
+urls: False
+attachments: True
+sentiment: authoritative
+->
+body:",99.86,98.22,18.17
+"subject: Formal notification: Account status review.
+urls: True
+attachments: False
+sentiment: authoritative
+->
+body:",99.47,3.31,99.98
+"subject: Official Policy Update: Mandatory compliance required by Q3.
+urls: True
+attachments: True
+sentiment: authoritative, formal
+->
+body:",5.23,99.98,0.29
+"subject: CEO Announcement: Strategic organizational changes for the upcoming year.
+urls: False
+attachments: False
+sentiment: authoritative, serious
+->
+body:",99.0,91.1,99.98
+"subject: Directive: New security protocols implemented for all remote employees.
+urls: True
+attachments: True
+sentiment: authoritative, strict
+->
+body:",2.02,99.93,99.91
+"subject: Important Notice: Binding changes to our Terms of Service and Privacy Policy.
+urls: True
+attachments: False
+sentiment: authoritative, legal
+->
+body:",64.14,98.97,96.17
+"subject: Legal Department: Strict compliance requirements for the upcoming financial audit.
+urls: False
+attachments: True
+sentiment: authoritative, demanding
+->
+body:",99.81,99.9,64.63
+"subject: Management Update: Official guidelines for the quarterly performance review.
+urls: True
+attachments: True
+sentiment: authoritative, instructive
+->
+body:",96.63,96.66,99.98
+"subject: Official Communication: Complete restructuring of the IT and Engineering departments.
+urls: False
+attachments: False
+sentiment: authoritative, informative
+->
+body:",99.98,99.98,99.97
+"subject: Executive Summary: Q2 Financial Results and Board of Directors Decisions.
+urls: False
+attachments: True
+sentiment: authoritative, professional
+->
+body:",9.53,65.16,99.26
+"subject: Mandatory Training: Annual corporate code of conduct certification.
+urls: True
+attachments: False
+sentiment: authoritative, obligatory
+->
+body:",99.44,99.98,91.88
+"subject: Official Statement: Final resolution report on the recent global service outage.
+urls: True
+attachments: True
+sentiment: authoritative, resolute
+->
+body:",99.77,99.96,85.68
+"subject: Official Notice: Policy updates effective immediately
+urls: True
+attachments: False
+sentiment: authoritative
+->
+body:",1.95,99.98,94.93
+"subject: Mandatory Compliance: Please review the new guidelines
+urls: False
+attachments: True
+sentiment: authoritative
+->
+body:",87.16,80.52,99.26
+"subject: Administrative Directive: Required actions for all members
+urls: False
+attachments: False
+sentiment: authoritative
+->
+body:",99.98,99.98,17.68
+"subject: Formal Reminder: Your participation is required
+urls: False
+attachments: False
+sentiment: authoritative
+->
+body:",0.39,99.96,99.31
+"subject: Executive Announcement: Structural changes to the program
+urls: True
+attachments: False
+sentiment: authoritative
+->
+body:",99.98,99.98,99.98
+"subject: Official Communication: Updated procedures for all staff
+urls: False
+attachments: True
+sentiment: authoritative
+->
+body:",99.07,98.01,98.9
+"subject: Leadership Directive: Immediate adherence required
+urls: False
+attachments: False
+sentiment: authoritative
+->
+body:",99.98,99.98,99.98
+"subject: Compliance Notice: Failure to follow may result in penalties
+urls: True
+attachments: False
+sentiment: authoritative
+->
+body:",92.3,99.97,36.83
+"subject: Board Decision: New operational standards implemented
+urls: True
+attachments: False
+sentiment: authoritative
+->
+body:",23.94,97.91,99.98
+"subject: Internal Memo: Mandatory attendance for upcoming briefing
+urls: False
+attachments: False
+sentiment: authoritative
+->
+body:",99.79,15.29,99.52
+"subject: Booking confirmation: Your reservation is confirmed.
+urls: True
+attachments: True
+sentiment: confirmation
+->
+body:",99.98,99.94,0.1
+"subject: Payment received successfully. Thank you!
+urls: False
+attachments: False
+sentiment: confirmation
+->
+body:",1.65,99.57,17.56
+"subject: Your order has been confirmed and is being processed.
+urls: True
+attachments: False
+sentiment: confirmation
+->
+body:",99.96,99.95,99.98
+"subject: Reservation details: Your booking is complete.
+urls: True
+attachments: True
+sentiment: confirmation
+->
+body:",11.06,99.98,9.59
+"subject: Invoice confirmation: Payment completed.
+urls: False
+attachments: True
+sentiment: confirmation
+->
+body:",99.97,96.95,99.89
+"subject: Confirmation: Your appointment has been scheduled.
+urls: False
+attachments: False
+sentiment: confirmation
+->
+body:",0.15,34.64,96.88
+"subject: Transaction successful: Receipt enclosed.
+urls: False
+attachments: True
+sentiment: confirmation
+->
+body:",99.2,33.57,97.03
+"subject: Your subscription has been activated successfully.
+urls: True
+attachments: False
+sentiment: confirmation
+->
+body:",99.33,99.97,99.92
+"subject: Confirmation email: Your request has been processed.
+urls: False
+attachments: False
+sentiment: confirmation
+->
+body:",96.95,77.76,6.01
+"subject: Booking successful: Details inside.
+urls: True
+attachments: False
+sentiment: confirmation
+->
+body:",99.49,92.9,99.98
+"subject: Booking Confirmation: Your upcoming stay at the Grand Hotel is confirmed.
+urls: True
+attachments: True
+sentiment: confirming, positive
+->
+body:",84.54,3.43,1.29
+"subject: Payment Received: Official receipt for your recent purchase at TechStore.
+urls: True
+attachments: True
+sentiment: confirming, neutral
+->
+body:",99.55,43.51,99.94
+"subject: Flight Itinerary: Confirmation and e-tickets for your trip to London.
+urls: True
+attachments: True
+sentiment: confirming, informative
+->
+body:",13.41,99.98,99.97
+"subject: Reservation Confirmed: Your table for two at Luigi's on Friday night.
+urls: False
+attachments: False
+sentiment: confirming, welcoming
+->
+body:",35.13,12.35,94.51
+"subject: Transaction Successful: Invoice #9932 has been paid in full.
+urls: True
+attachments: True
+sentiment: confirming, formal
+->
+body:",99.89,94.44,52.23
+"subject: Ticket Confirmation: Your VIP seats for the summer concert are secured.
+urls: True
+attachments: True
+sentiment: confirming, exciting
+->
+body:",99.03,99.95,99.74
+"subject: Order Confirmed: Your package is getting ready for shipment.
+urls: True
+attachments: False
+sentiment: confirming, reassuring
+->
+body:",13.52,48.45,99.98
+"subject: Payment Confirmation: Auto-renewal successful for your Annual Premium Plan.
+urls: True
+attachments: True
+sentiment: confirming, neutral
+->
+body:",5.39,94.35,86.03
+"subject: Appointment Confirmed: Dental check-up scheduled for next Tuesday at 10 AM.
+urls: False
+attachments: False
+sentiment: confirming, helpful
+->
+body:",15.53,0.44,53.32
+"subject: Receipt: Thank you for your generous donation to the Wildlife Foundation.
+urls: True
+attachments: True
+sentiment: confirming, appreciative
+->
+body:",81.23,99.98,34.57
+"subject: Booking Confirmed: Your reservation details inside
+urls: False
+attachments: True
+sentiment: confirmation
+->
+body:",0.77,97.94,23.91
+"subject: Payment Received: Thank you for your purchase
+urls: False
+attachments: False
+sentiment: confirmation
+->
+body:",99.95,99.98,2.84
+"subject: Your Appointment Is Confirmed for the Selected Date
+urls: False
+attachments: False
+sentiment: confirmation
+->
+body:",89.34,94.39,13.23
+"subject: Order Confirmation: Your items are being prepared
+urls: True
+attachments: False
+sentiment: confirmation
+->
+body:",99.88,99.98,99.15
+"subject: Subscription Renewal Successful: Receipt enclosed
+urls: False
+attachments: True
+sentiment: confirmation
+->
+body:",99.97,63.46,99.54
+"subject: Your Hotel Reservation Has Been Successfully Processed
+urls: False
+attachments: True
+sentiment: confirmation
+->
+body:",98.53,99.92,98.06
+"subject: Invoice Paid: Transaction summary available
+urls: True
+attachments: False
+sentiment: confirmation
+->
+body:",87.76,49.13,98.67
+"subject: Your Seat Reservation Is Complete
+urls: False
+attachments: False
+sentiment: confirmation
+->
+body:",97.98,99.53,19.29
+"subject: Payment Confirmation: Your order is now finalized
+urls: True
+attachments: False
+sentiment: confirmation
+->
+body:",99.5,99.96,94.62
+"subject: Booking Approved: Access your travel details here
+urls: True
+attachments: False
+sentiment: confirmation
+->
+body:",99.48,0.2,99.98
+"subject: Exclusive offer just for you: Limited-time discount!
+urls: True
+attachments: False
+sentiment: promotional
+->
+body:",99.98,83.98,50.01
+"subject: Discover our latest deals and special promotions.
+urls: True
+attachments: False
+sentiment: promotional
+->
+body:",0.21,79.01,99.98
+"subject: Flash sale: Up to 50% off today only!
+urls: True
+attachments: False
+sentiment: promotional
+->
+body:",98.45,69.02,66.33
+"subject: New arrivals are here: Shop the latest trends.
+urls: True
+attachments: False
+sentiment: promotional
+->
+body:",3.82,93.63,88.26
+"subject: Don’t miss out: Exclusive savings inside.
+urls: True
+attachments: False
+sentiment: promotional
+->
+body:",98.06,89.39,72.0
+"subject: Upgrade your experience with our premium plan.
+urls: True
+attachments: False
+sentiment: promotional
+->
+body:",98.76,3.66,95.86
+"subject: Special promotion: Unlock your benefits today.
+urls: True
+attachments: False
+sentiment: promotional
+->
+body:",99.96,98.37,99.97
+"subject: Limited-time offer: Claim your reward now.
+urls: True
+attachments: False
+sentiment: promotional
+->
+body:",99.88,73.37,77.78
+"subject: Introducing our new product line.
+urls: True
+attachments: False
+sentiment: promotional
+->
+body:",99.98,99.98,99.98
+"subject: Save big with our exclusive member deals.
+urls: True
+attachments: False
+sentiment: promotional
+->
+body:",92.82,24.03,34.77
+"subject: 🚀 Massive Summer Sale: Up to 50% off on all electronics inside!
+urls: True
+attachments: False
+sentiment: promotional, excited
+->
+body:",98.71,23.71,63.93
+"subject: Introducing our revolutionary new skincare line - Buy one get one free.
+urls: True
+attachments: False
+sentiment: promotional, inviting
+->
+body:",99.74,99.98,99.98
+"subject: Don't miss out! An exclusive VIP discount code is hiding inside just for you.
+urls: True
+attachments: False
+sentiment: promotional, exclusive
+->
+body:",10.21,69.74,87.29
+"subject: Upgrade your wardrobe today with our stunning new autumn collection.
+urls: True
+attachments: False
+sentiment: promotional, stylish
+->
+body:",1.39,3.26,31.97
+"subject: Flash Sale Alert: 24 hours only to grab your favorite sneakers at half price.
+urls: True
+attachments: False
+sentiment: promotional, urgent
+->
+body:",99.98,99.98,99.93
+"subject: Transform your home today with our premium smart lighting solutions.
+urls: True
+attachments: False
+sentiment: promotional, persuasive
+->
+body:",86.8,75.86,99.98
+"subject: Unlock your true potential: Join our expert masterclass for 30% less this week.
+urls: True
+attachments: False
+sentiment: promotional, inspiring
+->
+body:",90.31,88.3,99.98
+"subject: New Arrivals: Be the very first to shop the hottest trends of the season.
+urls: True
+attachments: False
+sentiment: promotional, trendy
+->
+body:",99.98,99.98,20.03
+"subject: Give the gift of joy! Special holiday bundles are now available in-store.
+urls: True
+attachments: False
+sentiment: promotional, joyful
+->
+body:",99.98,93.07,52.47
+"subject: Special Offer: Get a surprise free gift with any purchase over $50.
+urls: True
+attachments: False
+sentiment: promotional, generous
+->
+body:",49.91,20.03,99.77
+"subject: Exclusive Offer: Save 40% on your next purchase
+urls: True
+attachments: False
+sentiment: promotional
+->
+body:",73.93,99.96,94.53
+"subject: New Collection Launch: Be the first to explore
+urls: True
+attachments: False
+sentiment: promotional
+->
+body:",56.24,79.77,61.45
+"subject: Limited-Time Deal: Don’t miss out on these discounts
+urls: True
+attachments: False
+sentiment: promotional
+->
+body:",43.38,96.03,58.18
+"subject: Special Invitation: Join our VIP customer program
+urls: True
+attachments: False
+sentiment: promotional
+->
+body:",96.85,2.85,20.78
+"subject: Holiday Sale Starts Now: Shop our best prices
+urls: True
+attachments: False
+sentiment: promotional
+->
+body:",96.5,95.28,98.39
+"subject: Introducing Our Latest Product Line
+urls: True
+attachments: False
+sentiment: promotional
+->
+body:",92.37,0.24,5.9
+"subject: Flash Sale: Only a few hours left
+urls: True
+attachments: False
+sentiment: promotional
+->
+body:",99.95,48.64,82.14
+"subject: Your Personalized Deals Are Ready
+urls: True
+attachments: False
+sentiment: promotional
+->
+body:",0.08,99.98,94.97
+"subject: Upgrade Today: Exclusive benefits await you
+urls: True
+attachments: False
+sentiment: promotional
+->
+body:",99.4,99.98,99.98
+"subject: Special Bundle Offer: Get more for less
+urls: True
+attachments: False
+sentiment: promotional
+->
+body:",99.92,99.98,99.98
+"subject: Meeting scheduled for next week.
+urls: False
+attachments: False
+sentiment: neutral
+->
+body:",28.98,45.23,0.44
+"subject: Follow-up regarding our recent discussion.
+urls: False
+attachments: False
+sentiment: neutral
+->
+body:",95.88,81.44,99.98
+"subject: Sharing notes from today’s meeting.
+urls: False
+attachments: True
+sentiment: neutral
+->
+body:",99.98,96.46,2.49
+"subject: Update on current project status.
+urls: False
+attachments: False
+sentiment: neutral
+->
+body:",24.42,99.98,99.95
+"subject: Quick question about your availability.
+urls: False
+attachments: False
+sentiment: neutral
+->
+body:",99.98,99.98,96.66
+"subject: Recap of our last conversation.
+urls: False
+attachments: False
+sentiment: neutral
+->
+body:",99.98,99.98,99.98
+"subject: Documents for your review.
+urls: False
+attachments: True
+sentiment: neutral
+->
+body:",99.98,11.12,99.96
+"subject: Introduction and next steps.
+urls: False
+attachments: False
+sentiment: neutral
+->
+body:",99.98,99.98,99.91
+"subject: Clarification needed on recent request.
+urls: False
+attachments: False
+sentiment: neutral
+->
+body:",99.98,99.98,99.98
+"subject: General update: No action required.
+urls: False
+attachments: False
+sentiment: neutral
+->
+body:",99.98,99.98,99.98
+"subject: Weekly Newsletter: The latest insights, news, and articles from our community.
+urls: True
+attachments: False
+sentiment: neutral, informative
+->
+body:",99.98,77.84,99.98
+"subject: Invitation: Join us for the annual neighborhood potluck gathering next week.
+urls: False
+attachments: False
+sentiment: friendly, inviting
+->
+body:",97.43,31.32,71.97
+"subject: Meeting notes from today's brainstorming session on Project Alpha.
+urls: False
+attachments: True
+sentiment: neutral, professional
+->
+body:",97.39,95.58,33.88
+"subject: A quick question regarding the upcoming team building event logistics.
+urls: False
+attachments: False
+sentiment: neutral, curious
+->
+body:",99.97,99.21,99.97
+"subject: Monthly digest: The top 10 science fiction books recommended by our editors.
+urls: True
+attachments: False
+sentiment: neutral, informative
+->
+body:",82.07,99.9,72.0
+"subject: Follow-up: Our morning meeting discussing the new website design mockups.
+urls: True
+attachments: False
+sentiment: neutral, collaborative
+->
+body:",99.98,99.98,99.98
+"subject: Introduction: Please welcome the newest members of the marketing team.
+urls: False
+attachments: False
+sentiment: friendly, welcoming
+->
+body:",99.98,6.87,99.98
+"subject: Happy Birthday! Wishing you a fantastic and relaxing day from all of us.
+urls: False
+attachments: False
+sentiment: friendly, joyful
+->
+body:",66.59,6.8,98.53
+"subject: Feedback request: How was your recent experience with our customer support team?
+urls: True
+attachments: False
+sentiment: neutral, inquiring
+->
+body:",99.52,77.0,77.0
+"subject: Friendly reminder: The main office will be closed for the national holiday tomorrow.
+urls: False
+attachments: False
+sentiment: neutral, helpful
+->
+body:",99.97,62.49,83.94
+"subject: Weekly Update: Summary of recent activities
+urls: False
+attachments: False
+sentiment: neutral
+->
+body:",99.98,99.98,43.37
+"subject: Meeting Reminder: Agenda for tomorrow’s discussion
+urls: False
+attachments: True
+sentiment: neutral
+->
+body:",85.89,58.89,4.62
+"subject: Follow-Up: Notes from our last conversation
+urls: False
+attachments: True
+sentiment: neutral
+->
+body:",99.94,98.42,19.63
+"subject: Information Request: Additional details needed
+urls: False
+attachments: False
+sentiment: neutral
+->
+body:",99.98,32.68,69.87
+"subject: Team Announcement: New member introduction
+urls: False
+attachments: False
+sentiment: neutral
+->
+body:",99.98,99.98,99.96
+"subject: Project Update: Current status and next steps
+urls: False
+attachments: False
+sentiment: neutral
+->
+body:",99.98,79.01,71.1
+"subject: Friendly Reminder: Upcoming internal deadline
+urls: False
+attachments: False
+sentiment: neutral
+->
+body:",1.19,0.23,95.97
+"subject: General Inquiry: Clarification needed on your last message
+urls: False
+attachments: False
+sentiment: neutral
+->
+body:",99.98,99.28,99.98
+"subject: Status Check: How is the project progressing?
+urls: False
+attachments: False
+sentiment: neutral
+->
+body:",99.98,99.42,1.16
+"subject: Internal Notice: Scheduled maintenance this week
+urls: False
+attachments: False
+sentiment: neutral
+->
+body:",40.31,3.04,42.4
