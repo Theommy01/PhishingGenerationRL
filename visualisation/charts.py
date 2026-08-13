@@ -693,3 +693,104 @@ def show_pipeline_result(result: dict, save_as: Optional[str] = None) -> str:
     if save_as:
         config.save_text(text, save_as)
     return text
+
+
+# =============================================================================
+# Loop-run charts
+#
+# These consume the round-indexed frames from metrics.analysis and reuse the
+# same grouped_bar / threshold_line primitives as the one-shot charts above.
+# =============================================================================
+
+
+def plot_round_trajectory(summary: pd.DataFrame, name: str = "round_trajectory") -> str:
+    """Evasion rate and ASR@n across rounds, with the 50% line for reference."""
+    fig, ax = plt.subplots(figsize=(11, 6))
+    rounds = summary["round"]
+
+    ax.plot(rounds, summary["evasion_rate"], marker="o", linewidth=2.5,
+            color=PALETTE_ORANGE[1], label="Evasion rate (per message)")
+    ax.plot(rounds, summary["asr_at_n"], marker="s", linewidth=2.5,
+            color=PALETTE_ORANGE[2], label="ASR@n (per prompt)")
+    ax.plot(rounds, summary["mean_score"], marker="^", linewidth=1.5,
+            color=PALETTE_ORANGE[0], linestyle="--", label="Mean ScamLLM score")
+
+    threshold_line(ax)
+    ax.set_xlabel("Round", fontsize=12, fontweight="bold")
+    ax.set_ylabel("Percent", fontsize=12, fontweight="bold")
+    ax.set_title("Evasion across rounds", fontsize=15, fontweight="bold", pad=15)
+    ax.set_xticks(list(rounds))
+    ax.set_ylim(0, 105)
+    ax.legend(fontsize=11)
+
+    fig.tight_layout()
+    return save_figure(fig, name)
+
+
+def plot_drift_trajectory(summary: pd.DataFrame, name: str = "drift_trajectory") -> str:
+    """Semantic drift across rounds: coherence on the left, divergence on the right.
+
+    This is the chart that separates the reference-model conditions. Under
+    ref_mode="sft" the KL-vs-baseline should plateau; under "previous" it can
+    keep climbing, because each round is only anchored to its predecessor.
+    """
+    fig, axes = plt.subplots(1, 2, figsize=(16, 6))
+    rounds = summary["round"]
+
+    if "cos_prompt" in summary:
+        axes[0].plot(rounds, summary["cos_prompt"], marker="o", linewidth=2.5,
+                     color=PALETTE_ORANGE[1], label="vs prompt (coherence)")
+    if "cos_baseline" in summary:
+        axes[0].plot(rounds, summary["cos_baseline"], marker="s", linewidth=2.5,
+                     color=PALETTE_ORANGE[2], label="vs round 0 (drift)")
+    axes[0].set_title("Cosine similarity", fontsize=14, fontweight="bold")
+    axes[0].set_ylabel("Similarity (%)", fontsize=12, fontweight="bold")
+
+    if "kl_prompt" in summary:
+        axes[1].plot(rounds, summary["kl_prompt"], marker="o", linewidth=2.5,
+                     color=PALETTE_ORANGE[1], label="vs prompt")
+    if "kl_baseline" in summary:
+        axes[1].plot(rounds, summary["kl_baseline"], marker="s", linewidth=2.5,
+                     color=PALETTE_ORANGE[2], label="vs round 0")
+    axes[1].set_title("KL divergence", fontsize=14, fontweight="bold")
+    axes[1].set_ylabel("Divergence", fontsize=12, fontweight="bold")
+
+    for ax in axes:
+        ax.set_xlabel("Round", fontsize=12, fontweight="bold")
+        ax.set_xticks(list(rounds))
+        ax.legend(fontsize=11)
+
+    fig.suptitle("Semantic drift across rounds", fontsize=16, fontweight="bold")
+    fig.tight_layout()
+    return save_figure(fig, name)
+
+
+def plot_round_breakdown(
+    breakdown: pd.DataFrame,
+    title: str = "Mean ScamLLM score by generator and round",
+    ylabel: str = "ScamLLM score (%)",
+    name: str = "round_breakdown",
+) -> str:
+    """Grouped bars of a round x group table, one bar per round within each group.
+
+    Takes the frame from `analysis.round_breakdown` and reuses `grouped_bar`.
+    """
+    fig, ax = plt.subplots(figsize=(max(10, 2.4 * len(breakdown)), 7))
+
+    rects = grouped_bar(
+        ax,
+        {f"round {c}": breakdown[c].tolist() for c in breakdown.columns},
+        list(breakdown.index),
+        colors=GENERATOR_PALETTE_FLAT,
+        width=min(0.25, 0.8 / max(len(breakdown.columns), 1)),
+    )
+    ax.set_ylabel(ylabel, fontsize=12, fontweight="bold")
+    ax.set_title(title, fontsize=15, fontweight="bold", pad=15)
+    ax.set_ylim(0, 115)
+    threshold_line(ax)
+    ax.legend(fontsize=10, ncol=2)
+    for group in rects:
+        annotate_scores(ax, group, fontsize=9)
+
+    fig.tight_layout()
+    return save_figure(fig, name)
