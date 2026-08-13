@@ -18,7 +18,7 @@ from loop import report
 from loop.store import LoopStore
 
 ALGORITHMS = ("bco", "kto")
-REF_MODES = ("base", "sft", "previous")
+from reference_model import REF_MODES  # ("sft", "previous", "base")
 
 
 # =============================================================================

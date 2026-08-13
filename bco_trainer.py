@@ -9,29 +9,11 @@ from trl import BCOConfig, BCOTrainer
 from datasets import Dataset
 
 from metrics import config
+from reference_model import attach_reference
 
 torch.cuda.empty_cache()
 gc.collect()
 
-
-def resolve_ref_model(ref_mode: str, base_model: str, sft_path: str):
-    """Reference model for the KL term.
-
-    "base"     -> None. With a PEFT checkpoint TRL computes reference logprobs
-                  by disabling the adapters, so the anchor is the raw base
-                  model, not SFT. This is what the notebook did implicitly.
-    "sft"      -> the SFT checkpoint, pinned for every round, so drift is always
-                  measured from the tuned baseline.
-    "previous" -> the checkpoint this round trains from, so the anchor moves and
-                  divergence from SFT compounds across rounds.
-    """
-    if ref_mode == "base":
-        return None
-    if ref_mode == "sft":
-        return sft_path
-    if ref_mode == "previous":
-        return base_model
-    raise ValueError(f"unknown ref_mode: {ref_mode!r} (base | sft | previous)")
 
 
 
@@ -40,7 +22,7 @@ def train_bco(
     base_model=None,
     dataset_path=None,
     output_dir=None,
-    ref_mode="base",
+    ref_mode="sft",
     sft_path=None,
 ):
     print("\n" + "=" * 50)
@@ -81,8 +63,8 @@ def train_bco(
         print(f"training model uploading exception: {e}")
         return
 
-    ref_model = resolve_ref_model(ref_mode, path_sft, sft_path)
     print(f"\nTrainer configuration (ref_mode={ref_mode})...")
+    ref_kwargs = attach_reference(model, ref_mode, path_sft, sft_path)
 
     training_args = BCOConfig(
         per_device_train_batch_size=1,
@@ -107,10 +89,10 @@ def train_bco(
 
     trainer = BCOTrainer(
         model=model,
-        ref_model=ref_model,
         args=training_args,
         train_dataset=dataset,
         processing_class=tokenizer,
+        **ref_kwargs,
     )
 
     if "dataset" not in inspect.signature(trainer._get_train_sampler).parameters:
@@ -121,7 +103,12 @@ def train_bco(
     trainer.train()
 
     print(f"\nSaving FINAL BCO model in: {save_dir}")
-    model.save_pretrained(save_dir)
+    # Only the policy adapter. With a reference attached, peft would otherwise
+    # save every adapter, leaving a stray reference/ copy of the anchor inside
+    # each round's checkpoint.
+    model.save_pretrained(
+        save_dir, selected_adapters=[ref_kwargs.get("model_adapter_name", "default")]
+    )
     tokenizer.save_pretrained(save_dir)
 
     print("Cleaning memory, post-training...")

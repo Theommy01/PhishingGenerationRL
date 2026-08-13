@@ -48,10 +48,11 @@ def parse_args(argv=None):
     parser.add_argument(
         "--ref-mode",
         choices=REF_MODES,
-        default="base",
+        default="sft",
         help=(
-            "what the KL term is anchored to. 'base' disables the adapters and "
-            "costs no extra VRAM; 'sft' and 'previous' load a second 8B model"
+            "what the KL term is anchored to. 'sft' pins it to the SFT "
+            "checkpoint, 'previous' lets it move with each round, 'base' "
+            "anchors to the raw pretrained Llama as the notebook did"
         ),
     )
     parser.add_argument("--rounds", type=int, default=1, help="training rounds to run")
