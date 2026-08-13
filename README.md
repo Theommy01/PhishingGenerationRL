@@ -205,14 +205,10 @@ disk"* from accelerate, or a plain CUDA OOM.
   under both `--ref-mode base` and `--ref-mode sft`.
 - `--ref-mode previous` uses the identical code path as `sft` (a different
   checkpoint into the same adapter slot) but has not been run.
-- **Per-epoch checkpoints duplicate the reference adapter.** The trainers save
-  the final model with `selected_adapters=[policy]`, so `save_dir` is clean,
-  but `save_strategy="epoch"` makes the HF Trainer write its own intermediate
-  checkpoints, and those include every attached adapter — so each one carries
-  a redundant ~160 MB `reference/` copy. The loop only ever consumes the final
-  save, so `save_strategy="no"` would remove the waste entirely; it is left as
-  is because the trainers are also usable standalone, where per-epoch
-  checkpoints may be wanted.
+- BCO has not been run end to end; only KTO has.
+- Per-epoch checkpoints duplicate the reference adapter (~160 MB each).
+
+Open issues are tracked in [`TODO.md`](TODO.md).
 - Generation is ~4.6 s/message, so 150 prompts × 4 samples ≈ 45 min per round
   before training. Batching measured *slower* (0.9×), because a batch runs to
   its longest member. vLLM is the only real speedup identified, and is not
