@@ -18,7 +18,7 @@ from typing import Dict, List, Optional, Tuple
 import pandas as pd
 
 from metrics import config
-from metrics.models import scam_evasion_reward
+from ScamLabeller import get_scam_labeller
 
 DEFAULT_PROMPTS_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "prompts.json"
@@ -47,26 +47,51 @@ def _extract_completion(raw: str) -> Tuple[str, bool]:
     return config.extract_body_after_arrow(raw), True
 
 
+def resolve_gen_args(gen_args: Optional[dict], n_samples: int) -> dict:
+    """Merge over MessageGenerator's defaults and reject impossible combinations.
+
+    Greedy decoding is deterministic, so asking for several samples of the same
+    prompt under it would return n identical messages. That is always a mistake,
+    so it is refused rather than silently producing duplicates.
+    """
+    from phishnet_inference.MessageGenerator import DEFAULT_GEN_ARGS, GREEDY_GEN_ARGS
+
+    resolved = dict(GREEDY_GEN_ARGS if gen_args is None else gen_args)
+
+    if n_samples > 1 and not resolved.get("do_sample", True):
+        raise ValueError(
+            f"n_samples={n_samples} requires sampling, but gen_args has "
+            "do_sample=False; greedy decoding would return identical messages. "
+            f"Pass a sampling preset (e.g. SAMPLING_GEN_ARGS or {DEFAULT_GEN_ARGS})."
+        )
+    return resolved
+
+
 def generate_messages(
     prompts: List[Dict],
     path_sft: str = config.PATH_SFT,
     gen_args: Optional[dict] = None,
-) -> Tuple[List[str], List[str]]:
-    """Generate one email per prompt spec with the SFT checkpoint.
+    n_samples: int = 1,
+) -> List[Dict]:
+    """Generate `n_samples` emails per prompt spec with one checkpoint.
 
-    Returns (prompt_strings, completions). The prompt strings are what was
-    actually sent to the model, so they can be stored verbatim in the dataset.
+    Returns one record per generated message, carrying enough context to store
+    it and to regenerate the same prompt in a later round:
+
+        {prompt_id, sample_idx, prompt_text, body, category, generator}
+
+    `prompt_text` is what was actually sent to the model, so it can be stored
+    verbatim and fed straight back to KTO/BCO.
     """
-    from phishnet_inference.MessageGenerator import GREEDY_GEN_ARGS, MessageGenerator
+    from phishnet_inference.MessageGenerator import MessageGenerator
     from phishnet_inference.prompt_generation.generate_prompt import generate_prompt
     from phishnet_sft.LLama31GenModel import LLama31GenModel
 
-    if gen_args is None:
-        gen_args = GREEDY_GEN_ARGS
+    resolved_args = resolve_gen_args(gen_args, n_samples)
 
-    prompt_structures: List[str] = []
-    completions: List[str] = []
+    records: List[Dict] = []
     fallbacks = 0
+    total = len(prompts) * n_samples
 
     model = None
     generator = None
@@ -74,67 +99,94 @@ def generate_messages(
         model = LLama31GenModel(checkpoint_path=path_sft)
         generator = MessageGenerator(gen_model=model)
 
-        print(f"Generating {len(prompts)} emails...")
-        for i, p in enumerate(prompts, 1):
+        print(f"Generating {total} emails ({len(prompts)} prompts x {n_samples})...")
+        for prompt_id, p in enumerate(prompts):
             kwargs = dict(
                 subject=p["subject"],
                 urls=p["urls"],
                 attachments=p["attachments"],
                 sentiment=p["sentiment"],
             )
+            prompt_text = generate_prompt(**kwargs) + "\n->\n"
 
-            # store the prompt exactly as MessageGenerator builds it
-            prompt_structures.append(generate_prompt(**kwargs) + "\n->\n")
+            for sample_idx in range(n_samples):
+                raw = generator.generate_message(gen_args=resolved_args, **kwargs)
+                body, used_fallback = _extract_completion(raw)
+                fallbacks += used_fallback
 
-            raw = generator.generate_message(gen_args=gen_args, **kwargs)
-            completion, used_fallback = _extract_completion(raw)
-            fallbacks += used_fallback
-            completions.append(completion)
-
-            print(f"  generated {i} of {len(prompts)}")
+                records.append(
+                    {
+                        "prompt_id": prompt_id,
+                        "sample_idx": sample_idx,
+                        "prompt_text": prompt_text.strip(),
+                        "body": body,
+                        "category": p["category"],
+                        "generator": p["generator"],
+                    }
+                )
+                print(f"  generated {len(records)} of {total}")
     finally:
-        config.free_vram(model, generator)
+        # rebinding here is what actually releases the adapter: passing the
+        # objects to free_vram only deletes ITS parameters, leaving these two
+        # references alive, so the memory would not come back until this frame
+        # died — by which point empty_cache() had already run.
+        model = None
+        generator = None
+        config.free_vram()
 
     if fallbacks:
         print(
-            f"\nWarning: {fallbacks}/{len(prompts)} generations did not contain "
+            f"\nWarning: {fallbacks}/{total} generations did not contain "
             "'->\\nbody:'; the prompt was stripped on the bare arrow instead. "
             "Spot-check those completions."
         )
 
-    return prompt_structures, completions
+    return records
+
+
+def score_messages(
+    records: List[Dict], threshold: float = config.SAFE_THRESHOLD
+) -> List[Dict]:
+    """Score each record's body with ScamLLM and attach `score` and `label`.
+
+    `label` is True when ScamLLM considers the message safe, i.e. the filter was
+    evaded — the desirable class for KTO/BCO. Mutates and returns the records so
+    the loop can hand them straight to the store.
+    """
+    print(f"\nScoring {len(records)} messages with ScamLLM...")
+    scores = get_scam_labeller().score_messages([r["body"] for r in records])
+
+    for record, score in zip(records, scores):
+        record["score"] = score
+        record["label"] = bool(score >= threshold)
+
+    return records
 
 
 def build_dataset(
-    prompts: List[Dict],
-    prompt_structures: List[str],
-    completions: List[str],
-    threshold: float = config.SAFE_THRESHOLD,
+    records: List[Dict], threshold: float = config.SAFE_THRESHOLD
 ) -> pd.DataFrame:
-    """Score the completions with ScamLLM and assemble the training records.
+    """Score the records if needed and lay them out in the training schema.
 
-    `label` is True when ScamLLM considers the message safe, i.e. the filter was
-    evaded — that is the desirable class for BCO/KTO.
+    Produces the columns BCO/KTO and the evaluation report expect:
+    prompt, completion, label, score_scamllm, category, generator.
     """
-    print("\nScoring with ScamLLM...")
-    scores = scam_evasion_reward(
-        prompts=[""] * len(completions), completions=completions
-    )
+    if any("score" not in r for r in records):
+        records = score_messages(records, threshold)
 
-    records = []
-    for idx, score in enumerate(scores):
-        records.append(
+    return pd.DataFrame(
+        [
             {
-                "prompt": prompt_structures[idx].strip(),
-                "completion": completions[idx],
-                "label": bool(score >= threshold),
-                "score_scamllm": score,
-                "category": prompts[idx]["category"],
-                "generator": prompts[idx]["generator"],
+                "prompt": r["prompt_text"],
+                "completion": r["body"],
+                "label": r["label"],
+                "score_scamllm": r["score"],
+                "category": r["category"],
+                "generator": r["generator"],
             }
-        )
-
-    return pd.DataFrame(records)
+            for r in records
+        ]
+    )
 
 
 def save_dataset(df: pd.DataFrame, save_path: str = config.MASTER_TRAINING_DATASET) -> str:
@@ -156,10 +208,11 @@ def main(
     save_path: str = config.MASTER_TRAINING_DATASET,
     threshold: float = config.SAFE_THRESHOLD,
     gen_args: Optional[dict] = None,
+    n_samples: int = 1,
 ) -> pd.DataFrame:
     prompts = load_prompts(prompts_path)
-    prompt_structures, completions = generate_messages(prompts, path_sft, gen_args)
-    df = build_dataset(prompts, prompt_structures, completions, threshold)
+    records = generate_messages(prompts, path_sft, gen_args, n_samples)
+    df = build_dataset(records, threshold)
     save_dataset(df, save_path)
     return df
 
