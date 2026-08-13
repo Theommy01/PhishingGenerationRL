@@ -1,0 +1,1565 @@
+[
+    {
+        "category": "Urgency",
+        "generator": "ChatGPT",
+        "subject": "URGENT: Immediate action required to avoid service interruption.",
+        "sentiment": [
+            "urgent"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "ChatGPT",
+        "subject": "Final notice: Your response is needed within 12 hours.",
+        "sentiment": [
+            "urgent"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "ChatGPT",
+        "subject": "Time-sensitive: Confirm your details before midnight.",
+        "sentiment": [
+            "urgent"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "ChatGPT",
+        "subject": "Immediate attention required: Security alert detected.",
+        "sentiment": [
+            "urgent"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "ChatGPT",
+        "subject": "Act now: Limited window to resolve your account issue.",
+        "sentiment": [
+            "urgent"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "ChatGPT",
+        "subject": "Deadline approaching: Submit your information today.",
+        "sentiment": [
+            "urgent"
+        ],
+        "urls": false,
+        "attachments": true
+    },
+    {
+        "category": "Urgency",
+        "generator": "ChatGPT",
+        "subject": "Critical update: Respond immediately to avoid penalties.",
+        "sentiment": [
+            "urgent"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "ChatGPT",
+        "subject": "Urgent reminder: Payment overdue and requires action.",
+        "sentiment": [
+            "urgent"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "ChatGPT",
+        "subject": "Immediate verification needed to secure your account.",
+        "sentiment": [
+            "urgent"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "ChatGPT",
+        "subject": "Last chance: Complete your request before expiration.",
+        "sentiment": [
+            "urgent"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "Gemini",
+        "subject": "Action Required: Immediate attention needed for your security settings.",
+        "sentiment": [
+            "urgent",
+            "warning"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "Gemini",
+        "subject": "URGENT: Final notice regarding your unpaid invoice #4592.",
+        "sentiment": [
+            "urgent",
+            "threatening"
+        ],
+        "urls": true,
+        "attachments": true
+    },
+    {
+        "category": "Urgency",
+        "generator": "Gemini",
+        "subject": "Last Chance: Your exclusive access expires in exactly 2 hours!",
+        "sentiment": [
+            "urgent",
+            "anxious"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "Gemini",
+        "subject": "CRITICAL: A severe security breach detected on your profile.",
+        "sentiment": [
+            "urgent",
+            "alarming"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "Gemini",
+        "subject": "Act Now: Your premium subscription will be canceled today.",
+        "sentiment": [
+            "urgent",
+            "warning"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "Gemini",
+        "subject": "Immediate Action Required: Verify your identity to prevent account lock.",
+        "sentiment": [
+            "urgent",
+            "authoritative"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "Gemini",
+        "subject": "URGENT: Time-sensitive legal document requires your signature immediately.",
+        "sentiment": [
+            "urgent",
+            "formal"
+        ],
+        "urls": true,
+        "attachments": true
+    },
+    {
+        "category": "Urgency",
+        "generator": "Gemini",
+        "subject": "Alert: Suspicious login attempt from an unrecognized device.",
+        "sentiment": [
+            "urgent",
+            "protective"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "Gemini",
+        "subject": "Final Warning: Claim your pending rewards before they disappear at midnight.",
+        "sentiment": [
+            "urgent",
+            "persuasive"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "Gemini",
+        "subject": "Urgent Update: Last-minute changes to your flight schedule for tomorrow.",
+        "sentiment": [
+            "urgent",
+            "informative"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+
+    {
+        "category": "Urgency",
+        "generator": "Copilot",
+        "subject": "URGENT: Immediate action required to secure your account",
+        "sentiment": [
+            "urgent"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "Copilot",
+        "subject": "Time-sensitive: Your response is needed within the next hour",
+        "sentiment": [
+            "urgent"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "Copilot",
+        "subject": "Final Notice: Service interruption scheduled for today",
+        "sentiment": [
+            "urgent"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "Copilot",
+        "subject": "Critical Update: Please review these changes immediately",
+        "sentiment": [
+            "urgent"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "Copilot",
+        "subject": "Immediate Attention Required: Billing issue detected",
+        "sentiment": [
+            "urgent"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "Copilot",
+        "subject": "Action Needed Now: Your subscription is about to expire",
+        "sentiment": [
+            "urgent"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "Copilot",
+        "subject": "Emergency Alert: Confirm your identity to avoid lockout",
+        "sentiment": [
+            "urgent"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "Copilot",
+        "subject": "Deadline Approaching: Submit required documents today",
+        "sentiment": [
+            "urgent"
+        ],
+        "urls": false,
+        "attachments": true
+    },
+    {
+        "category": "Urgency",
+        "generator": "Copilot",
+        "subject": "High Priority: Review your security settings immediately",
+        "sentiment": [
+            "urgent"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Urgency",
+        "generator": "Copilot",
+        "subject": "Immediate Response Needed: Unusual activity detected",
+        "sentiment": [
+            "urgent"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+
+    {
+        "category": "Authoritative",
+        "generator": "ChatGPT",
+        "subject": "Official communication regarding policy updates.",
+        "sentiment": [
+            "authoritative"
+        ],
+        "urls": false,
+        "attachments": true
+    },
+    {
+        "category": "Authoritative",
+        "generator": "ChatGPT",
+        "subject": "Notice from administration: Compliance required.",
+        "sentiment": [
+            "authoritative"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Authoritative",
+        "generator": "ChatGPT",
+        "subject": "Formal directive: Review updated terms and conditions.",
+        "sentiment": [
+            "authoritative"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Authoritative",
+        "generator": "ChatGPT",
+        "subject": "Important: New regulations now in effect.",
+        "sentiment": [
+            "authoritative"
+        ],
+        "urls": true,
+        "attachments": true
+    },
+    {
+        "category": "Authoritative",
+        "generator": "ChatGPT",
+        "subject": "Statement from management: Mandatory action required.",
+        "sentiment": [
+            "authoritative"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Authoritative",
+        "generator": "ChatGPT",
+        "subject": "Official notice: Scheduled system maintenance.",
+        "sentiment": [
+            "authoritative"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Authoritative",
+        "generator": "ChatGPT",
+        "subject": "Compliance alert: Immediate adherence required.",
+        "sentiment": [
+            "authoritative"
+        ],
+        "urls": false,
+        "attachments": true
+    },
+    {
+        "category": "Authoritative",
+        "generator": "ChatGPT",
+        "subject": "Corporate update: Changes to internal procedures.",
+        "sentiment": [
+            "authoritative"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Authoritative",
+        "generator": "ChatGPT",
+        "subject": "Executive message: Strategic updates and next steps.",
+        "sentiment": [
+            "authoritative"
+        ],
+        "urls": false,
+        "attachments": true
+    },
+    {
+        "category": "Authoritative",
+        "generator": "ChatGPT",
+        "subject": "Formal notification: Account status review.",
+        "sentiment": [
+            "authoritative"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+
+    {
+        "category": "Authoritative",
+        "generator": "Gemini",
+        "subject": "Official Policy Update: Mandatory compliance required by Q3.",
+        "sentiment": [
+            "authoritative",
+            "formal"
+        ],
+        "urls": true,
+        "attachments": true
+    },
+    {
+        "category": "Authoritative",
+        "generator": "Gemini",
+        "subject": "CEO Announcement: Strategic organizational changes for the upcoming year.",
+        "sentiment": [
+            "authoritative",
+            "serious"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Authoritative",
+        "generator": "Gemini",
+        "subject": "Directive: New security protocols implemented for all remote employees.",
+        "sentiment": [
+            "authoritative",
+            "strict"
+        ],
+        "urls": true,
+        "attachments": true
+    },
+    {
+        "category": "Authoritative",
+        "generator": "Gemini",
+        "subject": "Important Notice: Binding changes to our Terms of Service and Privacy Policy.",
+        "sentiment": [
+            "authoritative",
+            "legal"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Authoritative",
+        "generator": "Gemini",
+        "subject": "Legal Department: Strict compliance requirements for the upcoming financial audit.",
+        "sentiment": [
+            "authoritative",
+            "demanding"
+        ],
+        "urls": false,
+        "attachments": true
+    },
+    {
+        "category": "Authoritative",
+        "generator": "Gemini",
+        "subject": "Management Update: Official guidelines for the quarterly performance review.",
+        "sentiment": [
+            "authoritative",
+            "instructive"
+        ],
+        "urls": true,
+        "attachments": true
+    },
+    {
+        "category": "Authoritative",
+        "generator": "Gemini",
+        "subject": "Official Communication: Complete restructuring of the IT and Engineering departments.",
+        "sentiment": [
+            "authoritative",
+            "informative"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Authoritative",
+        "generator": "Gemini",
+        "subject": "Executive Summary: Q2 Financial Results and Board of Directors Decisions.",
+        "sentiment": [
+            "authoritative",
+            "professional"
+        ],
+        "urls": false,
+        "attachments": true
+    },
+    {
+        "category": "Authoritative",
+        "generator": "Gemini",
+        "subject": "Mandatory Training: Annual corporate code of conduct certification.",
+        "sentiment": [
+            "authoritative",
+            "obligatory"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Authoritative",
+        "generator": "Gemini",
+        "subject": "Official Statement: Final resolution report on the recent global service outage.",
+        "sentiment": [
+            "authoritative",
+            "resolute"
+        ],
+        "urls": true,
+        "attachments": true
+    },
+
+    {
+        "category": "Authoritative",
+        "generator": "Copilot",
+        "subject": "Official Notice: Policy updates effective immediately",
+        "sentiment": [
+            "authoritative"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Authoritative",
+        "generator": "Copilot",
+        "subject": "Mandatory Compliance: Please review the new guidelines",
+        "sentiment": [
+            "authoritative"
+        ],
+        "urls": false,
+        "attachments": true
+    },
+    {
+        "category": "Authoritative",
+        "generator": "Copilot",
+        "subject": "Administrative Directive: Required actions for all members",
+        "sentiment": [
+            "authoritative"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Authoritative",
+        "generator": "Copilot",
+        "subject": "Formal Reminder: Your participation is required",
+        "sentiment": [
+            "authoritative"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Authoritative",
+        "generator": "Copilot",
+        "subject": "Executive Announcement: Structural changes to the program",
+        "sentiment": [
+            "authoritative"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Authoritative",
+        "generator": "Copilot",
+        "subject": "Official Communication: Updated procedures for all staff",
+        "sentiment": [
+            "authoritative"
+        ],
+        "urls": false,
+        "attachments": true
+    },
+    {
+        "category": "Authoritative",
+        "generator": "Copilot",
+        "subject": "Leadership Directive: Immediate adherence required",
+        "sentiment": [
+            "authoritative"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Authoritative",
+        "generator": "Copilot",
+        "subject": "Compliance Notice: Failure to follow may result in penalties",
+        "sentiment": [
+            "authoritative"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Authoritative",
+        "generator": "Copilot",
+        "subject": "Board Decision: New operational standards implemented",
+        "sentiment": [
+            "authoritative"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Authoritative",
+        "generator": "Copilot",
+        "subject": "Internal Memo: Mandatory attendance for upcoming briefing",
+        "sentiment": [
+            "authoritative"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+
+    {
+        "category": "Booking",
+        "generator": "ChatGPT",
+        "subject": "Booking confirmation: Your reservation is confirmed.",
+        "sentiment": [
+            "confirmation"
+        ],
+        "urls": true,
+        "attachments": true
+    },
+    {
+        "category": "Booking",
+        "generator": "ChatGPT",
+        "subject": "Payment received successfully. Thank you!",
+        "sentiment": [
+            "confirmation"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Booking",
+        "generator": "ChatGPT",
+        "subject": "Your order has been confirmed and is being processed.",
+        "sentiment": [
+            "confirmation"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Booking",
+        "generator": "ChatGPT",
+        "subject": "Reservation details: Your booking is complete.",
+        "sentiment": [
+            "confirmation"
+        ],
+        "urls": true,
+        "attachments": true
+    },
+    {
+        "category": "Booking",
+        "generator": "ChatGPT",
+        "subject": "Invoice confirmation: Payment completed.",
+        "sentiment": [
+            "confirmation"
+        ],
+        "urls": false,
+        "attachments": true
+    },
+    {
+        "category": "Booking",
+        "generator": "ChatGPT",
+        "subject": "Confirmation: Your appointment has been scheduled.",
+        "sentiment": [
+            "confirmation"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Booking",
+        "generator": "ChatGPT",
+        "subject": "Transaction successful: Receipt enclosed.",
+        "sentiment": [
+            "confirmation"
+        ],
+        "urls": false,
+        "attachments": true
+    },
+    {
+        "category": "Booking",
+        "generator": "ChatGPT",
+        "subject": "Your subscription has been activated successfully.",
+        "sentiment": [
+            "confirmation"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Booking",
+        "generator": "ChatGPT",
+        "subject": "Confirmation email: Your request has been processed.",
+        "sentiment": [
+            "confirmation"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Booking",
+        "generator": "ChatGPT",
+        "subject": "Booking successful: Details inside.",
+        "sentiment": [
+            "confirmation"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+
+    {
+        "category": "Booking",
+        "generator": "Gemini",
+        "subject": "Booking Confirmation: Your upcoming stay at the Grand Hotel is confirmed.",
+        "sentiment": [
+            "confirming",
+            "positive"
+        ],
+        "urls": true,
+        "attachments": true
+    },
+    {
+        "category": "Booking",
+        "generator": "Gemini",
+        "subject": "Payment Received: Official receipt for your recent purchase at TechStore.",
+        "sentiment": [
+            "confirming",
+            "neutral"
+        ],
+        "urls": true,
+        "attachments": true
+    },
+    {
+        "category": "Booking",
+        "generator": "Gemini",
+        "subject": "Flight Itinerary: Confirmation and e-tickets for your trip to London.",
+        "sentiment": [
+            "confirming",
+            "informative"
+        ],
+        "urls": true,
+        "attachments": true
+    },
+    {
+        "category": "Booking",
+        "generator": "Gemini",
+        "subject": "Reservation Confirmed: Your table for two at Luigi's on Friday night.",
+        "sentiment": [
+            "confirming",
+            "welcoming"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Booking",
+        "generator": "Gemini",
+        "subject": "Transaction Successful: Invoice #9932 has been paid in full.",
+        "sentiment": [
+            "confirming",
+            "formal"
+        ],
+        "urls": true,
+        "attachments": true
+    },
+    {
+        "category": "Booking",
+        "generator": "Gemini",
+        "subject": "Ticket Confirmation: Your VIP seats for the summer concert are secured.",
+        "sentiment": [
+            "confirming",
+            "exciting"
+        ],
+        "urls": true,
+        "attachments": true
+    },
+    {
+        "category": "Booking",
+        "generator": "Gemini",
+        "subject": "Order Confirmed: Your package is getting ready for shipment.",
+        "sentiment": [
+            "confirming",
+            "reassuring"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Booking",
+        "generator": "Gemini",
+        "subject": "Payment Confirmation: Auto-renewal successful for your Annual Premium Plan.",
+        "sentiment": [
+            "confirming",
+            "neutral"
+        ],
+        "urls": true,
+        "attachments": true
+    },
+    {
+        "category": "Booking",
+        "generator": "Gemini",
+        "subject": "Appointment Confirmed: Dental check-up scheduled for next Tuesday at 10 AM.",
+        "sentiment": [
+            "confirming",
+            "helpful"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Booking",
+        "generator": "Gemini",
+        "subject": "Receipt: Thank you for your generous donation to the Wildlife Foundation.",
+        "sentiment": [
+            "confirming",
+            "appreciative"
+        ],
+        "urls": true,
+        "attachments": true
+    },
+
+    {
+        "category": "Booking",
+        "generator": "Copilot",
+        "subject": "Booking Confirmed: Your reservation details inside",
+        "sentiment": [
+            "confirmation"
+        ],
+        "urls": false,
+        "attachments": true
+    },
+    {
+        "category": "Booking",
+        "generator": "Copilot",
+        "subject": "Payment Received: Thank you for your purchase",
+        "sentiment": [
+            "confirmation"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Booking",
+        "generator": "Copilot",
+        "subject": "Your Appointment Is Confirmed for the Selected Date",
+        "sentiment": [
+            "confirmation"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Booking",
+        "generator": "Copilot",
+        "subject": "Order Confirmation: Your items are being prepared",
+        "sentiment": [
+            "confirmation"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Booking",
+        "generator": "Copilot",
+        "subject": "Subscription Renewal Successful: Receipt enclosed",
+        "sentiment": [
+            "confirmation"
+        ],
+        "urls": false,
+        "attachments": true
+    },
+    {
+        "category": "Booking",
+        "generator": "Copilot",
+        "subject": "Your Hotel Reservation Has Been Successfully Processed",
+        "sentiment": [
+            "confirmation"
+        ],
+        "urls": false,
+        "attachments": true
+    },
+    {
+        "category": "Booking",
+        "generator": "Copilot",
+        "subject": "Invoice Paid: Transaction summary available",
+        "sentiment": [
+            "confirmation"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Booking",
+        "generator": "Copilot",
+        "subject": "Your Seat Reservation Is Complete",
+        "sentiment": [
+            "confirmation"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Booking",
+        "generator": "Copilot",
+        "subject": "Payment Confirmation: Your order is now finalized",
+        "sentiment": [
+            "confirmation"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Booking",
+        "generator": "Copilot",
+        "subject": "Booking Approved: Access your travel details here",
+        "sentiment": [
+            "confirmation"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+
+    {
+        "category": "Promotional",
+        "generator": "ChatGPT",
+        "subject": "Exclusive offer just for you: Limited-time discount!",
+        "sentiment": [
+            "promotional"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "ChatGPT",
+        "subject": "Discover our latest deals and special promotions.",
+        "sentiment": [
+            "promotional"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "ChatGPT",
+        "subject": "Flash sale: Up to 50% off today only!",
+        "sentiment": [
+            "promotional"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "ChatGPT",
+        "subject": "New arrivals are here: Shop the latest trends.",
+        "sentiment": [
+            "promotional"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "ChatGPT",
+        "subject": "Don’t miss out: Exclusive savings inside.",
+        "sentiment": [
+            "promotional"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "ChatGPT",
+        "subject": "Upgrade your experience with our premium plan.",
+        "sentiment": [
+            "promotional"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "ChatGPT",
+        "subject": "Special promotion: Unlock your benefits today.",
+        "sentiment": [
+            "promotional"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "ChatGPT",
+        "subject": "Limited-time offer: Claim your reward now.",
+        "sentiment": [
+            "promotional"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "ChatGPT",
+        "subject": "Introducing our new product line.",
+        "sentiment": [
+            "promotional"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "ChatGPT",
+        "subject": "Save big with our exclusive member deals.",
+        "sentiment": [
+            "promotional"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+
+    {
+        "category": "Promotional",
+        "generator": "Gemini",
+        "subject": "🚀 Massive Summer Sale: Up to 50% off on all electronics inside!",
+        "sentiment": [
+            "promotional",
+            "excited"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "Gemini",
+        "subject": "Introducing our revolutionary new skincare line - Buy one get one free.",
+        "sentiment": [
+            "promotional",
+            "inviting"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "Gemini",
+        "subject": "Don't miss out! An exclusive VIP discount code is hiding inside just for you.",
+        "sentiment": [
+            "promotional",
+            "exclusive"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "Gemini",
+        "subject": "Upgrade your wardrobe today with our stunning new autumn collection.",
+        "sentiment": [
+            "promotional",
+            "stylish"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "Gemini",
+        "subject": "Flash Sale Alert: 24 hours only to grab your favorite sneakers at half price.",
+        "sentiment": [
+            "promotional",
+            "urgent"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "Gemini",
+        "subject": "Transform your home today with our premium smart lighting solutions.",
+        "sentiment": [
+            "promotional",
+            "persuasive"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "Gemini",
+        "subject": "Unlock your true potential: Join our expert masterclass for 30% less this week.",
+        "sentiment": [
+            "promotional",
+            "inspiring"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "Gemini",
+        "subject": "New Arrivals: Be the very first to shop the hottest trends of the season.",
+        "sentiment": [
+            "promotional",
+            "trendy"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "Gemini",
+        "subject": "Give the gift of joy! Special holiday bundles are now available in-store.",
+        "sentiment": [
+            "promotional",
+            "joyful"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "Gemini",
+        "subject": "Special Offer: Get a surprise free gift with any purchase over $50.",
+        "sentiment": [
+            "promotional",
+            "generous"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+
+    {
+        "category": "Promotional",
+        "generator": "Copilot",
+        "subject": "Exclusive Offer: Save 40% on your next purchase",
+        "sentiment": [
+            "promotional"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "Copilot",
+        "subject": "New Collection Launch: Be the first to explore",
+        "sentiment": [
+            "promotional"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "Copilot",
+        "subject": "Limited-Time Deal: Don’t miss out on these discounts",
+        "sentiment": [
+            "promotional"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "Copilot",
+        "subject": "Special Invitation: Join our VIP customer program",
+        "sentiment": [
+            "promotional"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "Copilot",
+        "subject": "Holiday Sale Starts Now: Shop our best prices",
+        "sentiment": [
+            "promotional"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "Copilot",
+        "subject": "Introducing Our Latest Product Line",
+        "sentiment": [
+            "promotional"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "Copilot",
+        "subject": "Flash Sale: Only a few hours left",
+        "sentiment": [
+            "promotional"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "Copilot",
+        "subject": "Your Personalized Deals Are Ready",
+        "sentiment": [
+            "promotional"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "Copilot",
+        "subject": "Upgrade Today: Exclusive benefits await you",
+        "sentiment": [
+            "promotional"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Promotional",
+        "generator": "Copilot",
+        "subject": "Special Bundle Offer: Get more for less",
+        "sentiment": [
+            "promotional"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+
+    {
+        "category": "Neutral",
+        "generator": "ChatGPT",
+        "subject": "Meeting scheduled for next week.",
+        "sentiment": [
+            "neutral"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "ChatGPT",
+        "subject": "Follow-up regarding our recent discussion.",
+        "sentiment": [
+            "neutral"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "ChatGPT",
+        "subject": "Sharing notes from today’s meeting.",
+        "sentiment": [
+            "neutral"
+        ],
+        "urls": false,
+        "attachments": true
+    },
+    {
+        "category": "Neutral",
+        "generator": "ChatGPT",
+        "subject": "Update on current project status.",
+        "sentiment": [
+            "neutral"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "ChatGPT",
+        "subject": "Quick question about your availability.",
+        "sentiment": [
+            "neutral"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "ChatGPT",
+        "subject": "Recap of our last conversation.",
+        "sentiment": [
+            "neutral"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "ChatGPT",
+        "subject": "Documents for your review.",
+        "sentiment": [
+            "neutral"
+        ],
+        "urls": false,
+        "attachments": true
+    },
+    {
+        "category": "Neutral",
+        "generator": "ChatGPT",
+        "subject": "Introduction and next steps.",
+        "sentiment": [
+            "neutral"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "ChatGPT",
+        "subject": "Clarification needed on recent request.",
+        "sentiment": [
+            "neutral"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "ChatGPT",
+        "subject": "General update: No action required.",
+        "sentiment": [
+            "neutral"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+
+    {
+        "category": "Neutral",
+        "generator": "Gemini",
+        "subject": "Weekly Newsletter: The latest insights, news, and articles from our community.",
+        "sentiment": [
+            "neutral",
+            "informative"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "Gemini",
+        "subject": "Invitation: Join us for the annual neighborhood potluck gathering next week.",
+        "sentiment": [
+            "friendly",
+            "inviting"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "Gemini",
+        "subject": "Meeting notes from today's brainstorming session on Project Alpha.",
+        "sentiment": [
+            "neutral",
+            "professional"
+        ],
+        "urls": false,
+        "attachments": true
+    },
+    {
+        "category": "Neutral",
+        "generator": "Gemini",
+        "subject": "A quick question regarding the upcoming team building event logistics.",
+        "sentiment": [
+            "neutral",
+            "curious"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "Gemini",
+        "subject": "Monthly digest: The top 10 science fiction books recommended by our editors.",
+        "sentiment": [
+            "neutral",
+            "informative"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "Gemini",
+        "subject": "Follow-up: Our morning meeting discussing the new website design mockups.",
+        "sentiment": [
+            "neutral",
+            "collaborative"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "Gemini",
+        "subject": "Introduction: Please welcome the newest members of the marketing team.",
+        "sentiment": [
+            "friendly",
+            "welcoming"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "Gemini",
+        "subject": "Happy Birthday! Wishing you a fantastic and relaxing day from all of us.",
+        "sentiment": [
+            "friendly",
+            "joyful"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "Gemini",
+        "subject": "Feedback request: How was your recent experience with our customer support team?",
+        "sentiment": [
+            "neutral",
+            "inquiring"
+        ],
+        "urls": true,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "Gemini",
+        "subject": "Friendly reminder: The main office will be closed for the national holiday tomorrow.",
+        "sentiment": [
+            "neutral",
+            "helpful"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+
+    {
+        "category": "Neutral",
+        "generator": "Copilot",
+        "subject": "Weekly Update: Summary of recent activities",
+        "sentiment": [
+            "neutral"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "Copilot",
+        "subject": "Meeting Reminder: Agenda for tomorrow’s discussion",
+        "sentiment": [
+            "neutral"
+        ],
+        "urls": false,
+        "attachments": true
+    },
+    {
+        "category": "Neutral",
+        "generator": "Copilot",
+        "subject": "Follow-Up: Notes from our last conversation",
+        "sentiment": [
+            "neutral"
+        ],
+        "urls": false,
+        "attachments": true
+    },
+    {
+        "category": "Neutral",
+        "generator": "Copilot",
+        "subject": "Information Request: Additional details needed",
+        "sentiment": [
+            "neutral"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "Copilot",
+        "subject": "Team Announcement: New member introduction",
+        "sentiment": [
+            "neutral"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "Copilot",
+        "subject": "Project Update: Current status and next steps",
+        "sentiment": [
+            "neutral"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "Copilot",
+        "subject": "Friendly Reminder: Upcoming internal deadline",
+        "sentiment": [
+            "neutral"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "Copilot",
+        "subject": "General Inquiry: Clarification needed on your last message",
+        "sentiment": [
+            "neutral"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "Copilot",
+        "subject": "Status Check: How is the project progressing?",
+        "sentiment": [
+            "neutral"
+        ],
+        "urls": false,
+        "attachments": false
+    },
+    {
+        "category": "Neutral",
+        "generator": "Copilot",
+        "subject": "Internal Notice: Scheduled maintenance this week",
+        "sentiment": [
+            "neutral"
+        ],
+        "urls": false,
+        "attachments": false
+    }
+]
