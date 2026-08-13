@@ -163,9 +163,13 @@ def train_kto(
     tokenizer.save_pretrained(save_dir)
 
     print("Cleaning memory, post-training...")
+    # The trainer, the model and the optimiser state reference each other, so
+    # `del` only makes them collectable — the cycle collector is what actually
+    # frees them. Emptying the cache first (as this did) therefore ran before
+    # anything had been released, and the blocks were never returned to the
+    # driver: the next model load saw a full card and offloaded to CPU.
     del model, tokenizer, trainer
-    torch.cuda.empty_cache()
-    gc.collect()
+    config.free_vram()
 
     print("KTO Training done.")
 

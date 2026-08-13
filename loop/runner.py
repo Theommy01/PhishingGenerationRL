@@ -274,6 +274,12 @@ class LoopRunner:
             self.epochs,
         )
 
+        # The trainers clean up before returning, but their frame is only gone
+        # once train_fn has actually returned, so a second pass here reclaims
+        # whatever was still referenced from it. Generation loads another 8B
+        # adapter next and needs the room.
+        config.free_vram()
+
         self.generate_and_score(run_id, round_index, checkpoint)
         self.store.record_round(
             run_id,
