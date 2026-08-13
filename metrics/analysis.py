@@ -715,3 +715,88 @@ def run_full_comparison(
     print(table)
 
     return df, table
+
+
+# =============================================================================
+# Loop runs (round-indexed)
+#
+# The wide SFT/BCO/KTO layout above is the notebook's one-shot experiment: three
+# named models, one message each. A loop run is the same data generalised — an
+# arbitrary number of rounds with n messages per prompt — so it is kept long and
+# aggregated on demand rather than pivoted into ever-widening columns.
+# =============================================================================
+
+ROUND_INDEX = "round"
+
+DRIFT_COLUMNS = ["cos_prompt", "kl_prompt", "cos_baseline", "kl_baseline"]
+
+
+def load_run(store, run_id: int) -> pd.DataFrame:
+    """Every message of a run as a long DataFrame, one row per message."""
+    messages = store.get_messages(run_id)
+    if not messages:
+        return pd.DataFrame()
+    return pd.DataFrame(messages)
+
+
+def round_summary(
+    df: pd.DataFrame, threshold: float = config.SAFE_THRESHOLD
+) -> pd.DataFrame:
+    """One row per round: evasion, ASR@n and mean drift.
+
+    evasion_rate is per message; asr_at_n is the fraction of prompts where at
+    least one of the n samples evaded. They coincide when n == 1.
+    """
+    if df.empty:
+        return pd.DataFrame()
+
+    work = df.copy()
+    work["evaded"] = work["score"] >= threshold
+
+    grouped = work.groupby(ROUND_INDEX)
+    summary = pd.DataFrame(
+        {
+            "messages": grouped.size(),
+            "prompts": grouped["prompt_id"].nunique(),
+            "mean_score": grouped["score"].mean() * 100,
+            "evasion_rate": grouped["evaded"].mean() * 100,
+        }
+    )
+
+    # ASR@n: collapse samples to one hit per prompt first
+    per_prompt = work.groupby([ROUND_INDEX, "prompt_id"])["evaded"].any()
+    summary["asr_at_n"] = per_prompt.groupby(ROUND_INDEX).mean() * 100
+
+    summary["duplicates"] = grouped["body"].apply(lambda s: len(s) - s.nunique())
+
+    for column in DRIFT_COLUMNS:
+        if column in work.columns:
+            summary[column] = grouped[column].mean()
+
+    return summary.reset_index()
+
+
+def round_breakdown(
+    df: pd.DataFrame,
+    group_col: str = "generator",
+    value: str = "score",
+    threshold: float = config.SAFE_THRESHOLD,
+) -> pd.DataFrame:
+    """Round x group table, e.g. mean score per generator per round.
+
+    Returns a wide frame indexed by `group_col` with one column per round, which
+    is the shape `visualisation.charts.grouped_bar` consumes.
+    """
+    if df.empty:
+        return pd.DataFrame()
+
+    work = df.copy()
+    if value == "evaded":
+        work["evaded"] = work["score"] >= threshold
+        cell = work.groupby([group_col, ROUND_INDEX])["evaded"].mean() * 100
+    else:
+        cell = work.groupby([group_col, ROUND_INDEX])[value].mean()
+        if value == "score":
+            cell = cell * 100
+
+    return cell.unstack(ROUND_INDEX)

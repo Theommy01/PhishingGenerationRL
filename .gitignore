@@ -11,3 +11,7 @@ output/
 
 # Trained SVM baseline
 *.pkl
+
+# LoRA adapters / trainer checkpoints (hundreds of MB each)
+checkpoint-*/
+Models/*/

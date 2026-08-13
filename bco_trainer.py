@@ -9,19 +9,30 @@ from trl import BCOConfig, BCOTrainer
 from datasets import Dataset
 
 from metrics import config
+from reference_model import attach_reference
 
 torch.cuda.empty_cache()
 gc.collect()
 
 
-def train_bco(num_epochs=3):
+
+
+def train_bco(
+    num_epochs=3,
+    base_model=None,
+    dataset_path=None,
+    output_dir=None,
+    ref_mode="sft",
+    sft_path=None,
+):
     print("\n" + "=" * 50)
     print(f"BCO Training (Epochs: {num_epochs})")
     print("=" * 50)
 
-    path_sft = config.PATH_SFT
-    dataset_path = config.MASTER_TRAINING_DATASET
-    save_dir = f"{config.MODELS_DIR}/bco_model_ep{num_epochs}"
+    sft_path = sft_path or config.PATH_SFT
+    path_sft = base_model or sft_path
+    dataset_path = dataset_path or config.MASTER_TRAINING_DATASET
+    save_dir = output_dir or f"{config.MODELS_DIR}/bco_model_ep{num_epochs}"
 
     print("Uploading training dataset...")
     df = pd.read_json(dataset_path, lines=True)
@@ -52,7 +63,8 @@ def train_bco(num_epochs=3):
         print(f"training model uploading exception: {e}")
         return
 
-    print("\nTrainer configuration...")
+    print(f"\nTrainer configuration (ref_mode={ref_mode})...")
+    ref_kwargs = attach_reference(model, ref_mode, path_sft, sft_path)
 
     training_args = BCOConfig(
         per_device_train_batch_size=1,
@@ -80,6 +92,7 @@ def train_bco(num_epochs=3):
         args=training_args,
         train_dataset=dataset,
         processing_class=tokenizer,
+        **ref_kwargs,
     )
 
     if "dataset" not in inspect.signature(trainer._get_train_sampler).parameters:
@@ -90,13 +103,22 @@ def train_bco(num_epochs=3):
     trainer.train()
 
     print(f"\nSaving FINAL BCO model in: {save_dir}")
-    model.save_pretrained(save_dir)
+    # Only the policy adapter. With a reference attached, peft would otherwise
+    # save every adapter, leaving a stray reference/ copy of the anchor inside
+    # each round's checkpoint.
+    model.save_pretrained(
+        save_dir, selected_adapters=[ref_kwargs.get("model_adapter_name", "default")]
+    )
     tokenizer.save_pretrained(save_dir)
 
     print("Cleaning memory, post-training...")
+    # The trainer, the model and the optimiser state reference each other, so
+    # `del` only makes them collectable — the cycle collector is what actually
+    # frees them. Emptying the cache first (as this did) therefore ran before
+    # anything had been released, and the blocks were never returned to the
+    # driver: the next model load saw a full card and offloaded to CPU.
     del model, tokenizer, trainer
-    torch.cuda.empty_cache()
-    gc.collect()
+    config.free_vram()
 
     print("BCO Training done.")
 

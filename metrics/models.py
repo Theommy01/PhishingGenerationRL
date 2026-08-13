@@ -1,7 +1,11 @@
-"""The three auxiliary models: ScamLLM, the AI-text detector, and SBERT.
+"""The auxiliary models this package owns: the AI-text detector and SBERT.
 
-All three are loaded lazily through `_cached`, so importing this module costs
+Both are loaded lazily through `_cached`, so importing this module costs
 nothing and a script only pays for the models it actually touches.
+
+ScamLLM is the third auxiliary model but lives outside this package, in
+ScamAuxiliaryModel/ScamLabeller/ScamLabel, following the phishnet
+AuxiliaryModel/Labeller/Label pattern.
 
 Citations
 ---------
@@ -29,85 +33,40 @@ def _cached(key: str, factory: Callable[[], Any]) -> Any:
     return _CACHE[key]
 
 
+def unload_auxiliary_models() -> None:
+    """Evict the cached auxiliary models and give their VRAM back.
+
+    The RL loop scores and measures drift between rounds, so the AI detector
+    and SBERT would otherwise stay resident while BCO/KTO tries to load an 8B
+    adapter. On an 11 GB card that is the difference between training and
+    accelerate silently offloading layers to CPU. They reload lazily on next
+    use, so this is only a time/VRAM trade.
+    """
+    from ScamLabeller import unload_scam_labeller
+
+    _CACHE.clear()
+    unload_scam_labeller()
+    config.free_vram()
+
+
 # =============================================================================
 # ScamLLM
 # =============================================================================
 
 
-def get_scam_classifier():
-    """phishbot/ScamLLM, with top_k=None so both labels come back."""
-
-    def build():
-        import torch
-        from transformers import pipeline
-
-        print("Loading ScamLLM...")
-        return pipeline(
-            task="text-classification",
-            model="phishbot/ScamLLM",
-            device=0 if torch.cuda.is_available() else -1,
-            top_k=None,
-        )
-
-    return _cached("scam", build)
-
-
-def scam_evasion_reward(prompts, completions, **kwargs) -> List[float]:
-    """Safe probability per completion, read from the LABEL_0 entry.
-
-    `prompts` is unused; it is there for the TRL reward-function signature.
-
-    This is the scorer that labelled the training dataset and that the test-set
-    run and adversarial pipeline use. It disagrees with `scam_evasion_score`
-    about which label means safe — see PORTING_NOTES.md §1.
-    """
-    texts_to_evaluate = []
-    for comp in completions:
-        # a completion may arrive as [['text']]
-        texts_to_evaluate.append(str(comp[0]) if isinstance(comp, list) else str(comp))
-
-    # truncation avoids crashes on generations longer than the 512-token limit
-    results = get_scam_classifier()(texts_to_evaluate, truncation=True, max_length=512)
-
-    rewards = []
-    for res in results:
-        scores = {item["label"]: item["score"] for item in res}
-        rewards.append(scores.get("LABEL_0", 0.0))  # LABEL_0 = Safe, LABEL_1 = Malicious
-    return rewards
-
-
-def scam_evasion_score(prompts, completions, threshold: float = 0.50) -> List[float]:
-    """The scorer used to build the final evaluation report.
-
-    Truncates to 2000 characters, takes the top-scoring label, and returns the
-    score directly when it reads as safe or its complement otherwise. Returns
-    zeros if the classifier raises. `threshold` is accepted but unused, as in
-    the notebook.
-    """
-    cleaned_texts = [text[:2000] for text in completions]
-
-    try:
-        results = get_scam_classifier()(cleaned_texts, truncation=True, max_length=512)
-    except Exception as e:
-        print(f"ScamLLM Exception: {e}")
-        return [0.0] * len(completions)
-
-    scores = []
-    for result in results:
-        if isinstance(result, list):
-            result = result[0]
-        label = result.get("label", "")
-        score = result.get("score", 0.0)
-        scores.append(score if (label == "LABEL_1" or label.lower() == "safe") else 1.0 - score)
-    return scores
+# ScamLLM is not wired up in this module. It belongs to ScamAuxiliaryModel
+# (the pipeline) and ScamLabeller (the label-to-score mapping), and callers
+# reach it with `ScamLabeller.get_scam_labeller().score_messages(bodies)`.
+# Keeping it out of here is deliberate: the inverted-score bug that invalidated
+# the published BCO/KTO columns came from this module holding a second,
+# divergent copy of that mapping. See PORTING_NOTES.md §1.
 
 
 def report_safe_percentage(completions, prompts=None) -> List[float]:
     """Print the safe percentage of each completion and return the rewards."""
-    if prompts is None:
-        prompts = [""] * len(completions)
+    from ScamLabeller import get_scam_labeller
 
-    rewards = scam_evasion_reward(prompts=prompts, completions=completions)
+    rewards = get_scam_labeller().score_messages(completions)
 
     lines = ["--- Test model output's safe percentage ---"]
     for text, reward in zip(completions, rewards):
@@ -227,10 +186,15 @@ def get_similarity_model(
 
 
 def cosine_similarity(embedding_a, embedding_b) -> float:
-    """Cosine similarity between two embeddings, as a percentage."""
-    from sentence_transformers import util
+    """Cosine similarity between two embeddings, as a percentage.
 
-    return util.cos_sim(embedding_a, embedding_b).item() * 100
+    Uses torch rather than sentence_transformers.util.cos_sim — the value is
+    identical for a single pair, and it keeps this function usable with any
+    embedder (including a stub) instead of requiring sentence-transformers.
+    """
+    import torch.nn.functional as F
+
+    return F.cosine_similarity(embedding_a, embedding_b, dim=-1).item() * 100
 
 
 def kl_divergence(

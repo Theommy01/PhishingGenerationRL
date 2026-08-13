@@ -11,40 +11,63 @@ import os
 
 # --- inputs ---------------------------------------------------------------
 
-BASE_DIR = os.environ.get("THESIS_BASE_DIR", "/content/drive/MyDrive/Thesisproject")
+_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-DATASET_DIR = f"{BASE_DIR}/Dataset"
-MODELS_DIR = f"{BASE_DIR}/Models"
-DETECTION_SOURCES_DIR = f"{BASE_DIR}/DetectionDataSources"
+# The notebook ran on Colab and mounted Drive at this path. The repo carries its
+# own Dataset/ and Models/ directories, so those are the defaults now; set
+# THESIS_BASE_DIR to point elsewhere (e.g. back at a Drive mount).
+BASE_DIR = os.environ.get("THESIS_BASE_DIR", _REPO_ROOT)
 
-MASTER_TRAINING_DATASET = f"{DATASET_DIR}/master_training_dataset.jsonl"
-FINAL_EVALUATION_REPORT = f"{DATASET_DIR}/final_evaluation_report.csv"
-TEST_SET_FULL_RESULTS = f"{DATASET_DIR}/test_set_full_results.csv"
-AI_DETECTION_REPORT = f"{DATASET_DIR}/ai_detection.csv"
+DATASET_DIR = os.path.join(BASE_DIR, "Dataset")
+MODELS_DIR = os.path.join(BASE_DIR, "Models")
+DETECTION_SOURCES_DIR = os.path.join(BASE_DIR, "DetectionDataSources")
 
-PATH_SFT = f"{MODELS_DIR}/checkpoint-2104"
-PATH_BCO = f"{MODELS_DIR}/bco_model_ep3"
-PATH_KTO = f"{MODELS_DIR}/kto_model_ep3"
+MASTER_TRAINING_DATASET = os.path.join(DATASET_DIR, "master_training_dataset.jsonl")
+FINAL_EVALUATION_REPORT = os.path.join(DATASET_DIR, "final_evaluation_report.csv")
+TEST_SET_FULL_RESULTS = os.path.join(DATASET_DIR, "test_set_full_results.csv")
+AI_DETECTION_REPORT = os.path.join(DATASET_DIR, "ai_detection.csv")
+
+# Checkpoints are overridable individually, because they are gitignored (a few
+# hundred MB each) and so differ per checkout. checkpoint-2122 is the SFT
+# adapter currently on disk; Models/checkpoint-2104 is the one the notebook
+# used and is not in this checkout.
+PATH_SFT = os.environ.get(
+    "PHISHNET_SFT_CHECKPOINT", os.path.join(_REPO_ROOT, "checkpoint-2122")
+)
+
+# The legacy BCO/KTO adapters, used only by the wide notebook-era report in
+# metrics.analysis. They were trained on master_training_dataset.jsonl, whose
+# labels are largely inverted (see PORTING_NOTES.md §1), so they are historical
+# artefacts: do not use them as a warm start or a reference model for the loop.
+PATH_BCO = os.environ.get(
+    "PHISHNET_BCO_CHECKPOINT", os.path.join(MODELS_DIR, "bco_model_ep3")
+)
+PATH_KTO = os.environ.get(
+    "PHISHNET_KTO_CHECKPOINT", os.path.join(MODELS_DIR, "kto_model_ep3")
+)
 
 DETECTION_DATASET_PATHS = {
-    "SpamAssasin": f"{DETECTION_SOURCES_DIR}/SpamAssasin.csv",
-    "Nigerian_Fraud": f"{DETECTION_SOURCES_DIR}/Nigerian_Fraud.csv",
-    "Phishing_Email": f"{DETECTION_SOURCES_DIR}/phishing_email.csv",
-    "CEAS_08": f"{DETECTION_SOURCES_DIR}/CEAS_08.csv",
-    "Enron": f"{DETECTION_SOURCES_DIR}/Enron.csv",
-    "Ling": f"{DETECTION_SOURCES_DIR}/Ling.csv",
-    "Nazario": f"{DETECTION_SOURCES_DIR}/Nazario.csv",
+    name: os.path.join(DETECTION_SOURCES_DIR, filename)
+    for name, filename in {
+        "SpamAssasin": "SpamAssasin.csv",
+        "Nigerian_Fraud": "Nigerian_Fraud.csv",
+        "Phishing_Email": "phishing_email.csv",
+        "CEAS_08": "CEAS_08.csv",
+        "Enron": "Enron.csv",
+        "Ling": "Ling.csv",
+        "Nazario": "Nazario.csv",
+    }.items()
 }
 
-SVM_MODEL_PATH = os.environ.get("PHISHNET_SVM_MODEL", "svm_email_classifier.pkl")
+SVM_MODEL_PATH = os.environ.get(
+    "PHISHNET_SVM_MODEL", os.path.join(_REPO_ROOT, "svm_email_classifier.pkl")
+)
 
 # Score at or above which ScamLLM is taken to consider a message safe.
 SAFE_THRESHOLD = 0.50
 
 
 # --- outputs --------------------------------------------------------------
-
-_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 OUTPUT_DIR = os.environ.get("PHISHNET_OUTPUT_DIR", os.path.join(_REPO_ROOT, "output"))
 FIGURES_DIR = os.path.join(OUTPUT_DIR, "figures")
@@ -124,7 +147,14 @@ def extract_url_flag(prompt_text: str) -> bool:
 
 
 def free_vram(model_instance=None, generator_instance=None) -> None:
-    """Drop a model/generator and empty the CUDA caches."""
+    """Collect garbage and empty the CUDA caches.
+
+    The two arguments are vestigial and do almost nothing: `del` on a parameter
+    drops only this function's reference, so whatever the caller still holds
+    keeps the model alive and resident. **Callers must rebind their own
+    references to None first**, then call this with no arguments. They are kept
+    only so the notebook-era call sites still run.
+    """
     import torch  # imported lazily so the pandas-only paths stay torch-free
 
     try:

@@ -23,9 +23,8 @@ from metrics.models import (
     cosine_similarity,
     get_similarity_model,
     kl_divergence,
-    scam_evasion_reward,
-    scam_evasion_score,
 )
+from ScamLabeller import get_scam_labeller
 
 TEST_PROMPTS = [
     "ACTION REQUIRED: Unpaid Invoice #78492 - Service Suspension Warning",
@@ -170,12 +169,9 @@ def run_evaluation(
     df["KTO_Text"] = kto_texts
 
     print("\nScoring BCO and KTO with ScamLLM...")
-    df["BCO_ScamLLM_Score"] = scam_evasion_score(
-        prompts=[""] * len(bco_texts), completions=bco_texts
-    )
-    df["KTO_ScamLLM_Score"] = scam_evasion_score(
-        prompts=[""] * len(kto_texts), completions=kto_texts
-    )
+    labeller = get_scam_labeller()
+    df["BCO_ScamLLM_Score"] = labeller.score_messages(bco_texts)
+    df["KTO_ScamLLM_Score"] = labeller.score_messages(kto_texts)
 
     print("\nSemantic coherence with SBERT...")
     df = add_semantic_columns(df, sim_model=get_similarity_model())
@@ -217,9 +213,10 @@ def run_test_set(
     kto_texts = generate_with_checkpoint(path_kto, test_prompts, gen_args=gen_args)
 
     print("\nScoring with ScamLLM...")
-    sft_scores = scam_evasion_reward(prompts=[""] * n, completions=sft_texts)
-    bco_scores = scam_evasion_reward(prompts=[""] * n, completions=bco_texts)
-    kto_scores = scam_evasion_reward(prompts=[""] * n, completions=kto_texts)
+    labeller = get_scam_labeller()
+    sft_scores = labeller.score_messages(sft_texts)
+    bco_scores = labeller.score_messages(bco_texts)
+    kto_scores = labeller.score_messages(kto_texts)
 
     print("Semantic coherence...")
     sim_model = get_similarity_model()
@@ -282,7 +279,7 @@ def _generate_and_score(
             gen_args=gen_args,
         )
         text = config.extract_body_after_arrow(text)
-        score = scam_evasion_reward(prompts=[""], completions=[text])[0]
+        score = get_scam_labeller().score_messages([text])[0]
 
         embedding = sim_model.encode([text], convert_to_tensor=True)[0]
 
