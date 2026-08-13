@@ -55,10 +55,14 @@ Use this to delete cells with confidence. Every cell is accounted for.
 
 ---
 
-## 1. Critical: the two ScamLLM scorers disagree about which label means "safe"
+## 1. RESOLVED: the two ScamLLM scorers disagreed about which label means "safe"
 
-There are **three** definitions of `scam_evasion_reward` in the codebase, and two
-of them contradict each other:
+> **Outcome:** the published BCO/KTO numbers are wrong, the training labels are
+> largely inverted, and the three competing scorers have been collapsed into one
+> (`ScamLabeller`). Details below.
+
+There were **three** definitions of `scam_evasion_reward` in the codebase, and
+two of them contradicted each other:
 
 | Source | Reads | Treats as *safe* |
 |---|---|---|
@@ -73,10 +77,54 @@ This matters because the two scorers feed the *same CSV*:
 - `BCO_ScamLLM_Score` / `KTO_ScamLLM_Score` are computed by `run_evaluation()`
   with the **cell-17** scorer.
 
-If one of them has the polarity backwards, every SFT-vs-BCO/KTO comparison in
-the thesis is comparing an evasion score against its own complement. Worth
-resolving before anything else: run both over the same 20 texts and check they
-agree.
+**Settled empirically.** Both scorers were run over four real generations from
+checkpoint-2122 — two phishing, two benign:
+
+| expected | `scam_evasion_reward` (LABEL_0) | `scam_evasion_score` (LABEL_1) |
+|---|---|---|
+| phishing | 0.0022 | 0.9978 |
+| phishing | 0.0007 | 0.9993 |
+| benign | 0.8679 | 0.1321 |
+| benign | 0.9836 | 0.0164 |
+
+They are exact complements (`score == 1 - reward`), and **LABEL_0 is safe**:
+benign emails score 0.87-0.98 on it. So `scam_evasion_reward` was correct and
+`scam_evasion_score` was inverted — it returned a *malicious* probability.
+
+`scam_evasion_score` is now fixed to read LABEL_0, and both agree.
+
+**Consequence for the published report.** `scam_evasion_score` populated
+`BCO_ScamLLM_Score` and `KTO_ScamLLM_Score` in `final_evaluation_report.csv`,
+while `SFT_ScamLLM_Score` came from the reward. Those columns are therefore on
+**inverted scales relative to SFT**, and any SFT-vs-BCO/KTO comparison drawn
+from that file compares a safe-probability against a malicious-probability. All
+150 BCO/KTO rows were confirmed to be exact complements of a fresh re-score
+(max error 2.4e-06). Corrected, on phishing prompts:
+
+| | published mean | corrected mean | published evasions | corrected evasions |
+|---|---|---|---|---|
+| SFT | 6.76% | 6.76% | 48 | 48 |
+| BCO | 75.48% | 24.52% | 105 | **45** |
+| KTO | 76.96% | 23.04% | 102 | **48** |
+
+Neither the magnitude nor the direction survives: there is **no net evasion
+gain** over the SFT baseline. The CSV still holds `BCO_Text`/`KTO_Text`, so it
+was corrected by re-scoring in place — see `Dataset/final_evaluation_report_corrected.csv`.
+
+**Consequence for the training data.** Separately, the `score_scamllm` column in
+`Dataset/master_training_dataset.jsonl` (from which `label = score >= 0.5`, on
+all 150 rows) is *negatively* correlated with a correct re-score of its own
+completions: pearson -0.68, spearman -0.75. The derived boolean disagrees with
+the truth on 124/150 rows, and 100 rows marked desirable are messages ScamLLM
+actually flags. BCO and KTO were therefore trained to *produce* detectable
+phishing rather than to evade — consistent with the corrected evaluation above.
+
+Unlike the report columns, these are not a clean complement (only 12/150 are
+exact), so the mechanism is not a pure polarity flip; it was not reproduced from
+the prompt, the prompt+completion, the subject line, `starting_dataset.jsonl`,
+or truncation. Not pursued further: the file is superseded and the direction is
+unambiguous. `Models/bco_model_ep3` and `Models/kto_model_ep3` are the adapters
+trained on it — **historical artefacts, not a warm start or reference model.**
 
 Secondary issue in the cell-17 version: with `top_k=None` the pipeline returns a
 *list* per input sorted by score, so `result[0]` is "whichever label won", not a
@@ -85,15 +133,30 @@ is only equivalent to the safe probability for a strictly binary head.
 
 Also: its `threshold=0.50` parameter is accepted and never used.
 
-**In the port:** both are kept, under distinct names, in `metrics/models.py` —
-`scam_evasion_reward` (cell 8) and `scam_evasion_score` (cell 17). Call sites
-were wired to whichever the notebook actually used at that point.
+**In the port: there is now exactly one scorer.** Keeping two names was itself
+the bug that produced the numbers above, so both were deleted along with
+`metrics.models.get_scam_classifier`. ScamLLM is reached only through the
+phishnet class trio:
+
+- `ScamAuxiliaryModel` owns the pipeline (`top_k=None`),
+- `ScamLabeller.parse_model_output` owns the label→score mapping — the single
+  place in the codebase that decides what LABEL_0 means,
+- `ScamLabel.value` carries it, documented as a safe probability,
+- `ScamLabeller.score_messages(bodies)` returns plain floats for callers that
+  want them, and `get_scam_labeller()` hands out one shared instance so the
+  model is loaded into VRAM once.
+
+`generate_dataset`, `loop/` and `metrics/generation.py` all call that. The
+mapping now raises on an unexpected label instead of defaulting to 0.0, which
+would silently mean "certainly malicious" for every message; the old
+`scam_evasion_score` likewise returned a column of zeros if the classifier
+threw, and that swallow is gone too.
 
 ## 2. Same name, different behaviour
 
 | Name | Copies | Divergence |
 |---|---|---|
-| `scam_evasion_reward` | 3 | see §1 |
+| `scam_evasion_reward` | 3 | see §1 — collapsed to one, in `ScamLabeller` |
 | `extract_body` | 3 | cells 22/25/27/28 split on `"->\n"`; cells 17/38 split on `"->\nbody:"`. Different outputs on the same text. |
 | `free_vram` | 4 | byte-identical (cells 22, 25, 27, 28) |
 | `map_generator` | 5 | function in cells 30/32/34, inline nested lambda in 31/35. Same result. |
