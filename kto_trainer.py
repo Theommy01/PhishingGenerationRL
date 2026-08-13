@@ -16,15 +16,58 @@ torch.cuda.empty_cache()
 gc.collect()
 
 
-def train_kto(num_epochs=3):
+def kto_class_weights(n_desirable: int, n_undesirable: int) -> tuple:
+    """Weights that bring the effective desirable/undesirable ratio to ~1.
+
+    TRL wants desirable_weight * n_desirable / (undesirable_weight *
+    n_undesirable) near 1. The cumulative pool's balance shifts every round as
+    successes accumulate, so this is derived from the counts rather than fixed.
+    """
+    if not n_desirable or not n_undesirable:
+        return 1.0, 1.0
+    if n_desirable < n_undesirable:
+        return n_undesirable / n_desirable, 1.0
+    return 1.0, n_desirable / n_undesirable
+
+
+def resolve_ref_model(ref_mode: str, base_model: str, sft_path: str):
+    """Reference model for the KL term.
+
+    "base"     -> None. With a PEFT checkpoint TRL computes reference logprobs
+                  by disabling the adapters, so the anchor is the raw base
+                  model, not SFT. This is what the notebook did implicitly.
+    "sft"      -> the SFT checkpoint, pinned for every round, so drift is always
+                  measured from the tuned baseline.
+    "previous" -> the checkpoint this round trains from, so the anchor moves and
+                  divergence from SFT compounds across rounds.
+    """
+    if ref_mode == "base":
+        return None
+    if ref_mode == "sft":
+        return sft_path
+    if ref_mode == "previous":
+        return base_model
+    raise ValueError(f"unknown ref_mode: {ref_mode!r} (base | sft | previous)")
+
+
+
+def train_kto(
+    num_epochs=3,
+    base_model=None,
+    dataset_path=None,
+    output_dir=None,
+    ref_mode="base",
+    sft_path=None,
+):
     print("\n" + "=" * 50)
     print(f"KTO Training (Epochs: {num_epochs})")
     print("=" * 50)
 
     # Nota: partiamo sempre dal modello di base SFT per l'addestramento KTO
-    path_sft = config.PATH_SFT
-    dataset_path = config.MASTER_TRAINING_DATASET
-    save_dir = f"{config.MODELS_DIR}/kto_model_ep{num_epochs}"
+    sft_path = sft_path or config.PATH_SFT
+    path_sft = base_model or sft_path
+    dataset_path = dataset_path or config.MASTER_TRAINING_DATASET
+    save_dir = output_dir or f"{config.MODELS_DIR}/kto_model_ep{num_epochs}"
 
     print("Uploading training dataset...")
     df = pd.read_json(dataset_path, lines=True)
@@ -43,7 +86,20 @@ def train_kto(num_epochs=3):
         )
 
     dataset = Dataset.from_list(formatted_data)
-    print(f" Read {len(dataset)} samples.")
+    n_desirable = sum(1 for row in formatted_data if row["label"])
+    n_undesirable = len(formatted_data) - n_desirable
+    desirable_weight, undesirable_weight = kto_class_weights(n_desirable, n_undesirable)
+    print(
+        f" Read {len(dataset)} samples "
+        f"({n_desirable} desirable / {n_undesirable} undesirable); "
+        f"weights {desirable_weight:.3f} / {undesirable_weight:.3f}."
+    )
+    if not n_desirable or not n_undesirable:
+        print(
+            "WARNING: one class is empty. KTO needs both desirable and "
+            "undesirable examples to contrast; training will not learn a "
+            "useful signal from this dataset."
+        )
 
     print("\nUpload starting model for KTO training...")
 
@@ -58,7 +114,8 @@ def train_kto(num_epochs=3):
         print(f"Training model uploading exception: {e}")
         return
 
-    print("\nTrainer configuration...")
+    ref_model = resolve_ref_model(ref_mode, path_sft, sft_path)
+    print(f"\nTrainer configuration (ref_mode={ref_mode})...")
 
     training_args = KTOConfig(
         per_device_train_batch_size=2,  # <--- MODIFICATO DA 1 A 2 (Obbligatorio per KTO)
@@ -81,12 +138,13 @@ def train_kto(num_epochs=3):
         gradient_checkpointing=True,  # <--- FONDAMENTALE (lascialo sempre True!)
         # Parametri specifici di KTO
         beta=0.1,
-        desirable_weight=1.0,
-        undesirable_weight=1.0,
+        desirable_weight=desirable_weight,
+        undesirable_weight=undesirable_weight,
     )
 
     trainer = KTOTrainer(
         model=model,
+        ref_model=ref_model,
         args=training_args,
         train_dataset=dataset,
         processing_class=tokenizer,

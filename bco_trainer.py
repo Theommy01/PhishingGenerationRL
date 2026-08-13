@@ -14,14 +14,43 @@ torch.cuda.empty_cache()
 gc.collect()
 
 
-def train_bco(num_epochs=3):
+def resolve_ref_model(ref_mode: str, base_model: str, sft_path: str):
+    """Reference model for the KL term.
+
+    "base"     -> None. With a PEFT checkpoint TRL computes reference logprobs
+                  by disabling the adapters, so the anchor is the raw base
+                  model, not SFT. This is what the notebook did implicitly.
+    "sft"      -> the SFT checkpoint, pinned for every round, so drift is always
+                  measured from the tuned baseline.
+    "previous" -> the checkpoint this round trains from, so the anchor moves and
+                  divergence from SFT compounds across rounds.
+    """
+    if ref_mode == "base":
+        return None
+    if ref_mode == "sft":
+        return sft_path
+    if ref_mode == "previous":
+        return base_model
+    raise ValueError(f"unknown ref_mode: {ref_mode!r} (base | sft | previous)")
+
+
+
+def train_bco(
+    num_epochs=3,
+    base_model=None,
+    dataset_path=None,
+    output_dir=None,
+    ref_mode="base",
+    sft_path=None,
+):
     print("\n" + "=" * 50)
     print(f"BCO Training (Epochs: {num_epochs})")
     print("=" * 50)
 
-    path_sft = config.PATH_SFT
-    dataset_path = config.MASTER_TRAINING_DATASET
-    save_dir = f"{config.MODELS_DIR}/bco_model_ep{num_epochs}"
+    sft_path = sft_path or config.PATH_SFT
+    path_sft = base_model or sft_path
+    dataset_path = dataset_path or config.MASTER_TRAINING_DATASET
+    save_dir = output_dir or f"{config.MODELS_DIR}/bco_model_ep{num_epochs}"
 
     print("Uploading training dataset...")
     df = pd.read_json(dataset_path, lines=True)
@@ -52,7 +81,8 @@ def train_bco(num_epochs=3):
         print(f"training model uploading exception: {e}")
         return
 
-    print("\nTrainer configuration...")
+    ref_model = resolve_ref_model(ref_mode, path_sft, sft_path)
+    print(f"\nTrainer configuration (ref_mode={ref_mode})...")
 
     training_args = BCOConfig(
         per_device_train_batch_size=1,
@@ -77,6 +107,7 @@ def train_bco(num_epochs=3):
 
     trainer = BCOTrainer(
         model=model,
+        ref_model=ref_model,
         args=training_args,
         train_dataset=dataset,
         processing_class=tokenizer,
