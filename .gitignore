@@ -1,0 +1,13 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# Unsloth writes patched trainer sources here at import time
+unsloth_compiled_cache/
+
+# Figures, tables and text reports produced by visualisation/
+output/
+
+# Trained SVM baseline
+*.pkl
