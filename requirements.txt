@@ -1,0 +1,30 @@
+# Dependencies of the metrics/ and visualisation/ packages.
+# Versions are the ones the notebook pinned; everything else is unpinned
+# because the notebook installed whatever Colab had.
+
+pandas
+numpy
+torch
+transformers
+tqdm
+sentence-transformers
+
+# Training / generation (also needed by bco_trainer.py and kto_trainer.py)
+unsloth
+# The notebook pinned trl==0.15.2, but the checked-out venv has 0.18.1 and the
+# trainers now use the `processing_class` argument, which both versions accept
+# (`tokenizer` was removed in ~0.16). Pinning to 0.15.2 would contradict the
+# installed environment, so the floor is expressed as a minimum instead.
+trl>=0.15.2
+datasets>=3.4.1
+
+# SVM baseline detector — the notebook pinned these two explicitly
+scikit-learn==1.4.2
+imbalanced-learn==0.11.0
+joblib
+
+# Plots. Rendered headless (Agg backend) and written to output/figures;
+# ipywidgets and ipython are no longer needed - the interactive viewers were
+# replaced by static text reports.
+matplotlib
+seaborn
