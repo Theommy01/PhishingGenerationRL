@@ -143,12 +143,45 @@ def test_score_correlation_uses_the_size_of_the_movement():
     assert result["prompts"] == 10
 
 
-def test_report_bundles_the_checks_with_the_result():
-    rows = [(0, p, 0.1, 0.1) for p in range(6)] + [(1, p, 0.9, 0.5) for p in range(6)]
+def test_report_leads_with_the_threshold_free_measure():
+    rows = [(0, p, 0.1 + 0.01 * p, 0.1 + 0.01 * p) for p in range(8)]
+    rows += [(1, p, 0.9, 0.5 + 0.01 * p) for p in range(8)]
 
     out = transfer.report(transfer.with_detector_columns(frame(rows)), 1)
-    assert set(out) == {"dynamic_range", "baseline_agreement", "decomposition", "correlation"}
+
+    # the correlation is first, and the label-based reading is marked as
+    # inheriting the threshold it depends on
+    assert list(out)[0] == "correlation"
+    assert out["decomposition"]["threshold_dependent"] is True
+    assert "baseline_kappa" in out["decomposition"]
     assert set(out["dynamic_range"]) == {"scamllm", "bert-phishing"}
+
+
+def test_the_correlation_carries_an_interval_and_both_medians():
+    rows = []
+    for p in range(20):
+        rows += [(0, p, 0.1, 0.1), (1, p, 0.1 + p * 0.04, 0.1 + p * 0.03)]
+
+    out = transfer.score_correlation(transfer.with_detector_columns(frame(rows)), 1)
+    assert out["spearman"] == pytest.approx(1.0)
+    low, high = out["ci95"]
+    assert low <= out["spearman"] <= high
+    assert out["median_delta_scamllm"] > 0
+    assert out["median_delta_bert-phishing"] > 0
+
+
+def test_level_correlation_separates_calibration_from_disagreement():
+    """Same ranking, different thresholds — a calibration problem, not a real one."""
+    calibrated = [(0, p, 0.1 * p, 0.1 * p + 0.4) for p in range(10)]
+    assert transfer.level_correlation(
+        transfer.with_detector_columns(frame(calibrated))
+    )["spearman"] == pytest.approx(1.0)
+
+    # opposite rankings: the detectors disagree about the text itself
+    opposed = [(0, p, 0.1 * p, 1.0 - 0.1 * p) for p in range(10)]
+    assert transfer.level_correlation(
+        transfer.with_detector_columns(frame(opposed))
+    )["spearman"] == pytest.approx(-1.0)
 
 
 def test_it_degrades_quietly_when_a_detector_is_missing():

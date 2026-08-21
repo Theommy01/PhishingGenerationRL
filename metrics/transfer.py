@@ -243,6 +243,64 @@ def decomposition(
     return result
 
 
+def level_correlation(
+    df: pd.DataFrame,
+    in_loop: str = "scamllm",
+    held_out: str = "bert-phishing",
+    round_index: int = 0,
+) -> Dict:
+    """Do the two detectors *rank* the same messages alike, thresholds aside?
+
+    The companion to `baseline_agreement`, and the more informative of the two
+    when the label agreement is poor. Low agreement with a decent rank
+    correlation means the detectors broadly agree and are merely calibrated
+    differently — a threshold problem. Low agreement *and* a near-zero rank
+    correlation means they disagree about the text itself, and a transfer result
+    against this detector would say as much about the detector as the policy.
+    """
+    rows = df[df["round"] == round_index]
+    first, second = f"{SCORE_PREFIX}{in_loop}", f"{SCORE_PREFIX}{held_out}"
+    if rows.empty or first not in rows or second not in rows:
+        return {}
+
+    rows = rows[[first, second]].dropna()
+    if len(rows) < 3:
+        return {}
+
+    from scipy.stats import spearmanr
+
+    result = spearmanr(rows[first], rows[second])
+    return {
+        "round": round_index,
+        "messages": int(len(rows)),
+        "spearman": float(result.statistic),
+        "p_value": float(result.pvalue),
+    }
+
+
+def _bootstrap_spearman(x, y, samples: int = 2000, seed: int = 0):
+    """Percentile interval for a rank correlation, since n is ~135 prompts."""
+    import numpy as np
+    from scipy.stats import spearmanr
+
+    rng = np.random.default_rng(seed)
+    values = np.asarray(x, dtype=float), np.asarray(y, dtype=float)
+    n = len(values[0])
+    estimates = []
+    for _ in range(samples):
+        index = rng.integers(0, n, n)
+        a, b = values[0][index], values[1][index]
+        if np.std(a) == 0 or np.std(b) == 0:
+            continue
+        estimates.append(spearmanr(a, b).statistic)
+    if not estimates:
+        return None, None
+    return (
+        float(np.percentile(estimates, 2.5)),
+        float(np.percentile(estimates, 97.5)),
+    )
+
+
 def score_correlation(
     df: pd.DataFrame,
     round_index: int,
@@ -250,12 +308,20 @@ def score_correlation(
     held_out: str = "bert-phishing",
     baseline: int = 0,
     split: Optional[str] = None,
+    bootstrap: bool = True,
 ) -> Dict:
     """Rank correlation of the two detectors' paired per-prompt score changes.
 
-    A continuous companion to the decomposition: it uses the size of each
-    prompt's movement, not just its sign, and being rank-based it does not care
-    that the two detectors' scores are on different scales.
+    **The primary transfer measure.** It uses the size of each prompt's
+    movement rather than only its sign, and being rank-based it is indifferent
+    to the two detectors' scores living on different scales and to where either
+    threshold sits — which is what makes it usable when the label agreement is
+    poor, as it is here.
+
+    Read it with the two medians beside it, which `report` puts there: a
+    positive correlation means prompts that improved against one detector
+    improved against the other, but if the held-out median barely moved then
+    little transferred in absolute terms however well the ranks line up.
     """
     changes = {}
     for detector in (in_loop, held_out):
@@ -278,14 +344,21 @@ def score_correlation(
 
     from scipy.stats import spearmanr
 
-    result = spearmanr(changes[in_loop].loc[shared], changes[held_out].loc[shared])
-    return {
+    first, second = changes[in_loop].loc[shared], changes[held_out].loc[shared]
+    result = spearmanr(first, second)
+    out = {
         "prompts": int(len(shared)),
         "spearman": float(result.statistic),
         "p_value": float(result.pvalue),
-        f"median_delta_{in_loop}": float(changes[in_loop].loc[shared].median()),
-        f"median_delta_{held_out}": float(changes[held_out].loc[shared].median()),
+        f"median_delta_{in_loop}": float(first.median()),
+        f"median_delta_{held_out}": float(second.median()),
+        f"improved_{in_loop}": int((first > 0).sum()),
+        f"improved_{held_out}": int((second > 0).sum()),
     }
+    if bootstrap:
+        low, high = _bootstrap_spearman(first, second)
+        out["ci95"] = (low, high)
+    return out
 
 
 def report(
@@ -296,16 +369,30 @@ def report(
     baseline: int = 0,
     split: Optional[str] = None,
 ) -> Dict:
-    """Everything needed to read the transfer result, checks included."""
+    """Everything needed to read the transfer result, checks included.
+
+    `correlation` is the headline: it is threshold-free, which matters because
+    the two detectors here agree on labels barely better than chance, and a
+    label-based decomposition inherits that disagreement. `decomposition` is
+    kept as a secondary reading and carries `threshold_dependent`, so nothing
+    downstream can present it as if it were free of that assumption.
+    """
+    agreement = baseline_agreement(df, in_loop, held_out, baseline)
+    levels = level_correlation(df, in_loop, held_out, baseline)
+
+    label_based = decomposition(df, round_index, in_loop, held_out, baseline, split)
+    if label_based:
+        label_based["threshold_dependent"] = True
+        label_based["baseline_kappa"] = agreement.get("kappa")
+
     return {
-        "dynamic_range": {
-            detector: dynamic_range(df, detector) for detector in (in_loop, held_out)
-        },
-        "baseline_agreement": baseline_agreement(df, in_loop, held_out, baseline),
-        "decomposition": decomposition(
-            df, round_index, in_loop, held_out, baseline, split
-        ),
         "correlation": score_correlation(
             df, round_index, in_loop, held_out, baseline, split
         ),
+        "level_correlation": levels,
+        "baseline_agreement": agreement,
+        "dynamic_range": {
+            detector: dynamic_range(df, detector) for detector in (in_loop, held_out)
+        },
+        "decomposition": label_based,
     }

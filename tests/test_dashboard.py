@@ -61,7 +61,9 @@ def test_it_renders_a_run_that_is_still_generating(app, store, prompts, make_rec
     at = app()
 
     assert not at.exception, [e.value for e in at.exception]
-    assert [t.label for t in at.tabs] == ["Overview", "Messages", "Compare", "Provenance"]
+    assert [t.label for t in at.tabs] == [
+        "Overview", "Messages", "Transfer", "Compare", "Provenance"
+    ]
     # the overview says so rather than dividing by zero
     assert any("Nothing scored yet" in block.value for block in at.info)
 
@@ -89,3 +91,41 @@ def test_it_renders_a_scored_run(app, store, prompts, make_records, make_checkpo
     assert not at.exception, [e.value for e in at.exception]
     # the headline metrics are rendered rather than skipped
     assert any("Evasion" in metric.label for metric in at.metric)
+
+
+def test_the_transfer_tab_asks_for_a_second_detector_when_there_is_one(
+    app, store, prompts, make_records, make_checkpoint
+):
+    """With only the in-loop detector scored, it says how to add another."""
+    run_id = store.create_run(prompts, {"n_samples": 2})
+    store.add_messages(run_id, 0, make_records(), checkpoint=store.upsert_checkpoint(make_checkpoint()))
+
+    at = app()
+
+    assert not at.exception, [e.value for e in at.exception]
+    assert any("backfill" in w.value for w in at.warning)
+
+
+def test_the_transfer_tab_renders_with_two_detectors(
+    app, store, prompts, make_records, make_checkpoint
+):
+    run_id = store.create_run(prompts, {"n_samples": 2})
+    checkpoint = store.upsert_checkpoint(make_checkpoint())
+    for round_index in (0, 1):
+        store.add_messages(run_id, round_index, make_records(round_index), checkpoint=checkpoint)
+        verdicts = [
+            {
+                "round": round_index,
+                "prompt_id": m["prompt_id"],
+                "sample_idx": m["sample_idx"],
+                "score": 0.3 + 0.2 * round_index + 0.05 * m["prompt_id"],
+                "label": round_index > 0,
+            }
+            for m in store.get_messages(run_id, round_index=round_index, with_subject=False)
+        ]
+        store.set_detector_verdicts(run_id, "bert-phishing", verdicts)
+
+    at = app()
+
+    assert not at.exception, [e.value for e in at.exception]
+    assert any("Did the gain transfer" in h.value for h in at.subheader)

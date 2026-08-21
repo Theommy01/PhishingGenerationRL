@@ -19,7 +19,7 @@ if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
 
 from dashboard import charts, data  # noqa: E402
-from dashboard.views import compare, messages, overview, provenance  # noqa: E402
+from dashboard.views import compare, messages, overview, provenance, transfer  # noqa: E402
 
 st.set_page_config(page_title="PhishingGenerationRL", page_icon="🎣", layout="wide")
 
@@ -85,14 +85,16 @@ def main() -> None:
                 ),
             )
 
-    tabs = st.tabs(["Overview", "Messages", "Compare", "Provenance"])
+    tabs = st.tabs(["Overview", "Messages", "Transfer", "Compare", "Provenance"])
     with tabs[0]:
         overview.render(run_id)
     with tabs[1]:
         messages.render(run_id)
     with tabs[2]:
-        compare.render(run_id)
+        transfer.render(run_id)
     with tabs[3]:
+        compare.render(run_id)
+    with tabs[4]:
         provenance.render(run_id)
 
 
