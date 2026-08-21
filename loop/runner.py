@@ -283,6 +283,12 @@ class LoopRunner:
             )
 
         if self.measure_policy_kl:
+            # Scoring and drift leave ScamLLM, SBERT and the AI detector
+            # resident, and the KL pass loads the 8B policy plus the reference
+            # adapter — the same 11 GB squeeze training faces, so it needs the
+            # same eviction. They reload lazily on the next round's scoring.
+            self.free_auxiliary_models()
+
             # How far this round's policy has moved from the SFT baseline, on
             # the text it just produced. Always anchored to SFT whatever the
             # training-time ref_mode was, so rounds and ref_modes are on one

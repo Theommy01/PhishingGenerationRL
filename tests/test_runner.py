@@ -204,6 +204,23 @@ def test_policy_kl_is_measured_against_the_sft_baseline(store, runner_for, stubs
     assert store.get_round(run_id, 2)["metrics"]["kl_per_token"] is not None
 
 
+def test_the_scorers_are_evicted_before_the_kl_pass(store, runner_for, monkeypatch):
+    """It loads an 8B adapter plus the reference; the card has to be free."""
+    order = []
+
+    from loop.runner import LoopRunner
+
+    monkeypatch.setattr(
+        LoopRunner, "free_auxiliary_models", lambda self: order.append("free")
+    )
+
+    runner = runner_for(policy_kl_fn=lambda records, *_: order.append("kl") or records)
+    runner.run(rounds=1)
+
+    # once per round before the KL pass, plus once before training
+    assert order[: order.index("kl") + 1][-2:] == ["free", "kl"]
+
+
 def test_policy_kl_can_be_turned_off(store, runner_for, stubs):
     runner_for(measure_policy_kl=False).run(rounds=1)
 
