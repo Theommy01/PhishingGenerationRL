@@ -761,6 +761,61 @@ class LoopStore:
             return 0
         return self.messages.bulk_write(operations).modified_count
 
+    def set_detector_verdicts(self, run_id: int, detector: str, verdicts) -> int:
+        """Write one detector's verdicts onto messages already stored.
+
+        Verdicts land under `detector_scores.<name>` and `detector_labels.<name>`,
+        so the set of detectors can grow after a run has finished without any
+        schema change — which is the point of scoring being a separate pass over
+        stored bodies rather than part of generation.
+
+        Each verdict needs `round`, `prompt_id`, `sample_idx`, `score`, `label`.
+        """
+        from pymongo import UpdateOne
+
+        operations = [
+            UpdateOne(
+                {
+                    "run_id": run_id,
+                    "round": verdict["round"],
+                    "prompt_id": verdict["prompt_id"],
+                    "sample_idx": verdict["sample_idx"],
+                },
+                {
+                    "$set": {
+                        f"detector_scores.{detector}": verdict["score"],
+                        f"detector_labels.{detector}": bool(verdict["label"]),
+                    }
+                },
+            )
+            for verdict in verdicts
+        ]
+        if not operations:
+            return 0
+        return self.messages.bulk_write(operations).modified_count
+
+    def messages_missing_detector(
+        self, run_id: int, detector: str, round_index: Optional[int] = None
+    ) -> List[Dict]:
+        """Stored messages this detector has not scored yet."""
+        query: Dict[str, Any] = {
+            "run_id": run_id,
+            f"detector_scores.{detector}": {"$exists": False},
+        }
+        if round_index is not None:
+            query["round"] = round_index
+        return list(self.messages.find(query, {"_id": 0}).sort("round", ASCENDING))
+
+    def scored_detectors(self, run_id: int) -> List[str]:
+        """Which detectors have verdicts on this run's messages."""
+        names = set()
+        for document in self.messages.find(
+            {"run_id": run_id, "detector_scores": {"$exists": True}},
+            {"detector_scores": 1, "_id": 0},
+        ).limit(200):
+            names.update(document.get("detector_scores") or {})
+        return sorted(names)
+
     def unscored_count(self, run_id: int, round_index: Optional[int] = None) -> int:
         """Messages stored but not yet scored — a crashed round leaves these."""
         query: Dict[str, Any] = {"run_id": run_id, "score": {"$exists": False}}
