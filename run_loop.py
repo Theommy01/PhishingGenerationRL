@@ -97,6 +97,15 @@ def parse_args(argv=None):
         help="skip the SBERT semantic-drift metrics",
     )
     parser.add_argument(
+        "--no-policy-kl",
+        action="store_true",
+        help=(
+            "skip the KL of each round's policy from the SFT baseline. It costs "
+            "two forward passes per message, so a long round can afford to drop "
+            "it — at the cost of the degeneration signal"
+        ),
+    )
+    parser.add_argument(
         "--resume", type=int, default=None, metavar="RUN_ID", help="continue a run"
     )
     parser.add_argument(
@@ -180,6 +189,7 @@ def main(argv=None) -> int:
             seed=args.seed,
             sft_path=args.sft_path,
             measure_drift=not args.no_drift,
+            measure_policy_kl=not args.no_policy_kl,
         )
     except ValueError as exc:
         print(f"error: {exc}", file=sys.stderr)

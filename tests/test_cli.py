@@ -66,6 +66,14 @@ def test_flags_are_parsed():
     assert (args.algorithm, args.ref_mode, args.seed, args.limit) == ("bco", "previous", 7, 3)
 
 
+def test_the_expensive_measurements_can_be_skipped():
+    """Both cost real time per round, so both need a way off."""
+    args = run_loop.parse_args(["--no-drift", "--no-policy-kl"])
+
+    assert args.no_drift and args.no_policy_kl
+    assert not run_loop.parse_args([]).no_policy_kl
+
+
 def test_an_unknown_algorithm_is_rejected_by_argparse():
     with pytest.raises(SystemExit):
         run_loop.parse_args(["--algorithm", "dpo"])
