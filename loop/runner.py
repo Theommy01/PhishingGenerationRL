@@ -9,7 +9,6 @@ Generation, scoring and training are injected, so the whole sequence can be
 driven by stubs without a GPU. The defaults do the real thing.
 """
 
-import json
 import os
 from typing import Callable, Dict, List, Optional
 
@@ -41,7 +40,7 @@ def default_score(records, threshold) -> List[Dict]:
 
 
 def default_train(
-    algorithm, base_model, dataset_path, output_dir, ref_mode, sft_path, epochs
+    algorithm, base_model, dataset_path, output_dir, ref_mode, sft_path, epochs, seed
 ) -> str:
     """Run one round of BCO or KTO and return the checkpoint directory."""
     if algorithm == "bco":
@@ -58,6 +57,7 @@ def default_train(
         output_dir=output_dir,
         ref_mode=ref_mode,
         sft_path=sft_path,
+        seed=seed,
     )
 
     # the trainers swallow load failures and return early, so confirm the
@@ -86,6 +86,7 @@ class LoopRunner:
         gen_args: Optional[dict] = None,
         threshold: float = config.SAFE_THRESHOLD,
         epochs: int = 3,
+        seed: int = config.DEFAULT_TRAINING_SEED,
         sft_path: str = config.PATH_SFT,
         generate_fn: Callable = default_generate,
         score_fn: Callable = default_score,
@@ -105,6 +106,7 @@ class LoopRunner:
         self.n_samples = n_samples
         self.threshold = threshold
         self.epochs = epochs
+        self.seed = seed
         self.sft_path = sft_path
         self.generate_fn = generate_fn
         self.score_fn = score_fn
@@ -144,7 +146,9 @@ class LoopRunner:
     def baselines(self, run_id: int):
         """Round-0 embeddings for this run, computed once and cached."""
         if run_id not in self._baselines:
-            round_zero = self.store.get_messages(run_id, round_index=0)
+            round_zero = self.store.get_messages(
+                run_id, round_index=0, with_subject=False
+            )
             self._baselines[run_id] = report.baseline_embeddings(
                 round_zero, self.sim_model()
             )
@@ -168,18 +172,70 @@ class LoopRunner:
     # -- steps --------------------------------------------------------------
 
     def _config(self) -> Dict:
+        """What the run was started with — its intent."""
         return {
             "algorithm": self.algorithm,
             "ref_mode": self.ref_mode,
-            "n_samples": self.n_samples,
-            "gen_args": self.gen_args,
-            "threshold": self.threshold,
-            "epochs": self.epochs,
             "sft_path": self.sft_path,
+            **self._generation_config(),
+            **self._training_config(),
         }
 
-    def generate_and_score(self, run_id: int, round_index: int, checkpoint: str) -> List[Dict]:
-        """Generate over every prompt with `checkpoint`, score, and store."""
+    def _generation_config(self) -> Dict:
+        """How this round's messages were produced.
+
+        Recorded per round, not just per run: a resumed run builds a fresh
+        LoopRunner from whatever flags were passed that time, so these can
+        legitimately differ between rounds — and if they do, the round document
+        is the only honest record of what actually happened.
+        """
+        return {
+            "gen_args": self.gen_args,
+            "n_samples": self.n_samples,
+            "threshold": self.threshold,
+        }
+
+    def _training_config(self) -> Dict:
+        """What a training round needs to be re-runnable.
+
+        With the dataset pinned by content hash and the base checkpoint by
+        weights hash, these are the remaining inputs. `ref_mode` is recorded at
+        the top level of the round, so it is not repeated here.
+        """
+        return {"epochs": self.epochs, "seed": self.seed}
+
+    def warn_on_config_drift(self, run_id: int) -> Dict:
+        """Print a warning if this runner generates differently from the run.
+
+        Not an error: changing `--n-samples` or the decoding length part way
+        through a run is a legitimate thing to do. But it changes what the later
+        rounds mean — `asr_at_n` is per prompt over n samples, so it is not
+        comparable across a change in n — so it should never happen silently.
+        """
+        drift = self.store.config_drift(run_id, self._generation_config())
+        if drift:
+            print(
+                "WARNING: this round generates differently from the run's config:"
+            )
+            for field, (was, now) in sorted(drift.items()):
+                print(f"  {field}: run says {was!r}, this round uses {now!r}")
+            print("  the round document records what was actually used.")
+        return drift
+
+    def generate_and_score(self, run_id: int, round_index: int, checkpoint: str) -> tuple:
+        """Generate over every prompt with `checkpoint`, score, and store.
+
+        The checkpoint is content-addressed before generating, so every message
+        carries a DBRef to the adapter that wrote it. Returns (records,
+        checkpoint document).
+        """
+        # round 0 generates from the pinned SFT adapter, which this run did not
+        # produce and must not claim
+        produced_by = (
+            None if round_index == 0 else {"run_id": run_id, "round": round_index}
+        )
+        checkpoint_doc = self.store.upsert_checkpoint(checkpoint, produced_by=produced_by)
+
         records = self.generate_fn(checkpoint, self.prompts, self.gen_args, self.n_samples)
         records = self.score_fn(records, self.threshold)
 
@@ -188,24 +244,35 @@ class LoopRunner:
             baselines = None if round_index == 0 else self.baselines(run_id)
             records = report.attach_drift(records, self.sim_model(), baselines)
 
-        self.store.add_messages(run_id, round_index, records)
-        return records
+        self.store.add_messages(run_id, round_index, records, checkpoint=checkpoint_doc)
+        return records, checkpoint_doc
 
     def write_pool(self, run_id: int, round_index: int) -> tuple:
-        """Materialise the cumulative pool as jsonl for the trainers.
+        """Pin the cumulative pool as a dataset and export it for the trainers.
 
         The trainers read a jsonl path, so each round's pool is written out
-        rather than changing their interface.
+        rather than changing their interface. It is recorded as a dataset first
+        — query plus an `as_of` cut-off taken now — so what the round trained on
+        stays nameable and checkable after later rounds have appended to the
+        same collection.
+
+        Returns (path, dataset), where `dataset` carries `count`,
+        `content_hash` and the materialised `rows`.
         """
-        pool = self.store.training_pool(run_id, max_round=round_index)
         path = self.dataset_path(run_id, round_index)
-        with open(path, "w") as f:
-            for row in pool:
-                f.write(json.dumps(row) + "\n")
-        return path, pool
+        dataset = self.store.create_dataset(
+            self.store.pool_query(run_id, round_index),
+            name=f"run{run_id}_pool_round{round_index}",
+            export_path=path,
+            run_id=run_id,
+            round=round_index,
+        )
+        return path, dataset
 
     def evaluate_round(self, run_id: int, round_index: int) -> Dict:
-        messages = self.store.get_messages(run_id, round_index=round_index)
+        messages = self.store.get_messages(
+            run_id, round_index=round_index, with_subject=False
+        )
         metrics = report.round_metrics(messages, self.threshold)
         self.store.record_round(run_id, round_index, metrics=metrics)
         return metrics
@@ -217,14 +284,21 @@ class LoopRunner:
         run_id = self.store.create_run(self.prompts, self._config())
         print(f"\n{'=' * 60}\nRUN {run_id} — round 0 (baseline)\n{'=' * 60}")
 
-        self.generate_and_score(run_id, 0, self.sft_path)
+        _, checkpoint_doc = self.generate_and_score(run_id, 0, self.sft_path)
         self.store.record_round(
             run_id,
             0,
             base_checkpoint=None,
             checkpoint_path=self.sft_path,
+            checkpoint=self.store.checkpoint_ref(checkpoint_doc),
+            checkpoint_hash=checkpoint_doc.get("weights_hash"),
             ref_mode=self.ref_mode,
+            generation=self._generation_config(),
+            # round 0 trains on nothing, so it pins neither a dataset nor a seed
+            training=None,
+            dataset=None,
             dataset_size=0,
+            dataset_hash=None,
             pool_counts=None,
             label_counts=self.store.label_counts(run_id, round_index=0),
         )
@@ -235,6 +309,7 @@ class LoopRunner:
     def step(self, run_id: int) -> int:
         """Train on everything so far, then regenerate over the same prompts."""
         self.store.check_prompts(run_id, self.prompts)
+        self.warn_on_config_drift(run_id)
 
         previous = self.store.latest_round(run_id)
         if previous is None:
@@ -248,8 +323,9 @@ class LoopRunner:
         dataset_path, pool = self.write_pool(run_id, round_index - 1)
         counts = self.store.label_counts(run_id, max_round=round_index - 1)
         print(
-            f"training pool: {len(pool)} messages "
-            f"({counts['desirable']} desirable / {counts['undesirable']} undesirable)"
+            f"training pool: {pool['count']} messages "
+            f"({counts['desirable']} desirable / {counts['undesirable']} undesirable) "
+            f"[{pool['content_hash']} as of {pool['as_of']:%Y-%m-%d %H:%M:%S}Z]"
         )
         if not counts["desirable"] or not counts["undesirable"]:
             print(
@@ -272,6 +348,7 @@ class LoopRunner:
             self.ref_mode,
             self.sft_path,
             self.epochs,
+            self.seed,
         )
 
         # The trainers clean up before returning, but their frame is only gone
@@ -280,14 +357,22 @@ class LoopRunner:
         # adapter next and needs the room.
         config.free_vram()
 
-        self.generate_and_score(run_id, round_index, checkpoint)
+        _, checkpoint_doc = self.generate_and_score(run_id, round_index, checkpoint)
         self.store.record_round(
             run_id,
             round_index,
             base_checkpoint=base,
             checkpoint_path=checkpoint,
+            checkpoint=self.store.checkpoint_ref(checkpoint_doc),
+            checkpoint_hash=checkpoint_doc.get("weights_hash"),
             ref_mode=self.ref_mode,
-            dataset_size=len(pool),
+            generation=self._generation_config(),
+            training=self._training_config(),
+            dataset=self.store.dataset_ref(pool),
+            # denormalised so a trajectory reads without a second query; the
+            # dataset document is the authority, and it never changes
+            dataset_size=pool["count"],
+            dataset_hash=pool["content_hash"],
             pool_counts=counts,
             label_counts=self.store.label_counts(run_id, round_index=round_index),
         )

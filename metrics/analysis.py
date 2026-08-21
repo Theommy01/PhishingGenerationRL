@@ -732,10 +732,24 @@ DRIFT_COLUMNS = ["cos_prompt", "kl_prompt", "cos_baseline", "kl_baseline"]
 
 
 def load_run(store, run_id: int) -> pd.DataFrame:
-    """Every message of a run as a long DataFrame, one row per message."""
+    """Every message of a run as a long DataFrame, one row per message.
+
+    The store joins each message's subject in, so the frame carries
+    `subject_text`, `category`, `generator`, `sentiment`, `urls` and
+    `attachments` alongside the message's own fields. DBRefs are flattened to
+    `subject_id` / `checkpoint_id` strings, which group and print where a DBRef
+    object would not; `checkpoint_hash` is already on the message, so a
+    breakdown by the adapter that generated a row needs no join at all.
+    """
     messages = store.get_messages(run_id)
     if not messages:
         return pd.DataFrame()
+
+    for message in messages:
+        for field in ("subject", "checkpoint"):
+            ref = message.pop(field, None)
+            message[f"{field}_id"] = str(ref.id) if ref is not None else None
+
     return pd.DataFrame(messages)
 
 

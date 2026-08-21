@@ -16,9 +16,11 @@ KTO on everything collected so far, and regenerate over the same prompts.
     # inspect a finished run without generating anything
     python run_loop.py --report 1786641452
 
-The prompts are fingerprinted when a run is created and checked on every
-round, so resuming with a different --prompts file fails rather than quietly
-changing what the run measures.
+Prompt specs are stored as `subjects` documents when a run is created, and the
+run keeps an ordered list of DBRefs to them. Resuming reads the prompts back
+from those refs rather than from --prompts, so an edited prompts.json cannot
+quietly change what a half-finished run measures. The fingerprint of the same
+specs is checked on every round as a second guard.
 """
 
 import argparse
@@ -37,7 +39,11 @@ def parse_args(argv=None):
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
-    parser.add_argument("--prompts", default="prompts.json", help="prompt spec file")
+    parser.add_argument(
+        "--prompts",
+        default="prompts.json",
+        help="prompt spec file; ignored with --resume, which reads the run's subjects",
+    )
     parser.add_argument(
         "--limit",
         type=int,
@@ -60,6 +66,16 @@ def parse_args(argv=None):
         "--n-samples", type=int, default=4, help="messages generated per prompt"
     )
     parser.add_argument("--epochs", type=int, default=1, help="epochs per round")
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=config.DEFAULT_TRAINING_SEED,
+        help=(
+            "training seed (data order, dropout), recorded on each round. Does "
+            "not make a round bit-reproducible — 4-bit training runs "
+            "non-deterministic kernels — but completes the record of its inputs"
+        ),
+    )
     parser.add_argument(
         "--sft-path",
         default=config.PATH_SFT,
@@ -89,6 +105,17 @@ def parse_args(argv=None):
         metavar="RUN_ID",
         help="print an existing run's trajectory and exit",
     )
+    parser.add_argument(
+        "--verify",
+        type=int,
+        default=None,
+        metavar="RUN_ID",
+        help=(
+            "check each round's provenance and exit: that the checkpoint on "
+            "disk is the one that generated the messages, and that the pool it "
+            "trained on still hashes the same"
+        ),
+    )
 
     return parser.parse_args(argv)
 
@@ -104,12 +131,37 @@ def main(argv=None) -> int:
         report.print_trajectory(store, args.report)
         return 0
 
-    prompts = load_prompts(args.prompts)
-    if args.limit is not None:
-        prompts = prompts[: args.limit]
-    if not prompts:
-        print(f"no prompts in {args.prompts}", file=sys.stderr)
-        return 1
+    if args.verify is not None:
+        if store.get_run(args.verify) is None:
+            print(f"no such run: {args.verify}", file=sys.stderr)
+            return 1
+        df = report.print_provenance(store, args.verify)
+        # a failed check is the answer to the question, so it sets the exit code
+        failed = [
+            column
+            for column in ("ckpt_ok", "pool_ok")
+            if column in df and (df[column] == False).any()  # noqa: E712 — NA-safe
+        ]
+        if failed:
+            print(f"\nFAILED: {', '.join(failed)}", file=sys.stderr)
+            return 1
+        return 0
+
+    if args.resume is not None:
+        # a resumed run generates from the subjects it was created with, so it
+        # keeps measuring what it started measuring whatever prompts.json says now
+        if store.get_run(args.resume) is None:
+            print(f"no such run: {args.resume}", file=sys.stderr)
+            return 1
+        prompts = store.run_prompts(args.resume)
+        print(f"resuming run {args.resume} from its {len(prompts)} stored subjects")
+    else:
+        prompts = load_prompts(args.prompts)
+        if args.limit is not None:
+            prompts = prompts[: args.limit]
+        if not prompts:
+            print(f"no prompts in {args.prompts}", file=sys.stderr)
+            return 1
 
     gen_args = {"max_new_tokens": args.max_new_tokens, "do_sample": not args.greedy}
 
@@ -124,6 +176,7 @@ def main(argv=None) -> int:
             n_samples=args.n_samples,
             gen_args=gen_args,
             epochs=args.epochs,
+            seed=args.seed,
             sft_path=args.sft_path,
             measure_drift=not args.no_drift,
         )
