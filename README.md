@@ -224,6 +224,44 @@ and TRL swaps between them. Policy and reference share the identical frozen
 4-bit base, so a second base model is never needed — handing TRL a checkpoint
 *path* makes it build one anyway, which costs 5.5 GB and OOMs on an 11 GB card.
 
+### The three questions, and what answers them
+
+| Question | Per message | Per round | Figure |
+|---|---|---|---|
+| Is evasion improving? | `score`, `label` | `evasion_rate`, `asr_at_n`, `mean_score` | `plot_round_trajectory` |
+| Is the policy degenerating? | `kl_per_token`, `kl_k3_per_token` | `kl_per_token`, `kl_p95`, `training.kl_mean` | `plot_drift_trajectory` |
+| Does it still follow the prompt? | `url_ok`, `attachment_ok`, `cos_subject` | `url_compliance`, `attachment_compliance`, `cos_subject` | `plot_instruction_following` |
+
+**Degeneration is measured as KL from the SFT baseline, not against an absolute
+bar.** The baseline produces wonky text of its own, so the question is whether a
+round is worse than where it started. Two independent readings:
+
+- `training.kl_mean` — the KL TRL logs every step while training, i.e. the
+  penalty term the algorithm actually applied. KTO only; BCO's formulation logs
+  no equivalent.
+- `kl_per_token` — measured after the fact by `policy_kl.py` on the text the
+  round generated, always anchored to the pinned SFT checkpoint whatever
+  `--ref-mode` the training used, so every round and every `ref_mode` sit on one
+  axis. Two forward passes per message with the reference as a second adapter,
+  no sampling. `kl_p95` is reported next to the mean because one message
+  diverging hard is the interesting case and a mean hides it.
+
+**Instruction following is checked against the corpus's placeholders.** The
+training data is entity-anonymised — `<URL>`, `<ATTACHMENT>`, `<ORG>`, `<PER>` —
+so following `urls: True` means emitting `<URL>`, not writing a link. The check
+is two-sided: producing a URL that was not asked for counts against it. The SFT
+baseline itself sits at 88.7% URL compliance, which is the number later rounds
+are compared to. A literal `http://` link is tracked separately as `url_literal`
+— off-distribution for this corpus, so it signals format drift rather than
+compliance.
+
+> **`embed_dist_*` is not a KL divergence.** The columns once called `kl_prompt`
+> and `kl_baseline` softmax the coordinates of a SBERT embedding and feed them
+> to `F.kl_div`. Embedding dimensions are not outcomes, so the result is a
+> distance that tracks semantic drift, not a divergence between language
+> distributions and not the RLHF penalty. It is kept, and renamed, because
+> earlier figures report it. See `metrics.models.embedding_distance`.
+
 ### Metrics per round
 
 | Metric | Meaning |

@@ -728,7 +728,21 @@ def run_full_comparison(
 
 ROUND_INDEX = "round"
 
-DRIFT_COLUMNS = ["cos_prompt", "kl_prompt", "cos_baseline", "kl_baseline"]
+DRIFT_COLUMNS = [
+    "cos_prompt",
+    "embed_dist_prompt",
+    "cos_baseline",
+    "embed_dist_baseline",
+    # the real KL, from policy_kl.py — how far the round's policy moved from
+    # the SFT baseline, measured on the text it generated
+    "kl_per_token",
+    "kl_k3_per_token",
+    # instruction following
+    "cos_subject",
+]
+
+# Booleans, so they aggregate as a percentage rather than a mean of floats
+COMPLIANCE_COLUMNS = ["url_ok", "attachment_ok"]
 
 
 def load_run(store, run_id: int) -> pd.DataFrame:
@@ -786,6 +800,10 @@ def round_summary(
     for column in DRIFT_COLUMNS:
         if column in work.columns:
             summary[column] = grouped[column].mean()
+
+    for column in COMPLIANCE_COLUMNS:
+        if column in work.columns:
+            summary[column] = grouped[column].mean() * 100
 
     return summary.reset_index()
 

@@ -41,8 +41,13 @@ def default_score(records, threshold) -> List[Dict]:
 
 def default_train(
     algorithm, base_model, dataset_path, output_dir, ref_mode, sft_path, epochs, seed
-) -> str:
-    """Run one round of BCO or KTO and return the checkpoint directory."""
+):
+    """Run one round of BCO or KTO.
+
+    Returns (checkpoint directory, training stats). The stats carry the losses
+    and — for KTO, which is the one TRL logs it for — the KL between the policy
+    and the reference, the penalty term the algorithm applied.
+    """
     if algorithm == "bco":
         from bco_trainer import train_bco as train
     elif algorithm == "kto":
@@ -50,7 +55,7 @@ def default_train(
     else:
         raise ValueError(f"unknown algorithm: {algorithm!r} (bco | kto)")
 
-    train(
+    stats = train(
         num_epochs=epochs,
         base_model=base_model,
         dataset_path=dataset_path,
@@ -67,7 +72,26 @@ def default_train(
             f"{algorithm} training produced no checkpoint at {output_dir}; "
             "check the training log above"
         )
-    return output_dir
+    return output_dir, stats
+
+
+def default_policy_kl(records, checkpoint_path, reference_path):
+    """Attach the policy-vs-reference KL to a round's messages."""
+    from policy_kl import attach_policy_kl
+
+    return attach_policy_kl(records, checkpoint_path, reference_path)
+
+
+def unpack_train_result(result):
+    """Accept either a checkpoint path or (path, stats) from a `train_fn`.
+
+    The stats are an addition, and a caller with its own trainer — a notebook,
+    a test stub — should not have to grow a second return value to keep working.
+    """
+    if isinstance(result, tuple):
+        checkpoint, stats = result
+        return checkpoint, stats or {}
+    return result, {}
 
 
 # =============================================================================
@@ -91,8 +115,11 @@ class LoopRunner:
         generate_fn: Callable = default_generate,
         score_fn: Callable = default_score,
         train_fn: Callable = default_train,
+        policy_kl_fn: Callable = default_policy_kl,
         sim_model=None,
         measure_drift: bool = True,
+        measure_compliance: bool = True,
+        measure_policy_kl: bool = True,
     ):
         if algorithm not in ALGORITHMS:
             raise ValueError(f"unknown algorithm: {algorithm!r} {ALGORITHMS}")
@@ -111,7 +138,10 @@ class LoopRunner:
         self.generate_fn = generate_fn
         self.score_fn = score_fn
         self.train_fn = train_fn
+        self.policy_kl_fn = policy_kl_fn
         self.measure_drift = measure_drift
+        self.measure_compliance = measure_compliance
+        self.measure_policy_kl = measure_policy_kl
         self._sim_model = sim_model
         self._baselines: Dict[int, Dict] = {}
 
@@ -244,6 +274,21 @@ class LoopRunner:
             baselines = None if round_index == 0 else self.baselines(run_id)
             records = report.attach_drift(records, self.sim_model(), baselines)
 
+        if self.measure_compliance:
+            # did it still do what the prompt asked? The placeholder checks are
+            # free; cos_subject needs SBERT, so it rides along only when drift
+            # has already paid for the model.
+            records = report.attach_compliance(
+                records, self.prompts, self.sim_model() if self.measure_drift else None
+            )
+
+        if self.measure_policy_kl:
+            # How far this round's policy has moved from the SFT baseline, on
+            # the text it just produced. Always anchored to SFT whatever the
+            # training-time ref_mode was, so rounds and ref_modes are on one
+            # axis. Skipped for round 0, whose policy *is* the anchor.
+            records = self.policy_kl_fn(records, checkpoint, self.sft_path)
+
         self.store.add_messages(run_id, round_index, records, checkpoint=checkpoint_doc)
         return records, checkpoint_doc
 
@@ -340,15 +385,17 @@ class LoopRunner:
         # reload lazily when the next round scores.
         self.free_auxiliary_models()
 
-        checkpoint = self.train_fn(
-            self.algorithm,
-            base,
-            dataset_path,
-            self.checkpoint_dir(run_id, round_index),
-            self.ref_mode,
-            self.sft_path,
-            self.epochs,
-            self.seed,
+        checkpoint, training_stats = unpack_train_result(
+            self.train_fn(
+                self.algorithm,
+                base,
+                dataset_path,
+                self.checkpoint_dir(run_id, round_index),
+                self.ref_mode,
+                self.sft_path,
+                self.epochs,
+                self.seed,
+            )
         )
 
         # The trainers clean up before returning, but their frame is only gone
@@ -367,7 +414,7 @@ class LoopRunner:
             checkpoint_hash=checkpoint_doc.get("weights_hash"),
             ref_mode=self.ref_mode,
             generation=self._generation_config(),
-            training=self._training_config(),
+            training={**self._training_config(), **training_stats},
             dataset=self.store.dataset_ref(pool),
             # denormalised so a trajectory reads without a second query; the
             # dataset document is the authority, and it never changes

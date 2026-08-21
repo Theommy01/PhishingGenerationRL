@@ -165,8 +165,10 @@ def mean_ai_probabilities(df: pd.DataFrame) -> pd.Series:
 # Semantic coherence (SBERT)
 # =============================================================================
 
-# Temperature applied to the embeddings before softmax, for the KL divergence.
-KL_TEMPERATURE = 0.1
+# Temperature applied to the embedding coordinates before the softmax in
+# `embedding_distance`. At 0.1 the softmax is dominated by the largest few
+# coordinates, so the measure is sensitive to which dimensions lead.
+EMBED_TEMPERATURE = 0.1
 SIMILARITY_MODEL_NAME = "all-MiniLM-L6-v2"
 
 
@@ -197,10 +199,27 @@ def cosine_similarity(embedding_a, embedding_b) -> float:
     return F.cosine_similarity(embedding_a, embedding_b, dim=-1).item() * 100
 
 
-def kl_divergence(
-    embedding, reference_embedding, temperature: float = KL_TEMPERATURE
+def embedding_distance(
+    embedding, reference_embedding, temperature: float = EMBED_TEMPERATURE
 ) -> float:
-    """KL divergence of `embedding` from `reference_embedding`."""
+    """Distance between two sentence embeddings, via a softmax over coordinates.
+
+    **This is not a KL divergence between language distributions, and it is not
+    the RLHF/KTO penalty term**, though it used to be called `kl_divergence`,
+    with columns `*_KL_Div`. It softmaxes the 384 coordinates of a SBERT vector and
+    feeds the result to `F.kl_div`. Embedding dimensions are arbitrary basis
+    directions, not outcomes, so the softmax is not a distribution over
+    anything: the number is a distance that grows as embeddings differ, nothing
+    more. At temperature 0.1 it is dominated by the largest coordinates.
+
+    Kept because earlier runs and figures report it, and because as a *relative*
+    signal across rounds it still moves with semantic drift. For the real thing
+    — KL between the policy and the reference over token distributions — see
+    `policy_kl.py`, and the `kl` KTO logs during training.
+
+    The legacy wide report keeps its `*_KL_Div` column names, since those files
+    are already on disk; the loop's own columns are `embed_dist_*`.
+    """
     import torch.nn.functional as F
 
     log_prob = F.log_softmax(embedding / temperature, dim=-1)
@@ -216,9 +235,12 @@ def clean_prompt(prompt: str) -> str:
 def add_semantic_columns(
     df: pd.DataFrame,
     sim_model=None,
-    temperature: float = KL_TEMPERATURE,
+    temperature: float = EMBED_TEMPERATURE,
 ) -> pd.DataFrame:
-    """Add the cosine/KL columns for SFT, BCO and KTO to an evaluation report.
+    """Add the cosine and embedding-distance columns for SFT, BCO and KTO.
+
+    The column names stay `*_KL_Div` because the reports already on disk use
+    them; the quantity is `embedding_distance`, which is not a KL divergence.
 
     Each model is compared against the prompt, and BCO/KTO additionally against
     SFT. Expects `prompt`, `SFT_Text`, `BCO_Text`, `KTO_Text`.
@@ -243,11 +265,11 @@ def add_semantic_columns(
 
         for name, emb in (("SFT", emb_sft), ("BCO", emb_bco), ("KTO", emb_kto)):
             cos[name].append(cosine_similarity(emb_prompt, emb))
-            kl[name].append(kl_divergence(emb, emb_prompt, temperature))
+            kl[name].append(embedding_distance(emb, emb_prompt, temperature))
 
         for name, emb in (("SFT_vs_BCO", emb_bco), ("SFT_vs_KTO", emb_kto)):
             cos[name].append(cosine_similarity(emb_sft, emb))
-            kl[name].append(kl_divergence(emb, emb_sft, temperature))
+            kl[name].append(embedding_distance(emb, emb_sft, temperature))
 
     for name in ("SFT", "BCO", "KTO"):
         df[f"{name}_Cosine_Sim"] = cos[name]
@@ -263,11 +285,11 @@ def compare_against_baseline(
     baseline_texts: List[str],
     candidate_texts: List[str],
     sim_model=None,
-    temperature: float = KL_TEMPERATURE,
+    temperature: float = EMBED_TEMPERATURE,
 ):
-    """Cosine similarity and KL divergence of each candidate against its baseline.
+    """Cosine similarity and embedding distance of each candidate vs its baseline.
 
-    Returns (cosine percentages, KL divergences), one entry per pair.
+    Returns (cosine percentages, embedding distances), one entry per pair.
     """
     if sim_model is None:
         sim_model = get_similarity_model()
@@ -277,6 +299,6 @@ def compare_against_baseline(
         emb_baseline = sim_model.encode([baseline_text], convert_to_tensor=True)[0]
         emb_candidate = sim_model.encode([candidate_text], convert_to_tensor=True)[0]
         cosines.append(cosine_similarity(emb_baseline, emb_candidate))
-        divergences.append(kl_divergence(emb_candidate, emb_baseline, temperature))
+        divergences.append(embedding_distance(emb_candidate, emb_baseline, temperature))
 
     return cosines, divergences

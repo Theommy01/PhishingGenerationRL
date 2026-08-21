@@ -17,12 +17,12 @@ import pandas as pd
 
 from metrics import config
 from metrics.models import (
-    KL_TEMPERATURE,
+    EMBED_TEMPERATURE,
     add_semantic_columns,
     compare_against_baseline,
     cosine_similarity,
     get_similarity_model,
-    kl_divergence,
+    embedding_distance,
 )
 from ScamLabeller import get_scam_labeller
 
@@ -255,7 +255,7 @@ def _generate_and_score(
     urls: bool,
     sim_model,
     reference_embedding,
-    temperature: float = KL_TEMPERATURE,
+    temperature: float = EMBED_TEMPERATURE,
     gen_args: Optional[dict] = None,
 ):
     """Generate one email, score it, measure it against a reference embedding.
@@ -289,7 +289,7 @@ def _generate_and_score(
             else 0.0
         )
         kl = (
-            kl_divergence(embedding, reference_embedding, temperature)
+            embedding_distance(embedding, reference_embedding, temperature)
             if reference_embedding is not None
             else 0.0
         )
@@ -309,7 +309,7 @@ def run_adversarial_pipeline(
     path_bco: str = config.PATH_BCO,
     path_kto: str = config.PATH_KTO,
     sim_model=None,
-    temperature: float = KL_TEMPERATURE,
+    temperature: float = EMBED_TEMPERATURE,
     gen_args: Optional[dict] = None,
     threshold: float = config.SAFE_THRESHOLD,
     verbose: bool = True,

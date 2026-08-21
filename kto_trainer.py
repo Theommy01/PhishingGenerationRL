@@ -11,7 +11,7 @@ from trl import KTOConfig, KTOTrainer
 from datasets import Dataset
 
 from metrics import config
-from reference_model import attach_reference
+from reference_model import attach_reference, training_stats
 
 torch.cuda.empty_cache()
 gc.collect()
@@ -143,6 +143,13 @@ def train_kto(
     print("\nStarting KTO training...")
     trainer.train()
 
+    stats = training_stats(trainer.state.log_history)
+    if "kl_mean" in stats:
+        print(
+            f"  KL(policy || reference): mean {stats['kl_mean']:.4f}, "
+            f"final {stats['kl_final']:.4f}, max {stats['kl_max']:.4f}"
+        )
+
     print(f"\nSaving FINAL KTO model in: {save_dir}")
     # Only the policy adapter. With a reference attached, peft would otherwise
     # save every adapter, leaving a stray reference/ copy of the anchor inside
@@ -162,6 +169,7 @@ def train_kto(
     config.free_vram()
 
     print("KTO Training done.")
+    return stats
 
 
 if __name__ == "__main__":

@@ -5,17 +5,18 @@ cumulative pool — history would dilute the signal and make each round's
 improvement look smaller than it is. The cumulative pool is for training only.
 """
 
+import re
 from typing import Dict, List, Optional
 
 import pandas as pd
 
 from metrics import config
 from metrics.models import (
-    KL_TEMPERATURE,
+    EMBED_TEMPERATURE,
     clean_prompt,
     cosine_similarity,
+    embedding_distance,
     get_similarity_model,
-    kl_divergence,
 )
 
 
@@ -53,11 +54,11 @@ def baseline_embeddings(messages: List[Dict], sim_model=None) -> Dict[int, "obje
 
 
 def _drift_against(body_emb, reference_embs, temperature: float, reduction: str):
-    """Cosine and KL of one message against a prompt's round-0 samples.
+    """Cosine and embedding distance of one message against round-0 samples.
 
     reduction="pairwise" computes the metric against each baseline sample and
     averages the metrics — the aggregation happens after the metric, so a
-    non-linear divergence like KL stays interpretable.
+    non-linear measure stays interpretable.
 
     reduction="centroid" averages the embeddings first and compares once. It is
     cheaper but not equivalent: mean(cos(x, y_j)) != cos(x, mean(y_j)).
@@ -72,14 +73,14 @@ def _drift_against(body_emb, reference_embs, temperature: float, reduction: str)
         centroid = torch.stack(references).mean(dim=0)
         return (
             cosine_similarity(centroid, body_emb),
-            kl_divergence(body_emb, centroid, temperature),
+            embedding_distance(body_emb, centroid, temperature),
         )
 
     if reduction != "pairwise":
         raise ValueError(f"unknown reduction: {reduction!r} (pairwise | centroid)")
 
     cosines = [cosine_similarity(ref, body_emb) for ref in references]
-    divergences = [kl_divergence(body_emb, ref, temperature) for ref in references]
+    divergences = [embedding_distance(body_emb, ref, temperature) for ref in references]
     return sum(cosines) / len(cosines), sum(divergences) / len(divergences)
 
 
@@ -87,10 +88,10 @@ def attach_drift(
     records: List[Dict],
     sim_model=None,
     baselines: Optional[Dict[int, "object"]] = None,
-    temperature: float = KL_TEMPERATURE,
+    temperature: float = EMBED_TEMPERATURE,
     reduction: str = "pairwise",
 ) -> List[Dict]:
-    """Add cosine/KL against the prompt, and against round 0, to each message.
+    """Add cosine and embedding distance vs the prompt and vs round 0.
 
     Every metric is per message; round-level figures are the mean of these.
     Mutates and returns the records. `baselines` is omitted for round 0, whose
@@ -108,15 +109,107 @@ def attach_drift(
 
     for record, body_emb, prompt_emb in zip(records, bodies, prompts):
         record["cos_prompt"] = cosine_similarity(prompt_emb, body_emb)
-        record["kl_prompt"] = kl_divergence(body_emb, prompt_emb, temperature)
+        record["embed_dist_prompt"] = embedding_distance(body_emb, prompt_emb, temperature)
 
         if baselines is not None:
             references = baselines.get(record["prompt_id"])
             if references is not None:
-                cos, kl = _drift_against(body_emb, references, temperature, reduction)
+                cos, distance = _drift_against(body_emb, references, temperature, reduction)
                 if cos is not None:
                     record["cos_baseline"] = cos
-                    record["kl_baseline"] = kl
+                    record["embed_dist_baseline"] = distance
+
+    return records
+
+
+# =============================================================================
+# Instruction following
+#
+# The prompt asks for four things: a subject to write about, whether to include
+# a URL, whether to reference an attachment, and a sentiment. Three of those are
+# checkable against the message itself, which is what this section does — the
+# question being whether the policy trades instruction-following away for
+# evasion as the rounds go on.
+#
+# `cos_prompt` does not answer it: it compares the body against the whole
+# rendered prompt, including the `urls:`/`attachments:`/`sentiment:` lines,
+# which are near-identical across all 150 prompts and dilute the signal.
+# `cos_subject` compares against the subject line alone.
+# =============================================================================
+
+# The corpus is entity-anonymised, so the model was trained to emit placeholder
+# tokens rather than real values: <URL>, <ATTACHMENT>, <ORG>, <PER>, <EMAIL>,
+# <DATE>, <LOC>, <PHONE>. Following the `urls: True` instruction therefore means
+# emitting <URL>, not writing out a link — matching real URLs would score every
+# compliant message as a failure.
+URL_PLACEHOLDER = re.compile(r"<URL[^>]*>", re.IGNORECASE)
+ATTACHMENT_PLACEHOLDER = re.compile(r"<ATTACH(?:MENT)?[^>]*>", re.IGNORECASE)
+
+# A literal link is *off*-distribution here: the training data contains none, so
+# one appearing means the policy has drifted away from the corpus's conventions.
+# Tracked separately from compliance, as a format signal rather than a failure.
+LITERAL_URL = re.compile(r"(https?://\S+|www\.\S+)", re.IGNORECASE)
+
+
+def has_url(text: str) -> bool:
+    """Whether the body carries a <URL> placeholder."""
+    return bool(URL_PLACEHOLDER.search(text or ""))
+
+
+def mentions_attachment(text: str) -> bool:
+    """Whether the body carries an <ATTACHMENT> placeholder."""
+    return bool(ATTACHMENT_PLACEHOLDER.search(text or ""))
+
+
+def has_literal_url(text: str) -> bool:
+    return bool(LITERAL_URL.search(text or ""))
+
+
+def attach_compliance(
+    records: List[Dict], prompts: List[Dict], sim_model=None
+) -> List[Dict]:
+    """Add per-message instruction-following columns.
+
+        url_requested / url_present / url_ok
+        attachment_requested / attachment_present / attachment_ok
+        url_literal     a real link instead of the <URL> placeholder
+        cos_subject     body against the subject line alone
+
+    Presence means the *placeholder* the corpus uses, `<URL>` / `<ATTACHMENT>`;
+    see the patterns above. `*_ok` is two-sided: asking for no URL and getting
+    one is as much a failure to follow the prompt as the reverse. Mutates and
+    returns the records.
+    """
+    if not records:
+        return records
+
+    # The placeholder checks are pure string work. `sim_model=None` means skip
+    # cos_subject and do only those, so --no-drift can mean "no SBERT" without
+    # also meaning "no instruction-following check".
+    if sim_model is None:
+        subject_embs = body_embs = [None] * len(records)
+    else:
+        subjects = [prompts[record["prompt_id"]]["subject"] for record in records]
+        subject_embs = sim_model.encode(subjects, convert_to_tensor=True)
+        body_embs = sim_model.encode([r["body"] for r in records], convert_to_tensor=True)
+
+    for record, subject_emb, body_emb in zip(records, subject_embs, body_embs):
+        spec = prompts[record["prompt_id"]]
+
+        url_present = has_url(record["body"])
+        attachment_present = mentions_attachment(record["body"])
+
+        record["url_requested"] = bool(spec["urls"])
+        record["url_present"] = url_present
+        record["url_ok"] = url_present == bool(spec["urls"])
+
+        record["attachment_requested"] = bool(spec["attachments"])
+        record["attachment_present"] = attachment_present
+        record["attachment_ok"] = attachment_present == bool(spec["attachments"])
+        record["url_literal"] = has_literal_url(record["body"])
+
+        if subject_emb is not None:
+            record["cos_subject"] = cosine_similarity(subject_emb, body_emb)
 
     return records
 
@@ -144,6 +237,18 @@ def round_metrics(messages: List[Dict], threshold: float = config.SAFE_THRESHOLD
         values = [m[key] for m in messages if m.get(key) is not None]
         return sum(values) / len(values) if values else None
 
+    def rate_of(key):
+        """Percentage of messages where a boolean check passed."""
+        values = [m[key] for m in messages if m.get(key) is not None]
+        return sum(values) / len(values) * 100 if values else None
+
+    def percentile_of(key, fraction):
+        """The tail a mean hides — one message diverging hard is the interesting case."""
+        values = sorted(m[key] for m in messages if m.get(key) is not None)
+        if not values:
+            return None
+        return values[min(int(fraction * len(values)), len(values) - 1)]
+
     return {
         "messages": len(messages),
         "prompts": len(by_prompt),
@@ -152,9 +257,17 @@ def round_metrics(messages: List[Dict], threshold: float = config.SAFE_THRESHOLD
         "asr_at_n": sum(any(v) for v in by_prompt.values()) / len(by_prompt) * 100,
         "duplicates": len(bodies) - len(set(bodies)),
         "cos_prompt": mean_of("cos_prompt"),
-        "kl_prompt": mean_of("kl_prompt"),
+        "embed_dist_prompt": mean_of("embed_dist_prompt"),
         "cos_baseline": mean_of("cos_baseline"),
-        "kl_baseline": mean_of("kl_baseline"),
+        "embed_dist_baseline": mean_of("embed_dist_baseline"),
+        # instruction following
+        "cos_subject": mean_of("cos_subject"),
+        "url_compliance": rate_of("url_ok"),
+        "attachment_compliance": rate_of("attachment_ok"),
+        # KL from the SFT baseline, on this round's own text
+        "kl_per_token": mean_of("kl_per_token"),
+        "kl_k3_per_token": mean_of("kl_k3_per_token"),
+        "kl_p95": percentile_of("kl_per_token", 0.95),
     }
 
 
@@ -185,10 +298,18 @@ def trajectory(store, run_id: int) -> pd.DataFrame:
                 "mean_score": metrics.get("mean_score"),
                 "evasion_rate": metrics.get("evasion_rate"),
                 "asr_at_n": metrics.get("asr_at_n"),
+                # has it moved? (KL from the SFT baseline on this round's text)
+                "kl_per_token": metrics.get("kl_per_token"),
+                "kl_p95": metrics.get("kl_p95"),
+                "train_kl": (record.get("training") or {}).get("kl_mean"),
+                # does it still follow the prompt?
+                "cos_subject": metrics.get("cos_subject"),
+                "url_ok": metrics.get("url_compliance"),
+                "attach_ok": metrics.get("attachment_compliance"),
                 # semantic drift
                 "cos_prompt": metrics.get("cos_prompt"),
                 "cos_baseline": metrics.get("cos_baseline"),
-                "kl_baseline": metrics.get("kl_baseline"),
+                "embed_dist_baseline": metrics.get("embed_dist_baseline"),
                 "duplicates": metrics.get("duplicates"),
             }
         )

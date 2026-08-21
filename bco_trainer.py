@@ -9,7 +9,7 @@ from trl import BCOConfig, BCOTrainer
 from datasets import Dataset
 
 from metrics import config
-from reference_model import attach_reference
+from reference_model import attach_reference, training_stats
 
 torch.cuda.empty_cache()
 gc.collect()
@@ -105,6 +105,12 @@ def train_bco(
     print("\nStarting BCO training...")
     trainer.train()
 
+    # BCO's loss has no per-step KL for TRL to log — its formulation matches an
+    # underlying distribution rather than penalising a divergence — so these
+    # stats carry the losses only. `policy_kl.py` measures the divergence for
+    # BCO rounds instead, on the text the round generated.
+    stats = training_stats(trainer.state.log_history)
+
     print(f"\nSaving FINAL BCO model in: {save_dir}")
     # Only the policy adapter. With a reference attached, peft would otherwise
     # save every adapter, leaving a stray reference/ copy of the anchor inside
@@ -124,6 +130,7 @@ def train_bco(
     config.free_vram()
 
     print("BCO Training done.")
+    return stats
 
 
 if __name__ == "__main__":

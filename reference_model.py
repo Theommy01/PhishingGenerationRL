@@ -95,3 +95,25 @@ def attach_reference(model, ref_mode: str, base_model: str, sft_path: str) -> di
         "model_adapter_name": policy_adapter,
         "ref_adapter_name": REF_ADAPTER_NAME,
     }
+
+
+def training_stats(log_history) -> dict:
+    """Summarise a finished run's log history, KL included where TRL logs one.
+
+    KTO logs `kl` every step: the KL between the policy and the reference
+    logprobs, i.e. the penalty term the algorithm is actually applying. It is
+    thrown away when the trainer object goes out of scope unless it is pulled
+    out here, so the loop records it on the round.
+    """
+    steps = [entry for entry in log_history if "loss" in entry]
+    kls = [entry["kl"] for entry in log_history if "kl" in entry]
+
+    stats = {"steps": len(steps)}
+    if steps:
+        stats["loss_first"] = steps[0]["loss"]
+        stats["loss_final"] = steps[-1]["loss"]
+    if kls:
+        stats["kl_mean"] = sum(kls) / len(kls)
+        stats["kl_final"] = kls[-1]
+        stats["kl_max"] = max(kls)
+    return stats

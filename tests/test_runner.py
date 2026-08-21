@@ -45,9 +45,18 @@ def stubs(make_checkpoint):
             with open(dataset_path) as handle:
                 rows = len(handle.read().strip().splitlines())
             self.calls.append(("train", algorithm, base, rows, epochs, seed))
-            return make_checkpoint(
+            checkpoint = make_checkpoint(
                 output_dir.rsplit("/", 1)[-1], weights=f"{seed}:{rows}:{base}".encode()
             )
+            # what TRL's log history summarises to, for KTO
+            return checkpoint, {"steps": rows, "loss_final": 0.5, "kl_mean": 0.02 * rows}
+
+        def policy_kl(self, records, checkpoint_path, reference_path):
+            self.calls.append(("policy_kl", checkpoint_path, reference_path))
+            for index, record in enumerate(records):
+                record["kl_per_token"] = 0.01 * (index + 1)
+                record["kl_k3_per_token"] = 0.005 * (index + 1)
+            return records
 
     return Stubs()
 
@@ -63,6 +72,7 @@ def runner_for(store, prompts, stubs):
             generate_fn=stubs.generate,
             score_fn=stubs.score,
             train_fn=stubs.train,
+            policy_kl_fn=stubs.policy_kl,
             measure_drift=False,
             sft_path=stubs.sft,
         )
@@ -156,7 +166,48 @@ def test_the_seed_reaches_the_trainer_and_the_round(store, runner_for, stubs):
 
     trained = [call for call in stubs.calls if call[0] == "train"][0]
     assert trained[4:] == (2, 4242)
-    assert store.get_round(run_id, 1)["training"] == {"epochs": 2, "seed": 4242}
+    training = store.get_round(run_id, 1)["training"]
+    assert training["epochs"] == 2 and training["seed"] == 4242
+
+
+def test_the_training_kl_is_captured_on_the_round(store, runner_for):
+    """TRL logs it every step and then drops it; the round keeps it."""
+    run_id = runner_for().run(rounds=1)
+
+    training = store.get_round(run_id, 1)["training"]
+    assert training["kl_mean"] == pytest.approx(0.02 * 8)
+    assert training["loss_final"] == 0.5
+    assert training["steps"] == 8
+
+
+def test_a_train_fn_returning_only_a_path_still_works(store, runner_for, make_checkpoint):
+    """The stats are an addition; an older train_fn must not break."""
+
+    def legacy_train(algorithm, base, dataset_path, output_dir, ref_mode, sft_path, epochs, seed):
+        return make_checkpoint(output_dir.rsplit("/", 1)[-1], weights=b"legacy")
+
+    run_id = runner_for(train_fn=legacy_train).run(rounds=1)
+
+    training = store.get_round(run_id, 1)["training"]
+    assert training == {"epochs": 3, "seed": 3407}
+
+
+def test_policy_kl_is_measured_against_the_sft_baseline(store, runner_for, stubs):
+    """Anchored to SFT whatever ref_mode training used, so rounds compare."""
+    run_id = runner_for(ref_mode="previous").run(rounds=2)
+
+    calls = [call for call in stubs.calls if call[0] == "policy_kl"]
+    assert [call[2] for call in calls] == [stubs.sft, stubs.sft, stubs.sft]
+
+    messages = store.get_messages(run_id, round_index=2, with_subject=False)
+    assert all(m["kl_per_token"] is not None for m in messages)
+    assert store.get_round(run_id, 2)["metrics"]["kl_per_token"] is not None
+
+
+def test_policy_kl_can_be_turned_off(store, runner_for, stubs):
+    runner_for(measure_policy_kl=False).run(rounds=1)
+
+    assert not [call for call in stubs.calls if call[0] == "policy_kl"]
 
 
 def test_every_round_records_how_it_generated(store, runner_for):
