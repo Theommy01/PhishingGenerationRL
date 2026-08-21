@@ -68,6 +68,13 @@ DEFAULT_URI = "mongodb://localhost:27017/"
 DEFAULT_DB = "phishnet_rl"
 
 SUBJECTS_COLLECTION = "subjects"
+
+# Every message belongs to one of two splits. Held-out prompts are generated and
+# scored each round exactly like the training ones and never enter the pool, so
+# a rise in evasion on them is evasion for subjects the policy never trained on
+# — which is what separates learning to evade from memorising 150 subjects.
+TRAIN_SPLIT = "train"
+HOLDOUT_SPLIT = "holdout"
 DATASETS_COLLECTION = "datasets"
 CHECKPOINTS_COLLECTION = "checkpoints"
 
@@ -306,6 +313,9 @@ class LoopStore:
             [("run_id", ASCENDING), ("round", ASCENDING)], unique=True
         )
         self.messages.create_index([("run_id", ASCENDING), ("round", ASCENDING)])
+        self.messages.create_index(
+            [("run_id", ASCENDING), ("split", ASCENDING), ("round", ASCENDING)]
+        )
         self.messages.create_index([("run_id", ASCENDING), ("prompt_id", ASCENDING)])
         # DBRefs index on their $id subfield; this is the "every message ever
         # generated from this subject" query, across runs.
@@ -652,6 +662,7 @@ class LoopStore:
         records: Iterable[Dict],
         checkpoint=None,
         added_at: Optional[datetime] = None,
+        split: str = TRAIN_SPLIT,
     ) -> int:
         """Store this round's generated + scored messages. Returns the count.
 
@@ -696,6 +707,8 @@ class LoopStore:
             doc["run_id"] = run_id
             doc["round"] = round_index
             doc["added_at"] = stamp
+            # a record may carry its own split; the argument is the default
+            doc["split"] = doc.get("split") or split
             if checkpoint_ref is not None:
                 doc["checkpoint"] = checkpoint_ref
                 doc["checkpoint_hash"] = checkpoint_doc.get("weights_hash")
@@ -719,6 +732,7 @@ class LoopStore:
         round_index: Optional[int] = None,
         max_round: Optional[int] = None,
         with_subject: bool = True,
+        split: Optional[str] = None,
     ) -> List[Dict]:
         """Messages for a run.
 
@@ -737,6 +751,8 @@ class LoopStore:
             query["round"] = round_index
         elif max_round is not None:
             query["round"] = {"$lte": max_round}
+        if split is not None:
+            query["split"] = split
 
         messages = list(self.messages.find(query, {"_id": 0}).sort("round", ASCENDING))
         return self.attach_subjects(messages) if with_subject else messages
@@ -778,8 +794,13 @@ class LoopStore:
     # -- datasets -----------------------------------------------------------
 
     def pool_query(self, run_id: int, max_round: int) -> Dict[str, Any]:
-        """The query behind the cumulative training pool, as a dataset spec."""
-        return {"run_id": run_id, "round": {"$lte": max_round}}
+        """The query behind the cumulative training pool, as a dataset spec.
+
+        Restricted to the training split: held-out messages are scored every
+        round but must never reach a trainer, and putting that in the query
+        means the dataset's own definition carries the guarantee.
+        """
+        return {"run_id": run_id, "round": {"$lte": max_round}, "split": TRAIN_SPLIT}
 
     def materialise(
         self,
@@ -930,11 +951,22 @@ class LoopStore:
         return self.materialise(self.pool_query(run_id, max_round), as_of)["rows"]
 
     def label_counts(
-        self, run_id: int, max_round: Optional[int] = None, round_index: Optional[int] = None
+        self,
+        run_id: int,
+        max_round: Optional[int] = None,
+        round_index: Optional[int] = None,
+        split: Optional[str] = TRAIN_SPLIT,
     ) -> Dict[str, int]:
-        """Desirable/undesirable counts, for the KTO class weights."""
+        """Desirable/undesirable counts, for the KTO class weights.
+
+        Defaults to the training split, since the weights describe the pool.
+        """
         messages = self.get_messages(
-            run_id, round_index=round_index, max_round=max_round, with_subject=False
+            run_id,
+            round_index=round_index,
+            max_round=max_round,
+            with_subject=False,
+            split=split,
         )
         desirable = sum(1 for m in messages if m["label"])
         return {

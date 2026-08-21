@@ -26,7 +26,7 @@ specs is checked on every round as a second guard.
 import argparse
 import sys
 
-from generate_dataset import DEFAULT_PROMPTS_PATH, load_prompts
+from generate_dataset import DECODING_PRESETS, DEFAULT_PROMPTS_PATH, load_prompts
 from loop import report
 from loop.runner import ALGORITHMS, REF_MODES, LoopRunner
 from loop.store import LoopStore
@@ -62,6 +62,28 @@ def parse_args(argv=None):
             "anchors to the raw pretrained Llama as the notebook did"
         ),
     )
+    parser.add_argument(
+        "--holdout",
+        type=int,
+        default=0,
+        metavar="N",
+        help=(
+            "hold out N prompts, spread evenly through the file so the category "
+            "and generator mix is preserved. They are generated and scored every "
+            "round but never trained on, so their evasion rate says whether the "
+            "policy generalises or has memorised the training subjects"
+        ),
+    )
+    parser.add_argument(
+        "--decoding",
+        choices=DECODING_PRESETS,
+        default="default",
+        help=(
+            "decoding preset: 'default' samples at temperature 0.9, 'sampling' "
+            "at 0.7, 'greedy' is deterministic and only valid at --n-samples 1. "
+            "The resolved arguments are stored on every message"
+        ),
+    )
     parser.add_argument("--rounds", type=int, default=1, help="training rounds to run")
     parser.add_argument(
         "--n-samples", type=int, default=4, help="messages generated per prompt"
@@ -83,7 +105,10 @@ def parse_args(argv=None):
         help="checkpoint round 0 generates from, and the 'sft' KL anchor",
     )
     parser.add_argument(
-        "--max-new-tokens", type=int, default=256, help="generation length cap"
+        "--max-new-tokens",
+        type=int,
+        default=None,
+        help="override the preset's generation length cap",
     )
     parser.add_argument(
         "--greedy",
@@ -157,23 +182,52 @@ def main(argv=None) -> int:
             return 1
         return 0
 
+    def take_holdout(specs, count):
+        """Pull `count` prompts out, spread evenly through the list.
+
+        prompts.json is ordered by category and then generator, so taking a
+        contiguous slice would hold out one category only. Even spacing keeps
+        both mixes close to the training split's.
+        """
+        if not count:
+            return specs, []
+        count = min(count, len(specs) - 1)
+        stride = len(specs) / count
+        held_at = {int(i * stride) for i in range(count)}
+        keep = [spec for i, spec in enumerate(specs) if i not in held_at]
+        held = [spec for i, spec in enumerate(specs) if i in held_at]
+        return keep, held
+
     if args.resume is not None:
         # a resumed run generates from the subjects it was created with, so it
         # keeps measuring what it started measuring whatever prompts.json says now
         if store.get_run(args.resume) is None:
             print(f"no such run: {args.resume}", file=sys.stderr)
             return 1
-        prompts = store.run_prompts(args.resume)
-        print(f"resuming run {args.resume} from its {len(prompts)} stored subjects")
+        stored = store.run_prompts(args.resume)
+        held_count = (store.get_run(args.resume).get("config") or {}).get(
+            "holdout_prompts", 0
+        )
+        # the run's subject list is training prompts first, held out after
+        prompts = stored[: len(stored) - held_count] if held_count else stored
+        holdout = stored[len(stored) - held_count :] if held_count else []
+        print(
+            f"resuming run {args.resume} from its {len(stored)} stored subjects "
+            f"({len(holdout)} held out)"
+        )
     else:
         prompts = load_prompts(args.prompts)
+        prompts, holdout = take_holdout(prompts, args.holdout)
         if args.limit is not None:
             prompts = prompts[: args.limit]
         if not prompts:
             print(f"no prompts in {args.prompts}", file=sys.stderr)
             return 1
 
-    gen_args = {"max_new_tokens": args.max_new_tokens, "do_sample": not args.greedy}
+    decoding = "greedy" if args.greedy else args.decoding
+    gen_args = {}
+    if args.max_new_tokens is not None:
+        gen_args["max_new_tokens"] = args.max_new_tokens
 
     # LoopRunner validates the decoding/n_samples combination up front, so a
     # bad one is a usage error to report plainly rather than a traceback.
@@ -185,6 +239,8 @@ def main(argv=None) -> int:
             ref_mode=args.ref_mode,
             n_samples=args.n_samples,
             gen_args=gen_args,
+            decoding=decoding,
+            holdout=holdout,
             epochs=args.epochs,
             seed=args.seed,
             sft_path=args.sft_path,
@@ -196,10 +252,11 @@ def main(argv=None) -> int:
         return 2
 
     print(
-        f"{args.algorithm.upper()} / ref_mode={args.ref_mode} / "
-        f"{len(prompts)} prompts x {args.n_samples} samples / "
-        f"{args.rounds} round(s)"
+        f"{args.algorithm.upper()} / ref_mode={args.ref_mode} / decoding={decoding} / "
+        f"{len(prompts)} prompts (+{len(holdout)} held out) x {args.n_samples} "
+        f"samples / {args.rounds} round(s)"
     )
+    print(f"decoding args: {runner.gen_args}")
 
     run_id = runner.run(rounds=args.rounds, run_id=args.resume)
     print(f"\nrun_id {run_id} — re-inspect with: python run_loop.py --report {run_id}")

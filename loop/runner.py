@@ -14,7 +14,7 @@ from typing import Callable, Dict, List, Optional
 
 from metrics import config
 from loop import report
-from loop.store import LoopStore
+from loop.store import HOLDOUT_SPLIT, TRAIN_SPLIT, LoopStore
 
 ALGORITHMS = ("bco", "kto")
 from training.reference_model import REF_MODES  # ("sft", "previous", "base")
@@ -104,6 +104,7 @@ class LoopRunner:
         self,
         prompts: List[Dict],
         store: Optional[LoopStore] = None,
+        holdout: Optional[List[Dict]] = None,
         algorithm: str = "kto",
         ref_mode: str = "sft",
         n_samples: int = 4,
@@ -128,6 +129,11 @@ class LoopRunner:
             raise ValueError(f"unknown ref_mode: {ref_mode!r} {REF_MODES}")
 
         self.prompts = prompts
+        self.holdout = list(holdout or [])
+        # One subject list per run, training prompts first: `prompt_id` indexes
+        # into this, so a held-out prompt's id is its position after the offset
+        # and the two splits share one unambiguous id space.
+        self.all_prompts = list(prompts) + self.holdout
         self.store = store or LoopStore()
         self.algorithm = algorithm
         self.ref_mode = ref_mode
@@ -224,6 +230,7 @@ class LoopRunner:
         """
         return {
             "decoding": self.decoding,
+            "holdout_prompts": len(self.holdout),
             "gen_args": self.gen_args,
             "n_samples": self.n_samples,
             "threshold": self.threshold,
@@ -271,6 +278,21 @@ class LoopRunner:
         checkpoint_doc = self.store.upsert_checkpoint(checkpoint, produced_by=produced_by)
 
         records = self.generate_fn(checkpoint, self.prompts, self.gen_args, self.n_samples)
+        for record in records:
+            record["split"] = TRAIN_SPLIT
+
+        if self.holdout:
+            # Same checkpoint, same decoding, same scoring — the only difference
+            # is that these never reach the training pool.
+            held = self.generate_fn(
+                checkpoint, self.holdout, self.gen_args, self.n_samples
+            )
+            offset = len(self.prompts)
+            for record in held:
+                record["prompt_id"] += offset
+                record["split"] = HOLDOUT_SPLIT
+            records = records + held
+
         records = self.score_fn(records, self.threshold)
 
         if self.measure_drift:
@@ -283,7 +305,7 @@ class LoopRunner:
             # free; cos_subject needs SBERT, so it rides along only when drift
             # has already paid for the model.
             records = report.attach_compliance(
-                records, self.prompts, self.sim_model() if self.measure_drift else None
+                records, self.all_prompts, self.sim_model() if self.measure_drift else None
             )
 
         if self.measure_policy_kl:
@@ -325,18 +347,31 @@ class LoopRunner:
         return path, dataset
 
     def evaluate_round(self, run_id: int, round_index: int) -> Dict:
+        """Metrics for the round, computed separately for each split.
+
+        Kept apart rather than pooled: the training split says how well the
+        policy does on subjects it has trained on, the held-out split whether
+        that generalises, and averaging them together would hide the gap that
+        is the whole point of having two.
+        """
         messages = self.store.get_messages(
             run_id, round_index=round_index, with_subject=False
         )
-        metrics = report.round_metrics(messages, self.threshold)
-        self.store.record_round(run_id, round_index, metrics=metrics)
+        train = [m for m in messages if m.get("split", TRAIN_SPLIT) == TRAIN_SPLIT]
+        held = [m for m in messages if m.get("split") == HOLDOUT_SPLIT]
+
+        metrics = report.round_metrics(train, self.threshold)
+        holdout_metrics = report.round_metrics(held, self.threshold) if held else None
+        self.store.record_round(
+            run_id, round_index, metrics=metrics, holdout_metrics=holdout_metrics
+        )
         return metrics
 
     # -- the loop -----------------------------------------------------------
 
     def start(self) -> int:
         """Round 0: the SFT baseline, generated and scored but not trained."""
-        run_id = self.store.create_run(self.prompts, self._config())
+        run_id = self.store.create_run(self.all_prompts, self._config())
         print(f"\n{'=' * 60}\nRUN {run_id} — round 0 (baseline)\n{'=' * 60}")
 
         _, checkpoint_doc = self.generate_and_score(run_id, 0, self.sft_path)
@@ -359,11 +394,12 @@ class LoopRunner:
         )
         metrics = self.evaluate_round(run_id, 0)
         print(f"round 0: {_fmt(metrics)}")
+        _fmt_holdout(self, run_id, 0)
         return run_id
 
     def step(self, run_id: int) -> int:
         """Train on everything so far, then regenerate over the same prompts."""
-        self.store.check_prompts(run_id, self.prompts)
+        self.store.check_prompts(run_id, self.all_prompts)
         self.warn_on_config_drift(run_id)
 
         previous = self.store.latest_round(run_id)
@@ -435,6 +471,7 @@ class LoopRunner:
         )
         metrics = self.evaluate_round(run_id, round_index)
         print(f"round {round_index}: {_fmt(metrics)}")
+        _fmt_holdout(self, run_id, round_index)
         return round_index
 
     def run(self, rounds: int = 1, run_id: Optional[int] = None) -> int:
@@ -442,7 +479,7 @@ class LoopRunner:
         if run_id is None:
             run_id = self.start()
         else:
-            self.store.check_prompts(run_id, self.prompts)
+            self.store.check_prompts(run_id, self.all_prompts)
             print(f"resuming run {run_id} from round {self.store.latest_round(run_id)['round']}")
 
         for _ in range(rounds):
@@ -451,6 +488,13 @@ class LoopRunner:
         print(f"\n{'=' * 60}\nRUN {run_id} — trajectory\n{'=' * 60}")
         report.print_trajectory(self.store, run_id)
         return run_id
+
+
+def _fmt_holdout(runner, run_id: int, round_index: int) -> None:
+    record = runner.store.get_round(run_id, round_index) or {}
+    holdout = record.get("holdout_metrics")
+    if holdout:
+        print(f"  held out: {_fmt(holdout)}")
 
 
 def _fmt(metrics: Dict) -> str:

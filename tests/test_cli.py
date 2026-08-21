@@ -146,6 +146,7 @@ def test_resume_reads_the_prompts_from_the_database(finished_run, prompts, capsy
     class SpyRunner:
         def __init__(self, **kwargs):
             captured.update(kwargs)
+            self.gen_args = kwargs.get("gen_args")
 
         def run(self, rounds, run_id=None):
             captured["rounds"] = rounds

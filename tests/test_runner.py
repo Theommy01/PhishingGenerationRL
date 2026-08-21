@@ -238,6 +238,58 @@ def test_every_round_records_how_it_generated(store, runner_for):
         assert generation["gen_args"]["max_new_tokens"] == 128
 
 
+# -- the held-out split -----------------------------------------------------
+
+
+def test_held_out_prompts_are_generated_but_never_trained_on(store, runner_for, all_prompts):
+    """The whole point: scored every round, absent from every pool."""
+    held = [dict(spec) for spec in all_prompts[40:42]]
+    runner = runner_for(holdout=held)
+    run_id = runner.run(rounds=1)
+
+    from loop.store import HOLDOUT_SPLIT, TRAIN_SPLIT
+
+    held_messages = store.get_messages(run_id, split=HOLDOUT_SPLIT, with_subject=False)
+    train_messages = store.get_messages(run_id, split=TRAIN_SPLIT, with_subject=False)
+    assert len(held_messages) == 2 * 2 * 2  # 2 prompts x 2 samples x 2 rounds
+    assert len(train_messages) == 4 * 2 * 2
+
+    pool = store.training_pool(run_id, max_round=1)
+    held_bodies = {m["body"] for m in held_messages}
+    assert not held_bodies & {row["completion"] for row in pool}
+    assert store.get_round(run_id, 1)["dataset_size"] == 8  # round 0's train split only
+
+
+def test_held_out_prompts_share_the_run_id_space(store, runner_for, all_prompts):
+    held = [dict(spec) for spec in all_prompts[40:42]]
+    run_id = runner_for(holdout=held).start()
+
+    from loop.store import HOLDOUT_SPLIT
+
+    ids = {m["prompt_id"] for m in store.get_messages(run_id, split=HOLDOUT_SPLIT)}
+    assert ids == {4, 5}, "held-out ids must continue after the training prompts"
+    assert len(store.run_subject_refs(run_id)) == 6
+
+    # and each resolves to the right subject
+    message = store.get_messages(run_id, split=HOLDOUT_SPLIT)[0]
+    assert message["subject_text"] == held[message["prompt_id"] - 4]["subject"]
+
+
+def test_the_two_splits_are_scored_separately(store, runner_for, all_prompts):
+    held = [dict(spec) for spec in all_prompts[40:42]]
+    run_id = runner_for(holdout=held).start()
+
+    record = store.get_round(run_id, 0)
+    assert record["metrics"]["messages"] == 8
+    assert record["holdout_metrics"]["messages"] == 4
+
+
+def test_a_run_without_holdout_records_none(store, runner_for):
+    run_id = runner_for().start()
+
+    assert store.get_round(run_id, 0)["holdout_metrics"] is None
+
+
 # -- resuming ---------------------------------------------------------------
 
 
