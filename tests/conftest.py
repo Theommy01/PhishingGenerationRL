@@ -23,8 +23,28 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, REPO_ROOT)
 
 from loop.store import LoopStore  # noqa: E402  (after the path fix)
+from metrics import config  # noqa: E402
 
 PROMPTS_PATH = os.path.join(REPO_ROOT, "prompts.json")
+
+
+@pytest.fixture(autouse=True)
+def isolate_output_dirs(tmp_path, monkeypatch):
+    """Keep what a test run writes out of the repository.
+
+    LoopRunner exports each round's pool to `config.OUTPUT_DIR` and names its
+    checkpoints under `config.MODELS_DIR`, both of which default to the repo.
+    Without this every `pytest` leaves a directory per stubbed run behind in
+    `output/runs/` — which is also how a real run's artefacts would be buried.
+    """
+    for name, subdirectory in (
+        ("OUTPUT_DIR", "output"),
+        ("FIGURES_DIR", "output/figures"),
+        ("TABLES_DIR", "output/tables"),
+        ("REPORTS_DIR", "output/reports"),
+        ("MODELS_DIR", "Models"),
+    ):
+        monkeypatch.setattr(config, name, str(tmp_path / subdirectory))
 
 
 @pytest.fixture(scope="session")
