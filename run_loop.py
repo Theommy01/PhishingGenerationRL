@@ -26,7 +26,7 @@ specs is checked on every round as a second guard.
 import argparse
 import sys
 
-from generate_dataset import load_prompts
+from generate_dataset import DEFAULT_PROMPTS_PATH, load_prompts
 from loop import report
 from loop.runner import ALGORITHMS, REF_MODES, LoopRunner
 from loop.store import LoopStore
@@ -41,7 +41,8 @@ def parse_args(argv=None):
 
     parser.add_argument(
         "--prompts",
-        default="prompts.json",
+        # absolute, so the CLI works from any working directory
+        default=DEFAULT_PROMPTS_PATH,
         help="prompt spec file; ignored with --resume, which reads the run's subjects",
     )
     parser.add_argument(

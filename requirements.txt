@@ -9,6 +9,10 @@ transformers
 tqdm
 sentence-transformers
 
+# The loop's persistence. MongoDB itself has to be running on localhost:27017;
+# the test suite skips rather than fails when it is not.
+pymongo
+
 # Training / generation (also needed by bco_trainer.py and kto_trainer.py)
 unsloth
 # The notebook pinned trl==0.15.2, but the checked-out venv has 0.18.1 and the
@@ -28,3 +32,6 @@ joblib
 # replaced by static text reports.
 matplotlib
 seaborn
+
+# Tests: `pytest tests/`
+pytest

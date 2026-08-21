@@ -365,15 +365,27 @@ class LoopStore:
     # -- checkpoints ---------------------------------------------------------
 
     def _checkpoint_files(self, path: str) -> List[Dict[str, Any]]:
-        """Digest a checkpoint's files, once per (path, size, mtime) per session.
+        """Digest a checkpoint's files, re-using the result within a session.
 
         Hashing a LoRA adapter is ~0.3 s, which is nothing once a round but adds
         up if every batch re-hashes the same directory.
+
+        The cache key is the identity files' own sizes and mtimes, not the
+        directory's: overwriting a file in place leaves the directory's mtime
+        untouched, and a stale digest would hide exactly the tampering
+        `verify_checkpoint` exists to find.
         """
         if not os.path.isdir(path):
             return []
-        stat = os.stat(path)
-        key = (os.path.abspath(path), stat.st_mtime_ns, stat.st_size)
+
+        signature = []
+        for name in CHECKPOINT_IDENTITY_FILES:
+            candidate = os.path.join(path, name)
+            if os.path.isfile(candidate):
+                stat = os.stat(candidate)
+                signature.append((name, stat.st_size, stat.st_mtime_ns))
+
+        key = (os.path.abspath(path), tuple(signature))
         if key not in self._digest_cache:
             self._digest_cache[key] = checkpoint_files(path)
         return self._digest_cache[key]

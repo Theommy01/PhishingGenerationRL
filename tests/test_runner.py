@@ -1,0 +1,295 @@
+"""The loop end to end, with generation, scoring and training stubbed out.
+
+No GPU and no models: the point is the sequence and what it records, not what
+the adapters learn.
+"""
+
+import pytest
+
+from loop import report
+from loop.runner import LoopRunner
+from tests.conftest import render
+
+
+@pytest.fixture
+def stubs(make_checkpoint):
+    """Stand-ins for generate/score/train that record how they were called."""
+
+    class Stubs:
+        def __init__(self):
+            self.calls = []
+            self.sft = make_checkpoint("sft", weights=b"the sft adapter")
+
+        def generate(self, checkpoint, prompts, gen_args, n_samples):
+            self.calls.append(("generate", checkpoint, dict(gen_args), n_samples))
+            return [
+                {
+                    "prompt_id": prompt_id,
+                    "sample_idx": sample_idx,
+                    "prompt_text": render(spec),
+                    "body": f"{checkpoint}::{prompt_id}::{sample_idx}::{len(self.calls)}",
+                    "category": spec["category"],
+                    "generator": spec["generator"],
+                }
+                for prompt_id, spec in enumerate(prompts)
+                for sample_idx in range(n_samples)
+            ]
+
+        def score(self, records, threshold):
+            for index, record in enumerate(records):
+                record["score"] = 0.3 + 0.2 * (index % 2)
+                record["label"] = bool(record["score"] >= threshold)
+            return records
+
+        def train(self, algorithm, base, dataset_path, output_dir, ref_mode, sft_path, epochs, seed):
+            with open(dataset_path) as handle:
+                rows = len(handle.read().strip().splitlines())
+            self.calls.append(("train", algorithm, base, rows, epochs, seed))
+            return make_checkpoint(
+                output_dir.rsplit("/", 1)[-1], weights=f"{seed}:{rows}:{base}".encode()
+            )
+
+    return Stubs()
+
+
+@pytest.fixture
+def runner_for(store, prompts, stubs):
+    def build(**overrides):
+        settings = dict(
+            prompts=prompts,
+            store=store,
+            n_samples=2,
+            gen_args={"do_sample": True, "max_new_tokens": 256},
+            generate_fn=stubs.generate,
+            score_fn=stubs.score,
+            train_fn=stubs.train,
+            measure_drift=False,
+            sft_path=stubs.sft,
+        )
+        settings.update(overrides)
+        return LoopRunner(**settings)
+
+    return build
+
+
+# -- validation -------------------------------------------------------------
+
+
+def test_unknown_algorithm_is_refused(runner_for):
+    with pytest.raises(ValueError, match="unknown algorithm"):
+        runner_for(algorithm="dpo")
+
+
+def test_unknown_ref_mode_is_refused(runner_for):
+    with pytest.raises(ValueError, match="unknown ref_mode"):
+        runner_for(ref_mode="sideways")
+
+
+def test_greedy_decoding_with_several_samples_is_refused(runner_for):
+    """It would return n identical messages."""
+    with pytest.raises(ValueError, match="requires sampling"):
+        runner_for(n_samples=4, gen_args={"do_sample": False})
+
+
+# -- a round ----------------------------------------------------------------
+
+
+def test_round_zero_is_a_baseline(store, runner_for, prompts, stubs):
+    run_id = runner_for().start()
+
+    round_zero = store.get_round(run_id, 0)
+    assert round_zero["base_checkpoint"] is None
+    assert round_zero["checkpoint_path"] == stubs.sft
+    assert round_zero["dataset"] is None
+    assert round_zero["training"] is None
+    assert round_zero["dataset_size"] == 0
+    assert not any(call[0] == "train" for call in stubs.calls)
+    assert store.messages.count_documents({"run_id": run_id}) == len(prompts) * 2
+
+
+def test_a_training_round_pins_its_pool(store, runner_for, prompts):
+    runner = runner_for()
+    run_id = runner.start()
+    runner.step(run_id)
+
+    round_one = store.get_round(run_id, 1)
+    dataset = store.get_dataset(round_one["dataset"])
+    assert dataset["count"] == len(prompts) * 2  # round 0's messages only
+    assert round_one["dataset_hash"] == dataset["content_hash"]
+    assert store.verify_dataset(dataset["_id"])["ok"]
+
+
+def test_the_pool_is_cumulative(store, runner_for, prompts, stubs):
+    runner = runner_for()
+    run_id = runner.run(rounds=2)
+
+    trained = [call for call in stubs.calls if call[0] == "train"]
+    assert [call[3] for call in trained] == [len(prompts) * 2, len(prompts) * 4]
+    assert store.get_round(run_id, 2)["dataset_size"] == len(prompts) * 4
+
+
+def test_each_round_is_generated_by_its_own_checkpoint(store, runner_for):
+    run_id = runner_for().run(rounds=2)
+
+    stamps = []
+    for round_index in range(3):
+        messages = store.get_messages(run_id, round_index=round_index, with_subject=False)
+        round_stamps = {message["checkpoint_hash"] for message in messages}
+        assert len(round_stamps) == 1, "a round was generated by more than one adapter"
+        stamps.append(round_stamps.pop())
+
+    assert len(set(stamps)) == 3
+
+
+def test_the_checkpoint_a_round_produced_is_attributed_to_it(store, runner_for):
+    run_id = runner_for().run(rounds=1)
+
+    baseline = store.get_checkpoint(store.get_round(run_id, 0)["checkpoint"])
+    trained = store.get_checkpoint(store.get_round(run_id, 1)["checkpoint"])
+
+    assert baseline["produced_by"] is None, "the SFT adapter is not this run's work"
+    assert trained["produced_by"] == {"run_id": run_id, "round": 1}
+
+
+def test_the_seed_reaches_the_trainer_and_the_round(store, runner_for, stubs):
+    run_id = runner_for(seed=4242, epochs=2).run(rounds=1)
+
+    trained = [call for call in stubs.calls if call[0] == "train"][0]
+    assert trained[4:] == (2, 4242)
+    assert store.get_round(run_id, 1)["training"] == {"epochs": 2, "seed": 4242}
+
+
+def test_every_round_records_how_it_generated(store, runner_for):
+    run_id = runner_for(n_samples=3, gen_args={"do_sample": True, "max_new_tokens": 128}).run(
+        rounds=1
+    )
+
+    for round_index in (0, 1):
+        generation = store.get_round(run_id, round_index)["generation"]
+        assert generation["n_samples"] == 3
+        assert generation["gen_args"]["max_new_tokens"] == 128
+
+
+# -- resuming ---------------------------------------------------------------
+
+
+def test_a_run_resumes_from_its_stored_subjects(store, runner_for, prompts):
+    run_id = runner_for().run(rounds=1)
+
+    recovered = store.run_prompts(run_id)
+    runner_for(prompts=recovered).run(rounds=1, run_id=run_id)
+
+    assert store.get_round(run_id, 2) is not None
+    assert store.subjects.count_documents({}) == len(prompts)
+
+
+def test_resuming_with_different_prompts_is_refused(store, runner_for, prompts, all_prompts):
+    run_id = runner_for().run(rounds=1)
+    others = [dict(spec) for spec in all_prompts[10:14]]
+
+    with pytest.raises(ValueError, match="changed since run"):
+        runner_for(prompts=others).step(run_id)
+
+
+def test_stepping_a_run_with_no_baseline_is_refused(store, runner_for, prompts):
+    run_id = store.create_run(prompts, {})
+
+    with pytest.raises(RuntimeError, match="no round 0"):
+        runner_for().step(run_id)
+
+
+def test_config_drift_is_reported_not_refused(store, runner_for, capsys):
+    """Changing --n-samples mid-run is legitimate, but never silent."""
+    run_id = runner_for(n_samples=2).run(rounds=1)
+    capsys.readouterr()
+
+    resumed = runner_for(n_samples=4, gen_args={"do_sample": True, "max_new_tokens": 512})
+    drift = resumed.warn_on_config_drift(run_id)
+    printed = capsys.readouterr().out
+
+    assert set(drift) == {"n_samples", "gen_args"}
+    assert "generates differently" in printed
+    assert "n_samples" in printed
+
+
+def test_a_drifted_round_records_what_it_actually_used(store, runner_for, prompts):
+    run_id = runner_for(n_samples=2).run(rounds=1)
+    runner_for(n_samples=4, seed=77).run(rounds=1, run_id=run_id)
+
+    assert store.get_round(run_id, 2)["generation"]["n_samples"] == 4
+    assert store.get_round(run_id, 2)["training"]["seed"] == 77
+    # the run's config is its original intent, and stays put
+    assert store.get_run(run_id)["config"]["n_samples"] == 2
+    assert len(store.get_messages(run_id, round_index=2)) == len(prompts) * 4
+
+
+# -- reporting --------------------------------------------------------------
+
+
+def test_trajectory_has_a_row_per_round(store, runner_for):
+    run_id = runner_for().run(rounds=2)
+
+    df = report.trajectory(store, run_id)
+    assert list(df["round"]) == [0, 1, 2]
+    assert df["pool_hash"].isna().sum() == 1  # only round 0 trains on nothing
+    assert df.loc[df["round"] == 2, "pool"].item() > df.loc[df["round"] == 1, "pool"].item()
+
+
+def test_provenance_passes_on_an_untouched_run(store, runner_for):
+    run_id = runner_for().run(rounds=2)
+
+    df = report.provenance(store, run_id)
+    assert df["ckpt_ok"].all()
+    assert list(df["ckpt_stamps"]) == [1, 1, 1]
+    assert df.loc[df["round"] > 0, "pool_ok"].all()
+    assert df.loc[df["round"] == 0, "pool_ok"].isna().all()
+
+
+def test_provenance_flags_a_missing_checkpoint(store, runner_for):
+    import shutil
+
+    run_id = runner_for().run(rounds=1)
+    shutil.rmtree(store.get_round(run_id, 1)["checkpoint_path"])
+
+    df = report.provenance(store, run_id)
+    row = df[df["round"] == 1].iloc[0]
+    assert not row["ckpt_ok"]
+    assert row["ckpt_note"] == "missing"
+
+
+def test_provenance_flags_a_rewritten_pool(store, runner_for):
+    run_id = runner_for().run(rounds=1)
+    store.messages.update_one({"run_id": run_id, "round": 0}, {"$set": {"body": "edited"}})
+
+    df = report.provenance(store, run_id)
+    assert not df[df["round"] == 1].iloc[0]["pool_ok"]
+
+
+def test_round_metrics_are_computed_per_round(store, runner_for, prompts):
+    run_id = runner_for().run(rounds=1)
+
+    metrics = store.get_round(run_id, 1)["metrics"]
+    assert metrics["messages"] == len(prompts) * 2
+    assert metrics["prompts"] == len(prompts)
+    assert 0 <= metrics["evasion_rate"] <= 100
+
+
+def test_load_run_flattens_the_refs(store, runner_for):
+    from metrics.analysis import load_run, round_breakdown, round_summary
+
+    run_id = runner_for().run(rounds=1)
+    df = load_run(store, run_id)
+
+    assert df["subject_id"].map(type).eq(str).all()
+    assert df["checkpoint_id"].map(type).eq(str).all()
+    assert "subject" not in df.columns and "checkpoint" not in df.columns
+    # the joined spec fields are what the analysis groups by
+    assert not round_breakdown(df, group_col="generator").empty
+    assert list(round_summary(df)["round"]) == [0, 1]
+
+
+def test_load_run_of_an_empty_run_is_empty(store, prompts):
+    from metrics.analysis import load_run
+
+    run_id = store.create_run(prompts, {})
+    assert load_run(store, run_id).empty
