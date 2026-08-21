@@ -1,8 +1,16 @@
-"""The three questions, answered for one run."""
+"""The three questions, answered for one run.
 
+Leads with paired, per-prompt change rather than a difference of two means.
+Every round generates from the identical subject list, so each prompt is its own
+control — which matters here because the SFT baseline is uneven, and a marginal
+mean mixes real movement with how hard the prompts happen to be.
+"""
+
+import pandas as pd
 import streamlit as st
 
 from dashboard import charts, data
+from metrics import paired
 
 
 def _delta(summary, split: str, column: str):
@@ -12,6 +20,90 @@ def _delta(summary, split: str, column: str):
         return None, None
     first, last = rows.iloc[0][column], rows.iloc[-1][column]
     return last, (last - first if len(rows) > 1 else None)
+
+
+def _paired_headline(frame: pd.DataFrame, rounds) -> None:
+    """Flip table and paired deltas, per prompt, against round 0."""
+    columns = st.columns([1, 1, 2])
+    baseline = columns[0].selectbox("baseline", rounds, index=0, key="paired-baseline")
+    later = [r for r in rounds if r > baseline] or [rounds[-1]]
+    target = columns[1].selectbox("compared with", later, index=len(later) - 1, key="paired-round")
+    split = columns[2].radio(
+        "split", ["train", "holdout"], horizontal=True, key="paired-split"
+    )
+
+    table = paired.flip_table(frame, target, baseline, split)
+    if not table:
+        st.info("not enough scored rounds for a paired comparison yet")
+        return
+
+    left, right = st.columns([1, 1])
+    with left:
+        st.markdown("**Prompts that changed** — did *any* of the n samples evade?")
+        grid = pd.DataFrame(
+            {
+                f"round {target}: evaded": [table["both"], table["gained"]],
+                f"round {target}: blocked": [table["lost"], table["neither"]],
+            },
+            index=[f"round {baseline}: evaded", f"round {baseline}: blocked"],
+        )
+        st.dataframe(grid, use_container_width=True)
+
+        verdict = f"**{table['gained']} gained, {table['lost']} lost** (net {table['net']:+d})"
+        if "p_value" in table:
+            verdict += f" — McNemar p = {table['p_value']:.4f} on {table['discordant']} discordant"
+        st.markdown(verdict)
+        st.caption(
+            "Only the off-diagonal counts: a prompt that evaded both times, or "
+            "neither time, says nothing about the change."
+        )
+
+    with right:
+        st.markdown("**Paired change per prompt**")
+        report = paired.report(
+            frame, target, baseline, split,
+            outcomes=["evasion_rate", "mean_score", "url_ok", "attachment_ok", "cos_subject"],
+        )
+        if report.empty:
+            st.info("no paired outcomes available")
+        else:
+            display = report[
+                ["outcome", "median_delta", "improved", "worsened", "unchanged", "prompts"]
+            ].copy()
+            display["median_delta"] = display["median_delta"].round(3)
+            st.dataframe(display, hide_index=True, use_container_width=True)
+            st.caption(
+                "Median rather than mean, and counts rather than magnitudes: a "
+                "baseline that fails on some prompts moves a mean around far "
+                "more than it moves a sign."
+            )
+
+    did = paired.difference_in_differences(frame, target, baseline)
+    if did:
+        st.markdown(
+            f"**Generalisation** — median paired change in evasion rate: "
+            f"train {did['train']['median']:+.3f} "
+            f"({did['train']['prompts']} prompts), held out "
+            f"{did['holdout']['median']:+.3f} ({did['holdout']['prompts']}). "
+            f"Gap {did['gap_median']:+.3f}."
+        )
+        st.caption(
+            "The gap is the memorisation estimate: how much more the policy "
+            "improved on subjects it trained on than on subjects it did not."
+        )
+
+    joined = paired.paired(frame, target, baseline, split)
+    with st.expander("the prompts that moved most — read these first"):
+        outcome = st.selectbox(
+            "outcome", ["mean_score", "evasion_rate", "cos_subject"], key="movers-outcome"
+        )
+        best, worst = st.columns(2)
+        with best:
+            st.caption("largest gain")
+            st.dataframe(paired.movers(joined, outcome), hide_index=True)
+        with worst:
+            st.caption("largest loss")
+            st.dataframe(paired.movers(joined, outcome, worst=True), hide_index=True)
 
 
 def render(run_id: int) -> None:
@@ -28,6 +120,12 @@ def render(run_id: int) -> None:
 
     # -- headline ----------------------------------------------------------
     st.subheader("Did evasion improve?")
+
+    rounds = sorted(summary["round"].unique())
+    if len(rounds) > 1:
+        _paired_headline(frame, rounds)
+        st.divider()
+        st.markdown("**Round by round**")
     columns = st.columns(4)
     for column, (split, metric, label) in zip(
         columns,
