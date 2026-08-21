@@ -42,7 +42,7 @@ def unload_auxiliary_models() -> None:
     accelerate silently offloading layers to CPU. They reload lazily on next
     use, so this is only a time/VRAM trade.
     """
-    from scamllm import unload_scam_labeller
+    from detectors.scamllm import unload_scam_labeller
 
     _CACHE.clear()
     unload_scam_labeller()
@@ -64,7 +64,7 @@ def unload_auxiliary_models() -> None:
 
 def report_safe_percentage(completions, prompts=None) -> List[float]:
     """Print the safe percentage of each completion and return the rewards."""
-    from scamllm import get_scam_labeller
+    from detectors.scamllm import get_scam_labeller
 
     rewards = get_scam_labeller().score_messages(completions)
 

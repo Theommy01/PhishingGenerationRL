@@ -12,9 +12,9 @@ which disagreed, and the published BCO/KTO results were computed with the
 inverted one. See PORTING_NOTES.md §1.
 """
 
-from scamllm.ScamAuxiliaryModel import ScamAuxiliaryModel
-from scamllm.ScamLabel import ScamLabel
-from scamllm.ScamLabeller import ScamLabeller, get_scam_labeller, unload_scam_labeller
+from detectors.scamllm.ScamAuxiliaryModel import ScamAuxiliaryModel
+from detectors.scamllm.ScamLabel import ScamLabel
+from detectors.scamllm.ScamLabeller import ScamLabeller, get_scam_labeller, unload_scam_labeller
 
 __all__ = [
     "ScamAuxiliaryModel",

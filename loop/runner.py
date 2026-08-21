@@ -108,6 +108,7 @@ class LoopRunner:
         ref_mode: str = "sft",
         n_samples: int = 4,
         gen_args: Optional[dict] = None,
+        decoding: str = "default",
         threshold: float = config.SAFE_THRESHOLD,
         epochs: int = 3,
         seed: int = config.DEFAULT_TRAINING_SEED,
@@ -145,10 +146,12 @@ class LoopRunner:
         self._sim_model = sim_model
         self._baselines: Dict[int, Dict] = {}
 
-        # validated up front so a bad combination fails before any GPU time
+        # Resolved once, here, so every round of the run shares one complete
+        # decoding spec and a bad combination fails before any GPU time.
         from generate_dataset import resolve_gen_args
 
-        self.gen_args = resolve_gen_args(gen_args, n_samples)
+        self.decoding = decoding
+        self.gen_args = resolve_gen_args(gen_args, n_samples, decoding)
 
     # -- drift ----------------------------------------------------------------
 
@@ -220,6 +223,7 @@ class LoopRunner:
         is the only honest record of what actually happened.
         """
         return {
+            "decoding": self.decoding,
             "gen_args": self.gen_args,
             "n_samples": self.n_samples,
             "threshold": self.threshold,

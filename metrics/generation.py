@@ -24,7 +24,7 @@ from metrics.models import (
     get_similarity_model,
     embedding_distance,
 )
-from scamllm import get_scam_labeller
+from detectors.scamllm import get_scam_labeller
 
 TEST_PROMPTS = [
     "ACTION REQUIRED: Unpaid Invoice #78492 - Service Suspension Warning",
