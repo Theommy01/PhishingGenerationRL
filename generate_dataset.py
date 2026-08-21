@@ -81,7 +81,10 @@ def generate_messages(
         {prompt_id, sample_idx, prompt_text, body, category, generator}
 
     `prompt_text` is what was actually sent to the model, so it can be stored
-    verbatim and fed straight back to KTO/BCO.
+    verbatim and fed straight back to KTO/BCO. `prompt_id` is the index into
+    `prompts`, which is also the index into a run's subject list — LoopStore
+    turns it into the message's subject DBRef, and drops the `category` and
+    `generator` copies, which are there for the standalone jsonl path only.
     """
     from phishnet_inference.MessageGenerator import MessageGenerator
     from phishnet_inference.prompt_generation.generate_prompt import generate_prompt
