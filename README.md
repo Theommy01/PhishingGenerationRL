@@ -82,8 +82,93 @@ training. The pool is cumulative because ScamLLM is frozen, so labelled
 messages stay valid across rounds and each round only adds `N` new ones.
 Evaluation is round-scoped, so metrics always describe the current checkpoint.
 
-Prompts are fingerprinted when a run is created and re-checked every round: a
-run cannot silently change what it is measuring.
+A run cannot silently change what it is measuring. `--resume` reads the prompts
+back out of the database rather than off disk, so an edited `prompts.json`
+cannot reach a half-finished run at all; the specs are re-checked against the
+run's subject documents every round, and the *rendered* prompt structure — the
+field names and markers the model was shown — is checked too, which catches
+`generate_prompt` changing under a run in a way a hash of the specs cannot.
+
+### Data model
+
+Five collections in `phishnet_rl`:
+
+| Collection | One document per | Key fields |
+|---|---|---|
+| `subjects` | prompt spec | `subject`, `category`, `generator`, `sentiment`, `urls`, `attachments`, `spec_hash` |
+| `checkpoints` | adapter | `weights_hash`, `base_model`, `path`, `paths`, `files`, `produced_by` |
+| `runs` | loop invocation | `run_id`, `config`, `subjects` (ordered DBRefs), `prompt_structures` |
+| `rounds` | round of a run | `round`, `base_checkpoint`, `checkpoint` (DBRef), `dataset` (DBRef), `generation`, `training`, `pool_counts`, `metrics` |
+| `messages` | generated message | `run_id`, `round`, `prompt_id`, `sample_idx`, `prompt_text`, `body`, `score`, `label`, `added_at`, `subject` (DBRef), `checkpoint` (DBRef) |
+| `datasets` | point-in-time slice | `query`, `as_of`, `fields`, `count`, `content_hash`, `export_path` |
+
+`messages` is append-only, and everything else is either an entity it points at
+or a way of naming a subset of it.
+
+**Subjects and checkpoints are content-addressed entities.** Both are shared —
+the same 150 specs are regenerated every round, and one adapter generates a
+whole round — so a message points at them with a DBRef instead of copying their
+fields. Subject identity is a hash of the whole spec and checkpoint identity is
+a hash of the adapter weights, so neither document is ever mutated: flipping
+`urls` writes a new subject, and the same adapter found at a second path is
+recognised as the same checkpoint rather than duplicated.
+
+**Datasets are a query plus an `as_of` cut-off**, resolved against `added_at`.
+Since messages are only appended, that pair names the same rows however many
+rounds run afterwards — which round numbers alone cannot promise. Each is
+stored with the `content_hash` of the rows it resolved to, so it can be checked
+later rather than merely re-run.
+
+### What can actually be verified
+
+Generation is stochastic and unseeded, so no hash of the *inputs* makes a run
+reproducible. What the model does give you is provenance you can check:
+
+```bash
+python run_loop.py --verify 1786641452
+```
+
+Per round, that answers two questions from what the messages themselves
+recorded, not from the round document:
+
+- **which checkpoint wrote these messages** — every message carries a DBRef and
+  the adapter's `weights_hash`, stamped at insert time, so it holds even if the
+  run dies before the round is written. `--verify` re-hashes the adapter now on
+  disk: `differs` means the path was overwritten, `missing` means it is gone.
+- **whether the pool a round trained on still holds** — the dataset is
+  re-materialised from its query and cut-off and re-hashed, so an edited or
+  deleted message shows up as a mismatch instead of a quietly different
+  training set.
+
+A failed check sets the exit code, so it can gate a report build.
+
+Each round also records the config it *actually* used — `generation`
+(`gen_args`, `n_samples`, `threshold`) and `training` (`epochs`, `seed`) —
+rather than relying on the run's config, which is only what the run was
+started with. Resuming builds a fresh runner from whatever flags were passed
+that time, so those can legitimately differ; when they do, the loop warns and
+the round document is the record. This matters for reading results: `asr_at_n`
+is per prompt over n samples, so it is not comparable across a round where
+`--n-samples` changed.
+
+Note what a seed does and does not buy. There is no *decoding* seed, and none
+is needed: every generated message is stored, so a dataset is reproduced by
+retrieving it, not by replaying the sampler — which 4-bit kernels would not
+replay faithfully anyway. The training seed is recorded because training is the
+step worth re-running: with the dataset pinned by content hash and the base
+checkpoint by weights hash, the seed completes the list of a round's inputs. It
+still will not give bit-identical adapters without
+`torch.use_deterministic_algorithms(True)` and a matching environment.
+
+### Reading messages back
+
+`store.get_messages()` joins the subject back in by default — `subject_text`
+plus the spec fields — which is the shape `metrics.analysis` groups by. Pass
+`with_subject=False` on paths that only need bodies and labels. Going the other
+way, `store.messages_for_subject(id)` and `store.messages_for_checkpoint(id)`
+collect every message a subject line or an adapter ever produced, across runs;
+`store.checkpoint_for_message(m)` goes from one message to the adapter that
+wrote it.
 
 ### Running it
 
@@ -99,22 +184,26 @@ python run_loop.py --resume 1786641452 --rounds 2
 
 # inspect a finished run without generating anything
 python run_loop.py --report 1786641452
+
+# check each round's checkpoint and training pool still hash as recorded
+python run_loop.py --verify 1786641452
 ```
 
 | Flag | Default | Notes |
 |---|---|---|
-| `--prompts` | `prompts.json` | prompt spec file |
+| `--prompts` | `prompts.json` | prompt spec file; ignored with `--resume` |
 | `--limit` | all | first N prompts. Use it — a full round is slow |
 | `--algorithm` | `kto` | `kto` or `bco`; alternatives, not stages |
 | `--ref-mode` | `sft` | KL anchor; see below |
 | `--rounds` | 1 | training rounds after the baseline |
 | `--n-samples` | 4 | messages generated per prompt |
 | `--epochs` | 1 | epochs per round |
+| `--seed` | 3407 | training seed, recorded per round |
 | `--sft-path` | `config.PATH_SFT` | round 0's checkpoint, and the `sft` anchor |
 | `--max-new-tokens` | 256 | generation length cap |
 | `--greedy` | off | greedy decoding; rejected with `--n-samples > 1`, which would return N identical messages |
 | `--no-drift` | off | skip the SBERT drift metrics |
-| `--resume` / `--report` | — | run id |
+| `--resume` / `--report` / `--verify` | — | run id |
 
 ### `--ref-mode`: what the KL term is anchored to
 
