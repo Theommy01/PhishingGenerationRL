@@ -18,9 +18,10 @@ outcome — see `--ref-mode` below.
 | `generate_dataset.py` | Generate messages from prompt specs, score them, build a training set. Also a CLI. |
 | `loop/` | The loop: `store.py` (MongoDB), `runner.py` (the cycle), `report.py` (per-round metrics). |
 | `training/` | One round of `kto_trainer` or `bco_trainer`, `reference_model.py` (what the KL term is anchored to), `policy_kl.py` (how far it ended up). |
-| `scamllm/` | ScamLLM, following the phishnet AuxiliaryModel/Labeller/Label pattern. |
 | `metrics/` | `config.py` (paths, text helpers), `models.py` (AI detector, SBERT), `analysis.py`, `generation.py`. |
 | `visualisation/charts.py` | Every figure and text report. Writes to `output/`. |
+| `dashboard/` | Streamlit app over the store: `streamlit run dashboard/app.py`. Reads live, so a run in progress is browsable. |
+| `detectors/` | `scamllm/` (the detector the loop trains against) and `svm/` (held out, never in the loop). |
 | `tests/` | `pytest`. Needs mongod on localhost; skips cleanly without it. |
 | `prompts.json` | 150 prompt specs: subject, sentiment, urls, attachments, category, generator. |
 | `Dataset/` | The four files the code reads, plus `archive/` for superseded notebook-era artefacts. |

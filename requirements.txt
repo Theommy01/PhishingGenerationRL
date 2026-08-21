@@ -35,3 +35,6 @@ seaborn
 
 # Tests: `pytest tests/`
 pytest
+
+# Dashboard: `streamlit run dashboard/app.py`. Brings altair with it.
+streamlit
