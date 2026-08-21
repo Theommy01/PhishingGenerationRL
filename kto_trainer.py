@@ -40,9 +40,10 @@ def train_kto(
     output_dir=None,
     ref_mode="sft",
     sft_path=None,
+    seed=config.DEFAULT_TRAINING_SEED,
 ):
     print("\n" + "=" * 50)
-    print(f"KTO Training (Epochs: {num_epochs})")
+    print(f"KTO Training (Epochs: {num_epochs}, seed: {seed})")
     print("=" * 50)
 
     # Nota: partiamo sempre dal modello di base SFT per l'addestramento KTO
@@ -113,7 +114,9 @@ def train_kto(
         optim="adamw_8bit",
         weight_decay=0.01,
         lr_scheduler_type="linear",
-        seed=3407,
+        # TrainingArguments falls back to `seed` for data_seed, so this covers
+        # the sampler's shuffle as well as init and dropout
+        seed=seed,
         output_dir=save_dir,
         save_strategy="epoch",
         save_total_limit=3,

@@ -24,9 +24,10 @@ def train_bco(
     output_dir=None,
     ref_mode="sft",
     sft_path=None,
+    seed=config.DEFAULT_TRAINING_SEED,
 ):
     print("\n" + "=" * 50)
-    print(f"BCO Training (Epochs: {num_epochs})")
+    print(f"BCO Training (Epochs: {num_epochs}, seed: {seed})")
     print("=" * 50)
 
     sft_path = sft_path or config.PATH_SFT
@@ -80,7 +81,9 @@ def train_bco(
         optim="adamw_8bit",
         weight_decay=0.01,
         lr_scheduler_type="linear",
-        seed=3407,
+        # TrainingArguments falls back to `seed` for data_seed, so this covers
+        # the sampler's shuffle as well as init and dropout
+        seed=seed,
         output_dir=save_dir,  # <--- MODIFICA 1: Ora salva direttamente su Drive
         save_strategy="epoch",  # <--- MODIFICA 2: Salva un checkpoint alla fine di ogni epoca
         save_total_limit=3,  # <--- MODIFICA 3 (Opzionale ma consigliata): Evita di riempire il Drive, tiene solo gli ultimi 3 checkpoint
