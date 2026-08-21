@@ -17,7 +17,7 @@ from loop import report
 from loop.store import LoopStore
 
 ALGORITHMS = ("bco", "kto")
-from reference_model import REF_MODES  # ("sft", "previous", "base")
+from training.reference_model import REF_MODES  # ("sft", "previous", "base")
 
 
 # =============================================================================
@@ -49,9 +49,9 @@ def default_train(
     and the reference, the penalty term the algorithm applied.
     """
     if algorithm == "bco":
-        from bco_trainer import train_bco as train
+        from training.bco_trainer import train_bco as train
     elif algorithm == "kto":
-        from kto_trainer import train_kto as train
+        from training.kto_trainer import train_kto as train
     else:
         raise ValueError(f"unknown algorithm: {algorithm!r} (bco | kto)")
 
@@ -77,7 +77,7 @@ def default_train(
 
 def default_policy_kl(records, checkpoint_path, reference_path):
     """Attach the policy-vs-reference KL to a round's messages."""
-    from policy_kl import attach_policy_kl
+    from training.policy_kl import attach_policy_kl
 
     return attach_policy_kl(records, checkpoint_path, reference_path)
 

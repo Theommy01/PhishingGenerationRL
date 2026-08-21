@@ -39,7 +39,7 @@ import math
 from typing import Dict, List, Optional, Sequence
 
 from metrics import config
-from reference_model import REF_ADAPTER_NAME
+from training.reference_model import REF_ADAPTER_NAME
 
 # Messages are generated with max_new_tokens=256 on a 512-token prompt budget.
 MAX_LENGTH = 512

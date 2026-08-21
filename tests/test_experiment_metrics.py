@@ -11,8 +11,8 @@
 import pytest
 
 from loop import report
-from policy_kl import summarise
-from reference_model import training_stats
+from training.policy_kl import summarise
+from training.reference_model import training_stats
 
 
 # -- 1. evasion across rounds -----------------------------------------------
@@ -252,7 +252,7 @@ def test_the_real_corpus_uses_placeholders_not_links():
 
 def test_policy_kl_skips_when_the_policy_is_the_reference():
     """Round 0 against SFT: the KL is identically zero, so do not load a model."""
-    from policy_kl import attach_policy_kl
+    from training.policy_kl import attach_policy_kl
 
     records = [{"prompt_text": "subject: x\n->", "body": "hello"}]
     attach_policy_kl(records, "same/path", "same/path")
@@ -261,7 +261,7 @@ def test_policy_kl_skips_when_the_policy_is_the_reference():
 
 
 def test_policy_kl_skips_without_a_reference():
-    from policy_kl import attach_policy_kl
+    from training.policy_kl import attach_policy_kl
 
     records = [{"prompt_text": "subject: x\n->", "body": "hello"}]
     attach_policy_kl(records, "policy/path", None)
@@ -270,7 +270,7 @@ def test_policy_kl_skips_without_a_reference():
 
 
 def test_policy_kl_of_no_records_is_empty():
-    from policy_kl import attach_policy_kl, measure_policy_kl
+    from training.policy_kl import attach_policy_kl, measure_policy_kl
 
     assert attach_policy_kl([], "a", "b") == []
     assert measure_policy_kl("a", "b", []) == []

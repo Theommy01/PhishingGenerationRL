@@ -7,6 +7,12 @@ because they change published numbers.
 
 Original notebook preserved at `reference/Generate_Message.ipynb`.
 
+Filenames below are as they were during the port. The trainers, the reference
+model and the ScamLLM classes have since moved into packages —
+`training/kto_trainer.py`, `training/bco_trainer.py`,
+`training/reference_model.py`, `scamllm/ScamLabeller.py` — with their contents
+unchanged by the move.
+
 ---
 
 ## 0. Cell → file map

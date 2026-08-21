@@ -18,7 +18,7 @@ from typing import Dict, List, Optional, Tuple
 import pandas as pd
 
 from metrics import config
-from ScamLabeller import get_scam_labeller
+from scamllm import get_scam_labeller
 
 DEFAULT_PROMPTS_PATH = os.path.join(
     os.path.dirname(os.path.abspath(__file__)), "prompts.json"

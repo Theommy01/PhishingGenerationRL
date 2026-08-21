@@ -11,7 +11,7 @@ from trl import KTOConfig, KTOTrainer
 from datasets import Dataset
 
 from metrics import config
-from reference_model import attach_reference, training_stats
+from training.reference_model import attach_reference, training_stats
 
 torch.cuda.empty_cache()
 gc.collect()

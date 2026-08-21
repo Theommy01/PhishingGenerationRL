@@ -1,6 +1,6 @@
 from phishnet_feature_engineering.labelling.labellers.Labeller import Labeller
-from ScamAuxiliaryModel import ScamAuxiliaryModel
-from ScamLabel import ScamLabel
+from scamllm.ScamAuxiliaryModel import ScamAuxiliaryModel
+from scamllm.ScamLabel import ScamLabel
 from typing import List
 
 

@@ -17,24 +17,25 @@ outcome — see `--ref-mode` below.
 | `run_loop.py` | **CLI for the whole loop.** Start here. |
 | `generate_dataset.py` | Generate messages from prompt specs, score them, build a training set. Also a CLI. |
 | `loop/` | The loop: `store.py` (MongoDB), `runner.py` (the cycle), `report.py` (per-round metrics). |
-| `kto_trainer.py`, `bco_trainer.py` | One training round each. Alternatives — a run uses one or the other. |
-| `reference_model.py` | What the KL term is anchored to, shared by both trainers. |
-| `ScamAuxiliaryModel.py`, `ScamLabeller.py`, `ScamLabel.py` | ScamLLM, following the phishnet AuxiliaryModel/Labeller/Label pattern. |
+| `training/` | One round of `kto_trainer` or `bco_trainer`, `reference_model.py` (what the KL term is anchored to), `policy_kl.py` (how far it ended up). |
+| `scamllm/` | ScamLLM, following the phishnet AuxiliaryModel/Labeller/Label pattern. |
 | `metrics/` | `config.py` (paths, text helpers), `models.py` (AI detector, SBERT), `analysis.py`, `generation.py`. |
 | `visualisation/charts.py` | Every figure and text report. Writes to `output/`. |
+| `tests/` | `pytest`. Needs mongod on localhost; skips cleanly without it. |
 | `prompts.json` | 150 prompt specs: subject, sentiment, urls, attachments, category, generator. |
+| `Dataset/` | The four files the code reads, plus `archive/` for superseded notebook-era artefacts. |
 | `PORTING_NOTES.md` | What was found while porting the original notebook. **Read §1 before trusting any pre-existing result.** |
 
 `reference/` holds the original notebook and is not imported by anything.
 
 ### Where ScamLLM lives
 
-Exactly one place. `ScamLabeller.parse_model_output` is the only code in the
+Exactly one place. `scamllm.ScamLabeller.parse_model_output` is the only code in the
 project that turns ScamLLM's labels into a number, and `get_scam_labeller()`
 returns a single shared instance so the model loads into VRAM once:
 
 ```python
-from ScamLabeller import get_scam_labeller
+from scamllm import get_scam_labeller
 scores = get_scam_labeller().score_messages(bodies)   # safe probability, 0-1
 ```
 
@@ -239,7 +240,7 @@ round is worse than where it started. Two independent readings:
 - `training.kl_mean` — the KL TRL logs every step while training, i.e. the
   penalty term the algorithm actually applied. KTO only; BCO's formulation logs
   no equivalent.
-- `kl_per_token` — measured after the fact by `policy_kl.py` on the text the
+- `kl_per_token` — measured after the fact by `training/policy_kl.py` on the text the
   round generated, always anchored to the pinned SFT checkpoint whatever
   `--ref-mode` the training used, so every round and every `ref_mode` sit on one
   axis. Two forward passes per message with the reference as a second adapter,
@@ -287,7 +288,7 @@ Without the loop, for a one-shot dataset:
 python generate_dataset.py            # writes Dataset/master_training_dataset.jsonl
 ```
 
-Then `python kto_trainer.py` or `python bco_trainer.py`.
+Then `python -m training.kto_trainer` or `python -m training.bco_trainer`.
 
 ---
 
