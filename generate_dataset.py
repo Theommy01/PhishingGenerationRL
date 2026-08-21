@@ -15,7 +15,7 @@ greedily.
 
 import json
 import os
-from typing import Dict, List, Optional, Tuple
+from typing import Callable, Dict, List, Optional, Tuple
 
 import pandas as pd
 
@@ -113,6 +113,7 @@ def generate_messages(
     gen_args: Optional[dict] = None,
     n_samples: int = 1,
     preset: Optional[str] = None,
+    on_prompt: Optional[Callable[[List[Dict]], None]] = None,
 ) -> List[Dict]:
     """Generate `n_samples` emails per prompt spec with one checkpoint.
 
@@ -126,6 +127,11 @@ def generate_messages(
     `prompts`, which is also the index into a run's subject list — LoopStore
     turns it into the message's subject DBRef, and drops the `category` and
     `generator` copies, which are there for the standalone jsonl path only.
+
+    `on_prompt`, if given, is called with each prompt's samples as soon as they
+    are generated. Generating a full round takes hours, so a caller that wants
+    to persist progress can do it here rather than waiting for the return value
+    — the model is loaded once either way.
 
     Each record also carries `decoding`: the complete, resolved generation
     arguments this message was produced with. It is constant within a call, but
@@ -162,13 +168,14 @@ def generate_messages(
                 sentiment=p["sentiment"],
             )
             prompt_text = generate_prompt(**kwargs) + "\n->\n"
+            for_this_prompt: List[Dict] = []
 
             for sample_idx in range(n_samples):
                 raw = generator.generate_message(**kwargs)
                 body, used_fallback = _extract_completion(raw)
                 fallbacks += used_fallback
 
-                records.append(
+                for_this_prompt.append(
                     {
                         "prompt_id": prompt_id,
                         "sample_idx": sample_idx,
@@ -179,7 +186,11 @@ def generate_messages(
                         "decoding": dict(resolved_args),
                     }
                 )
-                print(f"  generated {len(records)} of {total}")
+                print(f"  generated {len(records) + len(for_this_prompt)} of {total}")
+
+            records.extend(for_this_prompt)
+            if on_prompt is not None:
+                on_prompt(for_this_prompt)
     finally:
         # rebinding here is what actually releases the adapter: passing the
         # objects to free_vram only deletes ITS parameters, leaving these two

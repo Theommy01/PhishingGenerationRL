@@ -726,6 +726,48 @@ class LoopStore:
         self.messages.insert_many(docs)
         return len(docs)
 
+    def update_message_metrics(self, run_id: int, round_index: int, records) -> int:
+        """Write scores and metrics onto messages already stored.
+
+        The counterpart to inserting a round's messages as they are generated:
+        generation is the slow part and is persisted immediately, then scoring
+        and the metric passes fill the rest in. Messages are matched on
+        (run_id, round, prompt_id, sample_idx), which is unique within a round.
+
+        Only fields the record actually carries are written, so a metric that
+        was skipped leaves no key behind.
+        """
+        from pymongo import UpdateOne
+
+        managed = {"run_id", "round", "prompt_id", "sample_idx", "subject", "added_at", "split"}
+        operations = []
+        for record in records:
+            fields = {k: v for k, v in record.items() if k not in managed}
+            if not fields:
+                continue
+            operations.append(
+                UpdateOne(
+                    {
+                        "run_id": run_id,
+                        "round": round_index,
+                        "prompt_id": record["prompt_id"],
+                        "sample_idx": record["sample_idx"],
+                    },
+                    {"$set": fields},
+                )
+            )
+
+        if not operations:
+            return 0
+        return self.messages.bulk_write(operations).modified_count
+
+    def unscored_count(self, run_id: int, round_index: Optional[int] = None) -> int:
+        """Messages stored but not yet scored — a crashed round leaves these."""
+        query: Dict[str, Any] = {"run_id": run_id, "score": {"$exists": False}}
+        if round_index is not None:
+            query["round"] = round_index
+        return self.messages.count_documents(query)
+
     def get_messages(
         self,
         run_id: int,

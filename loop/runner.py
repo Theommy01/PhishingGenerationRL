@@ -14,7 +14,7 @@ from typing import Callable, Dict, List, Optional
 
 from metrics import config
 from loop import report
-from loop.store import HOLDOUT_SPLIT, TRAIN_SPLIT, LoopStore
+from loop.store import HOLDOUT_SPLIT, TRAIN_SPLIT, LoopStore, utc_now
 
 ALGORITHMS = ("bco", "kto")
 from training.reference_model import REF_MODES  # ("sft", "previous", "base")
@@ -25,12 +25,30 @@ from training.reference_model import REF_MODES  # ("sft", "previous", "base")
 # =============================================================================
 
 
-def default_generate(checkpoint_path, prompts, gen_args, n_samples) -> List[Dict]:
+def default_generate(checkpoint_path, prompts, gen_args, n_samples, on_prompt=None):
     from generate_dataset import generate_messages
 
     return generate_messages(
-        prompts, path_sft=checkpoint_path, gen_args=gen_args, n_samples=n_samples
+        prompts,
+        path_sft=checkpoint_path,
+        gen_args=gen_args,
+        n_samples=n_samples,
+        on_prompt=on_prompt,
     )
+
+
+def supports_on_prompt(generate_fn) -> bool:
+    """Whether a generate_fn can report progress as it goes.
+
+    Checked rather than assumed, so a caller's own generator — a notebook, a
+    test stub — keeps working with the four arguments it was written for.
+    """
+    import inspect
+
+    try:
+        return "on_prompt" in inspect.signature(generate_fn).parameters
+    except (TypeError, ValueError):
+        return False
 
 
 def default_score(records, threshold) -> List[Dict]:
@@ -277,21 +295,43 @@ class LoopRunner:
         )
         checkpoint_doc = self.store.upsert_checkpoint(checkpoint, produced_by=produced_by)
 
-        records = self.generate_fn(checkpoint, self.prompts, self.gen_args, self.n_samples)
-        for record in records:
-            record["split"] = TRAIN_SPLIT
+        # One timestamp for the whole round, taken before any of it is written,
+        # so incremental inserts do not let an `as_of` cut a round in half.
+        stamp = utc_now()
+        streaming = supports_on_prompt(self.generate_fn)
 
+        def generate(prompts, split, offset=0):
+            """Generate for one split, persisting each prompt as it lands.
+
+            The messages go in unscored: generation is the expensive part — hours
+            for a full round — and a crash after it should not throw that away.
+            The scoring and metric passes below fill the rest in.
+            """
+
+            def persist(batch):
+                for record in batch:
+                    record["prompt_id"] += offset
+                    record["split"] = split
+                self.store.add_messages(
+                    run_id, round_index, batch, checkpoint=checkpoint_doc, added_at=stamp
+                )
+
+            if streaming:
+                produced = self.generate_fn(
+                    checkpoint, prompts, self.gen_args, self.n_samples, on_prompt=persist
+                )
+                # persist() has already offset and tagged what it was handed
+                return produced
+
+            produced = self.generate_fn(checkpoint, prompts, self.gen_args, self.n_samples)
+            persist(produced)
+            return produced
+
+        records = generate(self.prompts, TRAIN_SPLIT)
         if self.holdout:
             # Same checkpoint, same decoding, same scoring — the only difference
             # is that these never reach the training pool.
-            held = self.generate_fn(
-                checkpoint, self.holdout, self.gen_args, self.n_samples
-            )
-            offset = len(self.prompts)
-            for record in held:
-                record["prompt_id"] += offset
-                record["split"] = HOLDOUT_SPLIT
-            records = records + held
+            records = records + generate(self.holdout, HOLDOUT_SPLIT, len(self.prompts))
 
         records = self.score_fn(records, self.threshold)
 
@@ -321,7 +361,8 @@ class LoopRunner:
             # axis. Skipped for round 0, whose policy *is* the anchor.
             records = self.policy_kl_fn(records, checkpoint, self.sft_path)
 
-        self.store.add_messages(run_id, round_index, records, checkpoint=checkpoint_doc)
+        # the messages are already stored; this writes the scores and metrics on
+        self.store.update_message_metrics(run_id, round_index, records)
         return records, checkpoint_doc
 
     def write_pool(self, run_id: int, round_index: int) -> tuple:

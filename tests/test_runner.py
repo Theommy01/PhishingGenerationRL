@@ -20,9 +20,9 @@ def stubs(make_checkpoint):
             self.calls = []
             self.sft = make_checkpoint("sft", weights=b"the sft adapter")
 
-        def generate(self, checkpoint, prompts, gen_args, n_samples):
+        def generate(self, checkpoint, prompts, gen_args, n_samples, on_prompt=None):
             self.calls.append(("generate", checkpoint, dict(gen_args), n_samples))
-            return [
+            produced = [
                 {
                     "prompt_id": prompt_id,
                     "sample_idx": sample_idx,
@@ -34,6 +34,10 @@ def stubs(make_checkpoint):
                 for prompt_id, spec in enumerate(prompts)
                 for sample_idx in range(n_samples)
             ]
+            if on_prompt is not None:
+                for prompt_id in range(len(prompts)):
+                    on_prompt([r for r in produced if r["prompt_id"] == prompt_id])
+            return produced
 
         def score(self, records, threshold):
             for index, record in enumerate(records):
@@ -236,6 +240,96 @@ def test_every_round_records_how_it_generated(store, runner_for):
         generation = store.get_round(run_id, round_index)["generation"]
         assert generation["n_samples"] == 3
         assert generation["gen_args"]["max_new_tokens"] == 128
+
+
+def test_messages_are_stored_as_they_are_generated(store, runner_for, prompts):
+    """Generation is the expensive part; a crash after it must not lose it."""
+    seen = []
+
+    def generate(checkpoint, specs, gen_args, n_samples, on_prompt=None):
+        produced = []
+        for prompt_id, spec in enumerate(specs):
+            batch = [
+                {
+                    "prompt_id": prompt_id,
+                    "sample_idx": i,
+                    "prompt_text": render(spec),
+                    "body": f"p{prompt_id} s{i}",
+                }
+                for i in range(n_samples)
+            ]
+            produced += batch
+            if on_prompt is not None:
+                on_prompt(batch)
+                # what the database holds *during* generation
+                seen.append(store.messages.count_documents({}))
+        return produced
+
+    runner_for(generate_fn=generate).start()
+
+    assert seen == [2, 4, 6, 8], "messages did not accumulate per prompt"
+
+
+def test_messages_are_stored_unscored_then_filled_in(store, runner_for, prompts):
+    """The two phases: generation persists, scoring updates in place."""
+    during = {}
+
+    def generate(checkpoint, specs, gen_args, n_samples, on_prompt=None):
+        produced = []
+        for prompt_id, spec in enumerate(specs):
+            batch = [
+                {
+                    "prompt_id": prompt_id,
+                    "sample_idx": 0,
+                    "prompt_text": render(spec),
+                    "body": f"p{prompt_id}",
+                }
+            ]
+            produced += batch
+            if on_prompt is not None:
+                on_prompt(batch)
+                during["unscored"] = store.messages.count_documents(
+                    {"score": {"$exists": False}}
+                )
+        return produced
+
+    run_id = runner_for(generate_fn=generate, n_samples=1).start()
+
+    assert during["unscored"] > 0, "messages were scored before they were stored"
+    assert store.unscored_count(run_id) == 0, "scores were not filled in afterwards"
+
+    message = store.get_messages(run_id, with_subject=False)[0]
+    assert "score" in message and "label" in message
+    # the insert-time fields survived the update
+    assert message["split"] == "train" and message["checkpoint_hash"]
+
+
+def test_a_generate_fn_without_on_prompt_still_works(store, runner_for):
+    """A caller's own generator keeps its four-argument signature."""
+
+    def legacy_generate(checkpoint, specs, gen_args, n_samples):
+        return [
+            {
+                "prompt_id": prompt_id,
+                "sample_idx": 0,
+                "prompt_text": render(spec),
+                "body": f"legacy p{prompt_id}",
+            }
+            for prompt_id, spec in enumerate(specs)
+        ]
+
+    run_id = runner_for(generate_fn=legacy_generate, n_samples=1).start()
+
+    messages = store.get_messages(run_id, with_subject=False)
+    assert len(messages) == 4
+    assert all("score" in m for m in messages)
+
+
+def test_a_round_shares_one_timestamp_despite_incremental_writes(store, runner_for):
+    run_id = runner_for().start()
+
+    stamps = store.messages.distinct("added_at", {"run_id": run_id})
+    assert len(stamps) == 1, "an as_of could cut this round in half"
 
 
 # -- the held-out split -----------------------------------------------------
