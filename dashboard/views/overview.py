@@ -268,6 +268,26 @@ def render(run_id: int) -> None:
         )
 
     st.divider()
+    st.subheader("Is the evasion genuine, or just dropping the signal?")
+    st.caption(
+        "Among prompts that requested the placeholder, evasion split by whether "
+        "the body actually kept it — per message, since samples of one prompt "
+        "differ. If the **kept** line rises across rounds, the model learned to "
+        "evade *with* the phishing signal present; if only **dropped** rises, it "
+        "is evading by stripping the signal. This is the sharper test than the "
+        "requested-vs-not split above, which pools kept and dropped together."
+    )
+    left, right = st.columns(2)
+    with left:
+        charts.evasion_kept_vs_dropped(
+            paired.evasion_by_presence(frame, "url", TRAIN_SPLIT), "url"
+        )
+    with right:
+        charts.evasion_kept_vs_dropped(
+            paired.evasion_by_presence(frame, "attachment", TRAIN_SPLIT), "attachment"
+        )
+
+    st.divider()
     st.subheader("By category and generator")
     left, right = st.columns(2)
     with left:

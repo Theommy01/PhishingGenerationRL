@@ -261,3 +261,31 @@ def trajectory_by_flag(traj: pd.DataFrame, group: str, outcome: str, title: str)
         .properties(height=300)
     )
     st.altair_chart(chart, use_container_width=True)
+
+
+def evasion_kept_vs_dropped(traj: pd.DataFrame, field: str):
+    """Per-message evasion split by whether the placeholder was kept.
+
+    `traj` is metrics.paired.evasion_by_presence output: rows of
+    (round, kept in {"kept","dropped"}, evasion_rate, messages).
+    """
+    if traj.empty:
+        st.info(f"no prompts requested a {field} in this run")
+        return
+    chart = (
+        alt.Chart(traj)
+        .mark_line(point=True, strokeWidth=2.5)
+        .encode(
+            x=alt.X("round:O", title="Round"),
+            y=alt.Y("evasion_rate:Q", title="Evasion rate", scale=alt.Scale(domain=[0, 1])),
+            color=alt.Color(
+                "kept:N",
+                title=f"<{field.upper()}>",
+                scale=alt.Scale(domain=["kept", "dropped"],
+                                range=[PALETTE_ORANGE[1], PALETTE_ORANGE[0]]),
+            ),
+            tooltip=["round", "kept", alt.Tooltip("evasion_rate:Q", format=".3f"), "messages"],
+        )
+        .properties(height=300, title=f"Evasion when the {field} placeholder is kept vs dropped")
+    )
+    st.altair_chart(chart, use_container_width=True)

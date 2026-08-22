@@ -253,6 +253,42 @@ def trajectory_by(
     return pd.DataFrame(rows)
 
 
+def evasion_by_presence(
+    df: pd.DataFrame,
+    field: str,
+    split: Optional[str] = None,
+    threshold: float = config.SAFE_THRESHOLD,
+) -> pd.DataFrame:
+    """Per-message evasion, split by whether the placeholder is in the body.
+
+    Restricted to prompts that *requested* the placeholder, because only there
+    is keeping-vs-dropping a genuine choice. This is per message, not per
+    prompt: within one prompt's n samples some keep the placeholder and some
+    drop it, so the split lives at the sample level.
+
+    The point it settles: if evasion among the messages that KEEP the `<URL>`
+    rises across rounds, the gain is genuine — the model learned to write
+    phishing that carries the signal and still evades — rather than evading by
+    stripping the signal, which would show up only in the dropped column.
+    """
+    present, requested = f"{field}_present", f"{field}_requested"
+    rows = df if split is None or "split" not in df else df[df["split"] == split]
+    rows = rows[rows.get(requested) == True] if requested in rows else rows.iloc[0:0]  # noqa: E712
+    if rows.empty or present not in rows:
+        return pd.DataFrame()
+
+    rows = rows.copy()
+    rows["evaded"] = rows["score"] >= threshold
+    rows["kept"] = rows[present].map({True: "kept", False: "dropped"})
+
+    out = (
+        rows.groupby(["round", "kept"])
+        .agg(evasion_rate=("evaded", "mean"), messages=("evaded", "size"))
+        .reset_index()
+    )
+    return out
+
+
 def compliance_when_requested(
     df: pd.DataFrame, field: str, split: Optional[str] = None
 ) -> pd.DataFrame:

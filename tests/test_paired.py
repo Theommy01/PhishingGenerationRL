@@ -205,3 +205,34 @@ def test_compliance_when_requested_is_the_requested_subset_only():
     by_round = {row.round: (row.compliance, row.prompts) for row in c.itertuples()}
     assert by_round[0] == (50.0, 2)   # 1 of 2 requested prompts emitted; the not-requested one is excluded
     assert by_round[1] == (0.0, 2)    # compliance fell to zero on the requested subset
+
+
+def test_evasion_by_presence_is_per_message_on_the_requested_subset():
+    """kept vs dropped, and only for prompts that asked for the placeholder."""
+    rows = []
+    # prompt 0 (requested): sample keeps URL & evades, sample drops & fails
+    # prompt 1 (not requested): must be excluded entirely
+    for r, p, present, req, score in [
+        (0, 0, True, True, 0.9), (0, 0, False, True, 0.1),
+        (0, 1, False, False, 0.9), (0, 1, False, False, 0.9),
+        (1, 0, True, True, 0.9), (1, 0, True, True, 0.9),
+    ]:
+        rows.append({"round": r, "prompt_id": p, "score": score, "split": "train",
+                     "body": "b", "url_present": present, "url_requested": req})
+    df = pd.DataFrame(rows)
+
+    out = paired.evasion_by_presence(df, "url")
+    got = {(r.round, r.kept): (round(r.evasion_rate, 3), r.messages) for r in out.itertuples()}
+    assert got[(0, "kept")] == (1.0, 1)      # the one kept sample evaded
+    assert got[(0, "dropped")] == (0.0, 1)   # the one dropped sample failed
+    assert got[(1, "kept")] == (1.0, 2)      # both kept, both evaded
+    # the not-requested prompt contributed nothing
+    assert sum(m for _, m in got.values()) == 4
+
+
+def test_evasion_by_presence_empty_when_nothing_requested():
+    df = pd.DataFrame([
+        {"round": 0, "prompt_id": 0, "score": 0.9, "split": "train",
+         "body": "b", "url_present": False, "url_requested": False}
+    ])
+    assert paired.evasion_by_presence(df, "url").empty
