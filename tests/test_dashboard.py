@@ -129,3 +129,45 @@ def test_the_transfer_tab_renders_with_two_detectors(
 
     assert not at.exception, [e.value for e in at.exception]
     assert any("Did the gain transfer" in h.value for h in at.subheader)
+
+
+def test_the_evasion_chart_pins_which_line_is_which():
+    """The legend must not depend on Vega's alphabetical sort of the domain.
+
+    Left implicit, `asr_at_n` sorted before `evasion_rate` and silently took the
+    solid pattern the caption claimed for the evasion rate.
+    """
+    import json
+
+    import pandas as pd
+
+    from dashboard import charts
+
+    summary = pd.DataFrame(
+        {
+            "round": [0, 1],
+            "split": ["train", "train"],
+            "messages": [540, 540],
+            "evasion_rate": [31.3, 34.8],
+            "asr_at_n": [63.0, 67.4],
+        }
+    )
+
+    import streamlit as st
+
+    drawn = {}
+    st.altair_chart = lambda chart, **kwargs: drawn.setdefault("chart", chart)
+    charts.evasion_by_split(summary)
+
+    spec = json.loads(drawn["chart"].to_json())
+    dash = next(
+        layer["encoding"]["strokeDash"]
+        for layer in spec["layer"]
+        if "strokeDash" in layer.get("encoding", {})
+    )
+    domain = dash["scale"]["domain"]
+    ranges = dash["scale"]["range"]
+
+    assert domain[0] == charts.METRIC_LABELS["evasion_rate"]
+    assert ranges[domain.index(charts.METRIC_LABELS["evasion_rate"])] == charts.SOLID
+    assert ranges[domain.index(charts.METRIC_LABELS["asr_at_n"])] == charts.DASHED

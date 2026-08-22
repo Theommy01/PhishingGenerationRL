@@ -37,9 +37,21 @@ OUTCOMES = {
     "mean_score": ("score", "mean"),
     "url_ok": ("url_ok", "mean"),
     "attachment_ok": ("attachment_ok", "mean"),
+    # the *presence* of a placeholder, separate from two-sided compliance:
+    # filtered to prompts that requested it, its per-prompt mean is the
+    # emit-when-asked rate, which is the side of compliance that costs the model
+    # something and the side that erodes as evasion rises.
+    "url_present": ("url_present", "mean"),
+    "attachment_present": ("attachment_present", "mean"),
     "cos_subject": ("cos_subject", "mean"),
     "logratio_per_token": ("logratio_per_token", "mean"),
 }
+
+# Per-prompt attributes carried through unchanged (constant within a prompt),
+# so the analysis can subset by them — e.g. evasion only on prompts that asked
+# for a URL.
+CARRIED = ("category", "generator", "subject_text", "split", "url_requested",
+           "attachment_requested")
 
 # Outcomes where a higher number is the policy doing better at evading. The
 # guardrails are not in here: for those, "improved" is not the point — movement
@@ -72,7 +84,7 @@ def per_prompt(
     aggregations["samples"] = pd.NamedAgg(column="body", aggfunc="size")
 
     out = rows.groupby("prompt_id").agg(**aggregations)
-    for column in ("category", "generator", "subject_text", "split"):
+    for column in CARRIED:
         if column in rows:
             out[column] = rows.groupby("prompt_id")[column].first()
     return out
@@ -106,7 +118,7 @@ def paired(
         after_values = joined[f"{name}_after"].astype(float)
         joined[f"{name}_delta"] = after_values - before_values
 
-    for column in ("category", "generator", "subject_text", "split"):
+    for column in CARRIED:
         if column in after:
             joined[column] = after[column]
     return joined
@@ -207,6 +219,66 @@ def report(
     names = outcomes or [name for name in OUTCOMES if f"{name}_delta" in joined]
     rows = [summarise(joined, name) for name in names]
     return pd.DataFrame([row for row in rows if row])
+
+
+def trajectory_by(
+    df: pd.DataFrame,
+    group: str,
+    outcome: str = "evasion_rate",
+    split: Optional[str] = None,
+    threshold: float = config.SAFE_THRESHOLD,
+) -> pd.DataFrame:
+    """One row per (round, `group`): the mean of `outcome`, per prompt first.
+
+    Aggregates per prompt then over prompts, so a prompt with more samples does
+    not weigh more, and subsets by a per-prompt attribute like `url_requested`
+    — which answers whether evasion improves for the emails that *must* carry a
+    URL as opposed to those free to omit one.
+    """
+    rounds = sorted(df["round"].dropna().unique())
+    rows = []
+    for round_index in rounds:
+        per = per_prompt(df, round_index, split, threshold)
+        if per.empty or group not in per or outcome not in per:
+            continue
+        for value, chunk in per.groupby(group):
+            rows.append(
+                {
+                    "round": int(round_index),
+                    group: value,
+                    outcome: float(chunk[outcome].mean()),
+                    "prompts": int(len(chunk)),
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def compliance_when_requested(
+    df: pd.DataFrame, field: str, split: Optional[str] = None
+) -> pd.DataFrame:
+    """Per round, the emit-when-asked rate for `url` or `attachment`.
+
+    The honest half of compliance: restricted to prompts that asked for the
+    placeholder, since omitting one nobody asked for is free and dominates the
+    pooled figure. One row per round, over the requested subset only.
+    """
+    present, requested = f"{field}_present", f"{field}_requested"
+    rows = []
+    for round_index in sorted(df["round"].dropna().unique()):
+        per = per_prompt(df, round_index, split)
+        if per.empty or requested not in per or present not in per:
+            continue
+        asked = per[per[requested]]
+        if asked.empty:
+            continue
+        rows.append(
+            {
+                "round": int(round_index),
+                "compliance": float(asked[present].mean()) * 100,
+                "prompts": int(len(asked)),
+            }
+        )
+    return pd.DataFrame(rows)
 
 
 def difference_in_differences(

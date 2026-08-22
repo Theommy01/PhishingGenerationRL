@@ -19,6 +19,16 @@ from visualisation.style import PALETTE_ORANGE
 
 SPLIT_COLORS = {"train": PALETTE_ORANGE[1], "holdout": PALETTE_ORANGE[2]}
 
+# Spelled out in the legend rather than left as column names, and pinned to a
+# dash pattern below. Vega sorts a nominal domain alphabetically, so leaving it
+# implicit handed the solid line to `asr_at_n` while the caption claimed it for
+# the evasion rate — a mapping the chart never actually controlled.
+METRIC_LABELS = {
+    "evasion_rate": "evasion rate (per message)",
+    "asr_at_n": "ASR@n (per prompt)",
+}
+SOLID, DASHED = [1, 0], [6, 4]
+
 
 def figure_toggle(key: str) -> str:
     """The interactive / thesis-figure switch. Returns the chosen mode."""
@@ -88,6 +98,7 @@ def evasion_by_split(summary: pd.DataFrame):
         var_name="metric",
         value_name="percent",
     )
+    long["metric"] = long["metric"].map(METRIC_LABELS)
     chart = (
         alt.Chart(long)
         .mark_line(point=True, strokeWidth=2.5)
@@ -100,7 +111,15 @@ def evasion_by_split(summary: pd.DataFrame):
                     domain=list(SPLIT_COLORS), range=list(SPLIT_COLORS.values())
                 ),
             ),
-            strokeDash=alt.StrokeDash("metric:N", title="Metric"),
+            strokeDash=alt.StrokeDash(
+                "metric:N",
+                title="Metric",
+                # explicit, so the legend cannot drift from what is drawn
+                scale=alt.Scale(
+                    domain=[METRIC_LABELS["evasion_rate"], METRIC_LABELS["asr_at_n"]],
+                    range=[SOLID, DASHED],
+                ),
+            ),
             tooltip=[
                 "round",
                 "split",
@@ -193,6 +212,51 @@ def breakdown_bars(df: pd.DataFrame, group: str, value: str = "evaded"):
             color=alt.Color("round:O", title="Round"),
             xOffset="round:O",
             tooltip=[group, "round", alt.Tooltip("percent:Q", format=".1f")],
+        )
+        .properties(height=300)
+    )
+    st.altair_chart(chart, use_container_width=True)
+
+
+def emit_when_asked(store_frame: pd.DataFrame, field: str):
+    """Emit-when-asked compliance per round — the honest half of compliance.
+
+    `store_frame` is one row per round with a `compliance` column, as
+    metrics.paired.compliance_when_requested returns.
+    """
+    if store_frame.empty:
+        st.info(f"no prompts requested a {field} in this run")
+        return
+    chart = (
+        alt.Chart(store_frame)
+        .mark_line(point=True, strokeWidth=2.5, color=PALETTE_ORANGE[1])
+        .encode(
+            x=alt.X("round:O", title="Round"),
+            y=alt.Y("compliance:Q", title="% emitting when asked", scale=alt.Scale(domain=[0, 100])),
+            tooltip=["round", alt.Tooltip("compliance:Q", format=".1f"), "prompts"],
+        )
+        .properties(height=260, title=f"{field} placeholder emitted when requested")
+    )
+    baseline = store_frame.iloc[[0]]
+    mark = alt.Chart(baseline).mark_rule(strokeDash=[2, 3], opacity=0.6, color=PALETTE_ORANGE[1]).encode(y="compliance:Q")
+    st.altair_chart(chart + mark, use_container_width=True)
+
+
+def trajectory_by_flag(traj: pd.DataFrame, group: str, outcome: str, title: str):
+    """One line per value of a per-prompt flag — e.g. evasion split by url_requested."""
+    if traj.empty:
+        st.info("not enough data yet")
+        return
+    plot = traj.copy()
+    plot[group] = plot[group].map({True: "requested", False: "not requested"}).fillna(plot[group].astype(str))
+    chart = (
+        alt.Chart(plot)
+        .mark_line(point=True, strokeWidth=2.5)
+        .encode(
+            x=alt.X("round:O", title="Round"),
+            y=alt.Y(f"{outcome}:Q", title=title, scale=alt.Scale(domain=[0, 1])),
+            color=alt.Color(f"{group}:N", title=group.replace("_", " ")),
+            tooltip=["round", group, alt.Tooltip(f"{outcome}:Q", format=".3f"), "prompts"],
         )
         .properties(height=300)
     )

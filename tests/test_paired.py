@@ -171,3 +171,37 @@ def test_everything_survives_an_empty_or_single_round_frame():
 
     one_round = frame([(0, 0, 0.5, "train")])
     assert paired.paired(one_round, round_index=1).empty
+
+
+def test_trajectory_by_subsets_on_a_per_prompt_flag():
+    """Evasion split by whether the prompt requested a URL."""
+    rows = []
+    for r, p, s, req in [
+        (0, 0, 0.9, True), (0, 1, 0.1, True), (0, 2, 0.9, False), (0, 3, 0.9, False),
+        (1, 0, 0.9, True), (1, 1, 0.9, True), (1, 2, 0.9, False), (1, 3, 0.9, False),
+    ]:
+        rows.append({"round": r, "prompt_id": p, "score": s, "evaded": s >= 0.5,
+                     "split": "train", "body": f"r{r}p{p}", "url_requested": req})
+    df = pd.DataFrame(rows)
+
+    traj = paired.trajectory_by(df, "url_requested", "evasion_rate")
+    got = {(r.round, r.url_requested): r.evasion_rate for r in traj.itertuples()}
+    assert got[(0, True)] == 0.5 and got[(1, True)] == 1.0   # requested subset improved
+    assert got[(0, False)] == 1.0 and got[(1, False)] == 1.0
+
+
+def test_compliance_when_requested_is_the_requested_subset_only():
+    rows = []
+    for r, p, present, req in [
+        (0, 0, True, True), (0, 1, False, True), (0, 2, False, False),
+        (1, 0, False, True), (1, 1, False, True), (1, 2, False, False),
+    ]:
+        rows.append({"round": r, "prompt_id": p, "score": 0.5, "evaded": True,
+                     "split": "train", "body": f"r{r}p{p}",
+                     "url_present": present, "url_requested": req})
+    df = pd.DataFrame(rows)
+
+    c = paired.compliance_when_requested(df, "url")
+    by_round = {row.round: (row.compliance, row.prompts) for row in c.itertuples()}
+    assert by_round[0] == (50.0, 2)   # 1 of 2 requested prompts emitted; the not-requested one is excluded
+    assert by_round[1] == (0.0, 2)    # compliance fell to zero on the requested subset

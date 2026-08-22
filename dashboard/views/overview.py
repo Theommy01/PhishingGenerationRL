@@ -10,16 +10,23 @@ import pandas as pd
 import streamlit as st
 
 from dashboard import charts, data
+from loop.store import TRAIN_SPLIT
 from metrics import paired
 
 
 def _delta(summary, split: str, column: str):
-    """First round to last, for one split — the shape of every headline here."""
+    """Latest scored round for one split, and its change from the first.
+
+    Returns (value, change, latest_round, first_round) — the round numbers come
+    back so the tiles can say which rounds they are talking about rather than
+    leaving the reader to assume.
+    """
     rows = summary[(summary["split"] == split) & summary[column].notna()]
     if rows.empty:
-        return None, None
-    first, last = rows.iloc[0][column], rows.iloc[-1][column]
-    return last, (last - first if len(rows) > 1 else None)
+        return None, None, None, None
+    first, last = rows.iloc[0], rows.iloc[-1]
+    change = (last[column] - first[column]) if len(rows) > 1 else None
+    return last[column], change, int(last["round"]), int(first["round"])
 
 
 def _paired_headline(frame: pd.DataFrame, rounds) -> None:
@@ -127,6 +134,7 @@ def render(run_id: int) -> None:
         st.divider()
         st.markdown("**Round by round**")
     columns = st.columns(4)
+    shown = []
     for column, (split, metric, label) in zip(
         columns,
         [
@@ -136,11 +144,29 @@ def render(run_id: int) -> None:
             ("holdout", "asr_at_n", "ASR@n (held out)"),
         ],
     ):
-        value, change = _delta(summary, split, metric)
+        value, change, latest, first = _delta(summary, split, metric)
+        if latest is not None:
+            shown.append((latest, first))
         column.metric(
             label,
             "—" if value is None else f"{value:.1f}%",
             None if change is None else f"{change:+.1f} pts",
+            help=(
+                f"Round {latest}. The change is against round {first}."
+                if latest is not None
+                else "no scored round for this split yet"
+            ),
+        )
+
+    if shown:
+        latest = max(r for r, _ in shown)
+        first = min(f for _, f in shown)
+        st.caption(
+            f"Figures are **round {latest}** — the latest scored round; the "
+            f"change beneath each is against **round {first}**. These are "
+            "marginal means over all of a round's messages: the paired, "
+            "per-prompt view below is the one that says whether a difference is "
+            "real."
         )
 
     mode = charts.figure_toggle("evasion-mode")
@@ -156,10 +182,14 @@ def render(run_id: int) -> None:
             download_label="round_trajectory",
         )
     st.caption(
-        "Solid: evasion rate, per message. Dashed: ASR@n, the fraction of "
-        "prompts where at least one of the n samples evaded. A gap that widens "
-        "between train and held out is the policy fitting these subjects rather "
-        "than learning to evade."
+        "**Solid: evasion rate** — the share of individual messages that got "
+        "through. **Dashed: ASR@n** — the share of *prompts* where at least one "
+        "of the n samples got through, which is the attacker who generates n and "
+        "keeps whichever lands. ASR@n is at least the evasion rate by "
+        "construction, so the dashed line always sits above the solid one; it is "
+        "also only comparable at a fixed n. A gap that widens between train and "
+        "held out is the policy fitting these subjects rather than learning to "
+        "evade."
     )
 
     st.divider()
@@ -198,42 +228,44 @@ def render(run_id: int) -> None:
 
     # -- guardrail 2: instruction following ---------------------------------
     st.subheader("Does it still follow the prompt?")
-    mode = charts.figure_toggle("instruction-mode")
-    if mode == "interactive":
-        left, right = st.columns(2)
-        with left:
-            charts.guardrail(
-                summary, "url_compliance", "URL flag followed", "Percent", [0, 100]
-            )
-        with right:
-            charts.guardrail(
-                summary,
-                "attachment_compliance",
-                "Attachment flag followed",
-                "Percent",
-                [0, 100],
-            )
-        charts.guardrail(
-            summary, "cos_subject", "Similarity to the subject line", "Cosine (%)"
-        )
-    else:
-        from visualisation.charts import plot_instruction_following
-
-        train = summary[summary["split"] == "train"].rename(
-            columns={"url_compliance": "url_ok", "attachment_compliance": "attachment_ok"}
-        )
-        charts.thesis_figure(
-            plot_instruction_following,
-            train,
-            name=f"run{run_id}_instruction_following",
-            download_label="instruction_following",
-        )
     st.caption(
-        "Compliance is two-sided: producing a <URL> that was not asked for "
-        "counts against it, as does omitting one that was. The dotted line is "
-        "the round-0 level — the question is movement from there, not the "
-        "absolute value."
+        "The pooled compliance rate is misleading: omitting a placeholder "
+        "nobody asked for is free, and most prompts ask for neither, so the "
+        "pooled figure stays flat while the side that costs the model something "
+        "— emitting when asked — can erode. These show only the requested "
+        "subset, which is the honest half."
     )
+    left, right = st.columns(2)
+    with left:
+        charts.emit_when_asked(paired.compliance_when_requested(frame, "url", TRAIN_SPLIT), "URL")
+    with right:
+        charts.emit_when_asked(
+            paired.compliance_when_requested(frame, "attachment", TRAIN_SPLIT), "attachment"
+        )
+    charts.guardrail(
+        summary, "cos_subject", "Similarity to the subject line", "Cosine (%)"
+    )
+
+    st.divider()
+    st.subheader("Does evasion improve for emails that must carry a URL / attachment?")
+    st.caption(
+        "The hardest test of genuine evasion: a prompt that requests a URL must "
+        "keep a phishing signal and still slip past the detector, rather than "
+        "evading by having nothing to flag. If the requested subset improves — "
+        "and improves while the placeholder is kept — the gain is real quality, "
+        "not signal-stripping."
+    )
+    left, right = st.columns(2)
+    with left:
+        charts.trajectory_by_flag(
+            paired.trajectory_by(frame, "url_requested", "evasion_rate", TRAIN_SPLIT),
+            "url_requested", "evasion_rate", "Evasion rate (URL requested vs not)",
+        )
+    with right:
+        charts.trajectory_by_flag(
+            paired.trajectory_by(frame, "attachment_requested", "evasion_rate", TRAIN_SPLIT),
+            "attachment_requested", "evasion_rate", "Evasion rate (attachment requested vs not)",
+        )
 
     st.divider()
     st.subheader("By category and generator")
