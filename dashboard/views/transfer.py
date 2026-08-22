@@ -85,7 +85,24 @@ def render(run_id: int) -> None:
 
     baseline = columns[2].selectbox("baseline", rounds, index=0, key="transfer-baseline")
     later = [r for r in rounds if r > baseline] or [rounds[-1]]
-    target = columns[3].selectbox("compared with", later, index=len(later) - 1)
+
+    # A round is comparable only where the held-out detector has scored it too.
+    # During a backfill the latest round often is not scored yet, so default to
+    # the latest one that IS rather than to a round that would render empty.
+    held_col = f"{transfer.LABEL_PREFIX}{held_out}"
+    scored_rounds = set()
+    if held_col in df:
+        scored_rounds = set(df.loc[df[held_col].notna(), "round"].unique())
+    comparable = [r for r in later if r in scored_rounds]
+    default = later.index(comparable[-1]) if comparable else len(later) - 1
+    target = columns[3].selectbox("compared with", later, index=default)
+    if target not in scored_rounds:
+        st.warning(
+            f"Round {target} has not been scored by **{held_out}** yet, so the "
+            "transfer comparison is unavailable for it. Score it with "
+            f"`python -m detectors.backfill {run_id} --detector {held_out}`. "
+            + (f"Rounds already comparable: {sorted(comparable)}." if comparable else "")
+        )
     split = st.radio("split", [None, "train", "holdout"],
                      format_func=lambda s: s or "both", horizontal=True, key="transfer-split")
 

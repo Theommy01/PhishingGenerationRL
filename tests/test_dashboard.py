@@ -171,3 +171,30 @@ def test_the_evasion_chart_pins_which_line_is_which():
     assert domain[0] == charts.METRIC_LABELS["evasion_rate"]
     assert ranges[domain.index(charts.METRIC_LABELS["evasion_rate"])] == charts.SOLID
     assert ranges[domain.index(charts.METRIC_LABELS["asr_at_n"])] == charts.DASHED
+
+
+def test_transfer_tab_defaults_to_a_round_the_held_out_detector_scored(
+    app, store, prompts, make_records, make_checkpoint
+):
+    """During a backfill the latest round is often unscored; the default must
+    land on the latest COMPARABLE round rather than rendering empty."""
+    run_id = store.create_run(prompts, {"n_samples": 2})
+    checkpoint = store.upsert_checkpoint(make_checkpoint())
+    for round_index in range(3):
+        store.add_messages(run_id, round_index, make_records(round_index), checkpoint=checkpoint)
+        # only rounds 0 and 1 get a held-out verdict; round 2 is "still backfilling"
+        if round_index < 2:
+            store.set_detector_verdicts(
+                run_id, "bert-phishing",
+                [{"round": round_index, "prompt_id": m["prompt_id"],
+                  "sample_idx": m["sample_idx"], "score": 0.4 + 0.05 * m["prompt_id"],
+                  "label": round_index > 0}
+                 for m in store.get_messages(run_id, round_index=round_index, with_subject=False)],
+            )
+
+    at = app()
+
+    assert not at.exception, [e.value for e in at.exception]
+    # it defaulted to a comparable round and produced the headline, rather than
+    # defaulting to round 2 and showing "not enough"
+    assert any("Did the gain transfer" in h.value for h in at.subheader)
