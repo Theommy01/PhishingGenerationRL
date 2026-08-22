@@ -13,22 +13,31 @@ Two reasons to measure it here as well as inside the trainer:
   the anchor here is always the pinned SFT checkpoint regardless of what the
   KL term was anchored to during training.
 
-The estimator
--------------
-The messages were sampled from the policy, so the Monte-Carlo estimator over
-those samples is the standard one:
+The estimator, and what it is honestly called
+---------------------------------------------
+The quantity measured per message is the **log ratio**, per completion token:
 
-    k1 = E_y~policy [ log policy(y|x) - log reference(y|x) ]
+    r = [ log policy(y|x) - log reference(y|x) ] / |y|
 
-which is unbiased for KL(policy || reference) and needs only the log
-probabilities of the tokens that were actually produced — not the full vocab
-distribution at every position, which would be 128k floats per token. `k3` is
-Schulman's low-variance, non-negative variant of the same estimate,
+It needs only the log probabilities of the tokens actually produced, not the
+full vocabulary distribution at every position, which would be 128k floats per
+token.
 
-    k3 = exp(-r) - 1 + r,   r = log policy - log reference
+`r` is *not* a KL divergence, and this module no longer calls it one. Averaged
+over samples drawn from the policy it would be the k1 Monte-Carlo estimator of
+KL(policy || reference) — but these samples were drawn with temperature 0.9,
+top-k 50 and top-p 0.95, so the sampling distribution is not the policy
+distribution and the estimate is biased. Measured on run 1787343134 it came out
+negative for 99.7% of messages, which a KL cannot be: the policy assigns lower
+probability to its own sampled text than the SFT reference does. That is a real
+result — likelihood displacement, corroborated by both reward series falling
+during training — but it is a log ratio, not a divergence.
 
-and is reported alongside because k1 can come out negative on a small sample.
-http://joschu.net/blog/kl-approx.html
+`k3 = exp(-r) - 1 + r` is Schulman's non-negative variant
+(http://joschu.net/blog/kl-approx.html). It is kept, but **summarised by its
+median, never its mean**: exp(-r) explodes for the strongly negative r this
+setup produces, and one message at r = -26 dragged the mean to 3.9e8 while the
+median sat at 0.03.
 
 Cost is two forward passes per message with no sampling loop, on one model with
 two adapters attached — about 0.15 GiB over the policy alone, the same trick
@@ -85,8 +94,8 @@ def measure_policy_kl(
     """Per-message KL of `policy_path` from `reference_path`.
 
     `records` need `prompt_text` and `body`. Returns one dict per record with
-    `kl_per_token`, `kl_k3_per_token`, `logp_policy`, `logp_reference` and
-    `completion_tokens`, in the same order.
+    `logratio_per_token`, `kl_k3_per_token`, `logp_policy`, `logp_reference`
+    and `completion_tokens`, in the same order.
 
     Both adapters sit on one 4-bit base model and are swapped between passes.
     """
@@ -129,7 +138,7 @@ def measure_policy_kl(
             if not length or logp_policy is None or logp_reference is None:
                 results.append(
                     {
-                        "kl_per_token": None,
+                        "logratio_per_token": None,
                         "kl_k3_per_token": None,
                         "logp_policy": None,
                         "logp_reference": None,
@@ -141,7 +150,7 @@ def measure_policy_kl(
             ratio = (logp_policy - logp_reference) / length
             results.append(
                 {
-                    "kl_per_token": ratio,
+                    "logratio_per_token": ratio,
                     "kl_k3_per_token": math.exp(-ratio) - 1 + ratio,
                     "logp_policy": logp_policy / length,
                     "logp_reference": logp_reference / length,
@@ -183,19 +192,51 @@ def attach_policy_kl(
     return records
 
 
+def _percentile(ordered: Sequence[float], fraction: float) -> float:
+    return ordered[min(int(fraction * len(ordered)), len(ordered) - 1)]
+
+
 def summarise(records: Sequence[Dict]) -> Dict:
-    """Round-level KL figures: the mean, and the tail that a mean would hide."""
-    values = [r["kl_per_token"] for r in records if r.get("kl_per_token") is not None]
+    """Round-level figures, summarised robustly.
+
+    Medians and percentiles rather than means throughout: the per-message log
+    ratio has a long negative tail (one message at -26 on the first real run),
+    and k3 exponentiates it, so a mean of either says more about the worst
+    message than about the round.
+    """
+    values = [
+        r["logratio_per_token"]
+        for r in records
+        if r.get("logratio_per_token") is not None
+    ]
     if not values:
         return {}
 
     ordered = sorted(values)
-    k3 = [r["kl_k3_per_token"] for r in records if r.get("kl_k3_per_token") is not None]
+    middle = len(ordered) // 2
+    median = (
+        ordered[middle]
+        if len(ordered) % 2
+        else (ordered[middle - 1] + ordered[middle]) / 2
+    )
 
-    return {
-        "kl_per_token": sum(values) / len(values),
-        "kl_k3_per_token": (sum(k3) / len(k3)) if k3 else None,
-        "kl_p95": ordered[min(int(0.95 * len(ordered)), len(ordered) - 1)],
-        "kl_max": ordered[-1],
+    k3 = sorted(
+        r["kl_k3_per_token"] for r in records if r.get("kl_k3_per_token") is not None
+    )
+
+    summary = {
+        "logratio_per_token": median,
+        "logratio_mean": sum(values) / len(values),
+        "logratio_p5": _percentile(ordered, 0.05),
+        "logratio_p95": _percentile(ordered, 0.95),
+        "logratio_min": ordered[0],
+        "negative_fraction": sum(v < 0 for v in values) / len(values),
         "kl_messages": len(values),
     }
+    if k3:
+        k3_middle = len(k3) // 2
+        summary["kl_k3_median"] = (
+            k3[k3_middle] if len(k3) % 2 else (k3[k3_middle - 1] + k3[k3_middle]) / 2
+        )
+        summary["kl_k3_max"] = k3[-1]
+    return summary

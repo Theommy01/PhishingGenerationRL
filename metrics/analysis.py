@@ -735,7 +735,7 @@ DRIFT_COLUMNS = [
     "embed_dist_baseline",
     # the real KL, from policy_kl.py — how far the round's policy moved from
     # the SFT baseline, measured on the text it generated
-    "kl_per_token",
+    "logratio_per_token",
     "kl_k3_per_token",
     # instruction following
     "cos_subject",

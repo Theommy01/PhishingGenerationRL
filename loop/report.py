@@ -242,6 +242,17 @@ def round_metrics(messages: List[Dict], threshold: float = config.SAFE_THRESHOLD
         values = [m[key] for m in messages if m.get(key) is not None]
         return sum(values) / len(values) * 100 if values else None
 
+    def median_of(key):
+        values = sorted(m[key] for m in messages if m.get(key) is not None)
+        if not values:
+            return None
+        middle = len(values) // 2
+        return (
+            values[middle]
+            if len(values) % 2
+            else (values[middle - 1] + values[middle]) / 2
+        )
+
     def percentile_of(key, fraction):
         """The tail a mean hides — one message diverging hard is the interesting case."""
         values = sorted(m[key] for m in messages if m.get(key) is not None)
@@ -264,10 +275,13 @@ def round_metrics(messages: List[Dict], threshold: float = config.SAFE_THRESHOLD
         "cos_subject": mean_of("cos_subject"),
         "url_compliance": rate_of("url_ok"),
         "attachment_compliance": rate_of("attachment_ok"),
-        # KL from the SFT baseline, on this round's own text
-        "kl_per_token": mean_of("kl_per_token"),
-        "kl_k3_per_token": mean_of("kl_k3_per_token"),
-        "kl_p95": percentile_of("kl_per_token", 0.95),
+        # Movement from the SFT baseline, on this round's own text. A log
+        # ratio, not a divergence — see training/policy_kl.py — and summarised
+        # by median because its negative tail is long.
+        "logratio_per_token": median_of("logratio_per_token"),
+        "logratio_p5": percentile_of("logratio_per_token", 0.05),
+        "logratio_p95": percentile_of("logratio_per_token", 0.95),
+        "kl_k3_median": median_of("kl_k3_per_token"),
     }
 
 
@@ -298,9 +312,9 @@ def trajectory(store, run_id: int) -> pd.DataFrame:
                 "mean_score": metrics.get("mean_score"),
                 "evasion_rate": metrics.get("evasion_rate"),
                 "asr_at_n": metrics.get("asr_at_n"),
-                # has it moved? (KL from the SFT baseline on this round's text)
-                "kl_per_token": metrics.get("kl_per_token"),
-                "kl_p95": metrics.get("kl_p95"),
+                # has it moved? (log ratio vs the SFT baseline, median)
+                "logratio_per_token": metrics.get("logratio_per_token"),
+                "logratio_p5": metrics.get("logratio_p5"),
                 "train_kl": (record.get("training") or {}).get("kl_mean"),
                 # does it still follow the prompt?
                 "cos_subject": metrics.get("cos_subject"),

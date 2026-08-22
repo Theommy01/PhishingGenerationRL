@@ -38,7 +38,7 @@ OUTCOMES = {
     "url_ok": ("url_ok", "mean"),
     "attachment_ok": ("attachment_ok", "mean"),
     "cos_subject": ("cos_subject", "mean"),
-    "kl_per_token": ("kl_per_token", "mean"),
+    "logratio_per_token": ("logratio_per_token", "mean"),
 }
 
 # Outcomes where a higher number is the policy doing better at evading. The

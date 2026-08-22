@@ -103,15 +103,32 @@ def test_training_stats_survive_a_run_without_kl():
     assert "kl_mean" not in stats
 
 
-def test_policy_kl_summary_reports_the_tail():
-    """One message diverging hard is the interesting case, and a mean hides it."""
-    records = [{"kl_per_token": v, "kl_k3_per_token": v / 2} for v in [0.1] * 19 + [5.0]]
+def test_the_summary_is_robust_to_the_tail_that_wrecked_the_mean():
+    """A real run had one message at r = -26 and a k3 mean of 3.9e8."""
+    records = [{"logratio_per_token": -0.2, "kl_k3_per_token": 0.03} for _ in range(19)]
+    records.append({"logratio_per_token": -26.0, "kl_k3_per_token": 2.1e11})
 
     summary = summarise(records)
+
     assert summary["kl_messages"] == 20
-    assert summary["kl_per_token"] == pytest.approx(0.345)
-    assert summary["kl_max"] == 5.0
-    assert summary["kl_p95"] == 5.0
+    # the median ignores the outlier; the mean does not, and both are reported
+    assert summary["logratio_per_token"] == pytest.approx(-0.2)
+    assert summary["logratio_mean"] < -1.0
+    assert summary["logratio_min"] == -26.0
+    assert summary["negative_fraction"] == 1.0
+    # k3 is summarised by median, never by mean
+    assert summary["kl_k3_median"] == pytest.approx(0.03)
+    assert summary["kl_k3_max"] == 2.1e11
+    assert "kl_k3_per_token" not in summary
+
+
+def test_the_log_ratio_is_not_called_a_divergence():
+    """It goes negative in practice, which a KL cannot."""
+    records = [{"logratio_per_token": -0.5, "kl_k3_per_token": 0.1}]
+
+    summary = summarise(records)
+    assert summary["logratio_per_token"] == -0.5
+    assert not any(key.startswith("kl_per") for key in summary)
 
 
 def test_policy_kl_summary_of_nothing_is_empty():
@@ -119,15 +136,16 @@ def test_policy_kl_summary_of_nothing_is_empty():
     assert summarise([{"kl_per_token": None}]) == {}
 
 
-def test_round_metrics_aggregate_the_policy_kl():
+def test_round_metrics_aggregate_the_log_ratio_by_median():
     messages = [
-        {"prompt_id": 0, "score": 0.5, "body": "a", "kl_per_token": 0.2},
-        {"prompt_id": 1, "score": 0.5, "body": "b", "kl_per_token": 0.4},
+        {"prompt_id": i, "score": 0.5, "body": f"b{i}", "logratio_per_token": v}
+        for i, v in enumerate([-0.2, -0.3, -0.1, -9.0])
     ]
 
     metrics = report.round_metrics(messages)
-    assert metrics["kl_per_token"] == pytest.approx(0.3)
-    assert metrics["kl_p95"] == 0.4
+    # median, not mean: the -9.0 must not set the round's headline
+    assert metrics["logratio_per_token"] == pytest.approx(-0.25)
+    assert metrics["logratio_p5"] == -9.0
 
 
 # -- 3. instruction following -----------------------------------------------

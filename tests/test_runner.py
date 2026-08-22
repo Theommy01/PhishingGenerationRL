@@ -58,7 +58,7 @@ def stubs(make_checkpoint):
         def policy_kl(self, records, checkpoint_path, reference_path):
             self.calls.append(("policy_kl", checkpoint_path, reference_path))
             for index, record in enumerate(records):
-                record["kl_per_token"] = 0.01 * (index + 1)
+                record["logratio_per_token"] = -0.01 * (index + 1)
                 record["kl_k3_per_token"] = 0.005 * (index + 1)
             return records
 
@@ -204,8 +204,8 @@ def test_policy_kl_is_measured_against_the_sft_baseline(store, runner_for, stubs
     assert [call[2] for call in calls] == [stubs.sft, stubs.sft, stubs.sft]
 
     messages = store.get_messages(run_id, round_index=2, with_subject=False)
-    assert all(m["kl_per_token"] is not None for m in messages)
-    assert store.get_round(run_id, 2)["metrics"]["kl_per_token"] is not None
+    assert all(m["logratio_per_token"] is not None for m in messages)
+    assert store.get_round(run_id, 2)["metrics"]["logratio_per_token"] is not None
 
 
 def test_the_scorers_are_evicted_before_the_kl_pass(store, runner_for, monkeypatch):

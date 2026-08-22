@@ -170,13 +170,16 @@ def render(run_id: int) -> None:
     with left:
         charts.guardrail(
             summary,
-            "kl_per_token",
-            "KL from the SFT baseline",
-            "Nats per token",
+            "logratio_per_token",
+            "Log ratio against the SFT baseline",
+            "Per token (median)",
         )
         st.caption(
             "Measured on each round's own text, always against the pinned SFT "
-            "checkpoint. Round 0 is the anchor, so it is zero by construction."
+            "checkpoint; round 0 is the anchor, so it is zero by construction. "
+            "This is a **log ratio, not a KL divergence** — negative values mean "
+            "the policy assigns its own output lower probability than SFT does, "
+            "which is likelihood displacement and a real thing to watch for."
         )
     with right:
         charts.score_distribution(frame)
