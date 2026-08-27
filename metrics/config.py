@@ -66,6 +66,17 @@ SVM_MODEL_PATH = os.environ.get(
 # Score at or above which ScamLLM is taken to consider a message safe.
 SAFE_THRESHOLD = 0.50
 
+# Seed for a training round: data order, dropout, and anything else TRL draws.
+# 3407 is what both trainers hardcoded, kept as the default so existing runs
+# behave identically; the loop records the seed it used on each round.
+#
+# It does not buy bit-identical adapters. 4-bit quantised training runs
+# non-deterministic CUDA kernels, and reproducing a round exactly would also
+# need torch.use_deterministic_algorithms(True) and a matching environment.
+# What it does buy is a round whose inputs are all written down: dataset hash,
+# base checkpoint hash, config, seed.
+DEFAULT_TRAINING_SEED = 3407
+
 
 # --- outputs --------------------------------------------------------------
 

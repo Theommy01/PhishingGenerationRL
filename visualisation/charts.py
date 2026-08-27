@@ -746,14 +746,30 @@ def plot_drift_trajectory(summary: pd.DataFrame, name: str = "drift_trajectory")
     axes[0].set_title("Cosine similarity", fontsize=14, fontweight="bold")
     axes[0].set_ylabel("Similarity (%)", fontsize=12, fontweight="bold")
 
-    if "kl_prompt" in summary:
-        axes[1].plot(rounds, summary["kl_prompt"], marker="o", linewidth=2.5,
-                     color=PALETTE_ORANGE[1], label="vs prompt")
-    if "kl_baseline" in summary:
-        axes[1].plot(rounds, summary["kl_baseline"], marker="s", linewidth=2.5,
-                     color=PALETTE_ORANGE[2], label="vs round 0")
-    axes[1].set_title("KL divergence", fontsize=14, fontweight="bold")
-    axes[1].set_ylabel("Divergence", fontsize=12, fontweight="bold")
+    # The right panel is the real KL where it was measured — policy against the
+    # SFT baseline, over token distributions — and falls back to the embedding
+    # distance for runs that predate it. The two are not the same quantity and
+    # are never drawn together.
+    if "kl_per_token" in summary and summary["kl_per_token"].notna().any():
+        axes[1].plot(rounds, summary["kl_per_token"], marker="o", linewidth=2.5,
+                     color=PALETTE_ORANGE[1], label="KL(policy || SFT), per token")
+        if "kl_k3_per_token" in summary:
+            axes[1].plot(rounds, summary["kl_k3_per_token"], marker="^", linewidth=1.5,
+                         linestyle="--", color=PALETTE_ORANGE[0], label="k3 estimator")
+        axes[1].set_title("KL from the SFT baseline", fontsize=14, fontweight="bold")
+        axes[1].set_ylabel("Nats per token", fontsize=12, fontweight="bold")
+    else:
+        if "embed_dist_prompt" in summary:
+            axes[1].plot(rounds, summary["embed_dist_prompt"], marker="o", linewidth=2.5,
+                         color=PALETTE_ORANGE[1], label="vs prompt")
+        if "embed_dist_baseline" in summary:
+            axes[1].plot(rounds, summary["embed_dist_baseline"], marker="s", linewidth=2.5,
+                         color=PALETTE_ORANGE[2], label="vs round 0")
+        # NOT the RLHF KL: a softmax over SBERT coordinates. See
+        # metrics.models.embedding_distance.
+        axes[1].set_title("Embedding distance", fontsize=14, fontweight="bold")
+        axes[1].set_ylabel("Distance (softmax over embedding dims)", fontsize=11,
+                           fontweight="bold")
 
     for ax in axes:
         ax.set_xlabel("Round", fontsize=12, fontweight="bold")
@@ -791,6 +807,47 @@ def plot_round_breakdown(
     ax.legend(fontsize=10, ncol=2)
     for group in rects:
         annotate_scores(ax, group, fontsize=9)
+
+    fig.tight_layout()
+    return save_figure(fig, name)
+
+
+def plot_instruction_following(
+    summary: pd.DataFrame, name: str = "instruction_following"
+) -> str:
+    """Does the policy still do what the prompt asked, round after round?
+
+    Compliance is the percentage of messages whose <URL>/<ATTACHMENT>
+    placeholders match the flags the prompt set — two-sided, so producing a URL
+    that was not asked for counts against it. `cos_subject` is the body against
+    the subject line alone, which is the part of the prompt with any content.
+
+    Round 0 is the reference: the SFT baseline is imperfect too, so what matters
+    is the distance from where it started, not the absolute level.
+    """
+    fig, ax = plt.subplots(figsize=(11, 6))
+    rounds = summary["round"]
+
+    series = [
+        ("url_ok", "URL flag followed", PALETTE_ORANGE[1], "o"),
+        ("attachment_ok", "Attachment flag followed", PALETTE_ORANGE[2], "s"),
+        ("cos_subject", "Similarity to subject", PALETTE_ORANGE[0], "^"),
+    ]
+    for column, label, color, marker in series:
+        if column in summary:
+            ax.plot(rounds, summary[column], marker=marker, linewidth=2.5,
+                    color=color, label=label)
+            # the baseline level, so degradation is readable at a glance
+            ax.axhline(summary[column].iloc[0], color=color, linestyle=":",
+                       linewidth=1, alpha=0.6)
+
+    ax.set_xlabel("Round", fontsize=12, fontweight="bold")
+    ax.set_ylabel("Percent", fontsize=12, fontweight="bold")
+    ax.set_title("Instruction following across rounds", fontsize=15,
+                 fontweight="bold", pad=15)
+    ax.set_xticks(list(rounds))
+    ax.set_ylim(0, 105)
+    ax.legend(fontsize=11)
 
     fig.tight_layout()
     return save_figure(fig, name)

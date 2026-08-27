@@ -16,15 +16,17 @@ KTO on everything collected so far, and regenerate over the same prompts.
     # inspect a finished run without generating anything
     python run_loop.py --report 1786641452
 
-The prompts are fingerprinted when a run is created and checked on every
-round, so resuming with a different --prompts file fails rather than quietly
-changing what the run measures.
+Prompt specs are stored as `subjects` documents when a run is created, and the
+run keeps an ordered list of DBRefs to them. Resuming reads the prompts back
+from those refs rather than from --prompts, so an edited prompts.json cannot
+quietly change what a half-finished run measures. The fingerprint of the same
+specs is checked on every round as a second guard.
 """
 
 import argparse
 import sys
 
-from generate_dataset import load_prompts
+from generate_dataset import DECODING_PRESETS, DEFAULT_PROMPTS_PATH, load_prompts
 from loop import report
 from loop.runner import ALGORITHMS, REF_MODES, LoopRunner
 from loop.store import LoopStore
@@ -37,7 +39,12 @@ def parse_args(argv=None):
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
 
-    parser.add_argument("--prompts", default="prompts.json", help="prompt spec file")
+    parser.add_argument(
+        "--prompts",
+        # absolute, so the CLI works from any working directory
+        default=DEFAULT_PROMPTS_PATH,
+        help="prompt spec file; ignored with --resume, which reads the run's subjects",
+    )
     parser.add_argument(
         "--limit",
         type=int,
@@ -55,18 +62,53 @@ def parse_args(argv=None):
             "anchors to the raw pretrained Llama as the notebook did"
         ),
     )
+    parser.add_argument(
+        "--holdout",
+        type=int,
+        default=0,
+        metavar="N",
+        help=(
+            "hold out N prompts, spread evenly through the file so the category "
+            "and generator mix is preserved. They are generated and scored every "
+            "round but never trained on, so their evasion rate says whether the "
+            "policy generalises or has memorised the training subjects"
+        ),
+    )
+    parser.add_argument(
+        "--decoding",
+        choices=DECODING_PRESETS,
+        default="default",
+        help=(
+            "decoding preset: 'default' samples at temperature 0.9, 'sampling' "
+            "at 0.7, 'greedy' is deterministic and only valid at --n-samples 1. "
+            "The resolved arguments are stored on every message"
+        ),
+    )
     parser.add_argument("--rounds", type=int, default=1, help="training rounds to run")
     parser.add_argument(
         "--n-samples", type=int, default=4, help="messages generated per prompt"
     )
     parser.add_argument("--epochs", type=int, default=1, help="epochs per round")
     parser.add_argument(
+        "--seed",
+        type=int,
+        default=config.DEFAULT_TRAINING_SEED,
+        help=(
+            "training seed (data order, dropout), recorded on each round. Does "
+            "not make a round bit-reproducible — 4-bit training runs "
+            "non-deterministic kernels — but completes the record of its inputs"
+        ),
+    )
+    parser.add_argument(
         "--sft-path",
         default=config.PATH_SFT,
         help="checkpoint round 0 generates from, and the 'sft' KL anchor",
     )
     parser.add_argument(
-        "--max-new-tokens", type=int, default=256, help="generation length cap"
+        "--max-new-tokens",
+        type=int,
+        default=None,
+        help="override the preset's generation length cap",
     )
     parser.add_argument(
         "--greedy",
@@ -80,6 +122,15 @@ def parse_args(argv=None):
         help="skip the SBERT semantic-drift metrics",
     )
     parser.add_argument(
+        "--no-policy-kl",
+        action="store_true",
+        help=(
+            "skip the KL of each round's policy from the SFT baseline. It costs "
+            "two forward passes per message, so a long round can afford to drop "
+            "it — at the cost of the degeneration signal"
+        ),
+    )
+    parser.add_argument(
         "--resume", type=int, default=None, metavar="RUN_ID", help="continue a run"
     )
     parser.add_argument(
@@ -88,6 +139,17 @@ def parse_args(argv=None):
         default=None,
         metavar="RUN_ID",
         help="print an existing run's trajectory and exit",
+    )
+    parser.add_argument(
+        "--verify",
+        type=int,
+        default=None,
+        metavar="RUN_ID",
+        help=(
+            "check each round's provenance and exit: that the checkpoint on "
+            "disk is the one that generated the messages, and that the pool it "
+            "trained on still hashes the same"
+        ),
     )
 
     return parser.parse_args(argv)
@@ -104,14 +166,68 @@ def main(argv=None) -> int:
         report.print_trajectory(store, args.report)
         return 0
 
-    prompts = load_prompts(args.prompts)
-    if args.limit is not None:
-        prompts = prompts[: args.limit]
-    if not prompts:
-        print(f"no prompts in {args.prompts}", file=sys.stderr)
-        return 1
+    if args.verify is not None:
+        if store.get_run(args.verify) is None:
+            print(f"no such run: {args.verify}", file=sys.stderr)
+            return 1
+        df = report.print_provenance(store, args.verify)
+        # a failed check is the answer to the question, so it sets the exit code
+        failed = [
+            column
+            for column in ("ckpt_ok", "pool_ok")
+            if column in df and (df[column] == False).any()  # noqa: E712 — NA-safe
+        ]
+        if failed:
+            print(f"\nFAILED: {', '.join(failed)}", file=sys.stderr)
+            return 1
+        return 0
 
-    gen_args = {"max_new_tokens": args.max_new_tokens, "do_sample": not args.greedy}
+    def take_holdout(specs, count):
+        """Pull `count` prompts out, spread evenly through the list.
+
+        prompts.json is ordered by category and then generator, so taking a
+        contiguous slice would hold out one category only. Even spacing keeps
+        both mixes close to the training split's.
+        """
+        if not count:
+            return specs, []
+        count = min(count, len(specs) - 1)
+        stride = len(specs) / count
+        held_at = {int(i * stride) for i in range(count)}
+        keep = [spec for i, spec in enumerate(specs) if i not in held_at]
+        held = [spec for i, spec in enumerate(specs) if i in held_at]
+        return keep, held
+
+    if args.resume is not None:
+        # a resumed run generates from the subjects it was created with, so it
+        # keeps measuring what it started measuring whatever prompts.json says now
+        if store.get_run(args.resume) is None:
+            print(f"no such run: {args.resume}", file=sys.stderr)
+            return 1
+        stored = store.run_prompts(args.resume)
+        held_count = (store.get_run(args.resume).get("config") or {}).get(
+            "holdout_prompts", 0
+        )
+        # the run's subject list is training prompts first, held out after
+        prompts = stored[: len(stored) - held_count] if held_count else stored
+        holdout = stored[len(stored) - held_count :] if held_count else []
+        print(
+            f"resuming run {args.resume} from its {len(stored)} stored subjects "
+            f"({len(holdout)} held out)"
+        )
+    else:
+        prompts = load_prompts(args.prompts)
+        prompts, holdout = take_holdout(prompts, args.holdout)
+        if args.limit is not None:
+            prompts = prompts[: args.limit]
+        if not prompts:
+            print(f"no prompts in {args.prompts}", file=sys.stderr)
+            return 1
+
+    decoding = "greedy" if args.greedy else args.decoding
+    gen_args = {}
+    if args.max_new_tokens is not None:
+        gen_args["max_new_tokens"] = args.max_new_tokens
 
     # LoopRunner validates the decoding/n_samples combination up front, so a
     # bad one is a usage error to report plainly rather than a traceback.
@@ -123,19 +239,24 @@ def main(argv=None) -> int:
             ref_mode=args.ref_mode,
             n_samples=args.n_samples,
             gen_args=gen_args,
+            decoding=decoding,
+            holdout=holdout,
             epochs=args.epochs,
+            seed=args.seed,
             sft_path=args.sft_path,
             measure_drift=not args.no_drift,
+            measure_policy_kl=not args.no_policy_kl,
         )
     except ValueError as exc:
         print(f"error: {exc}", file=sys.stderr)
         return 2
 
     print(
-        f"{args.algorithm.upper()} / ref_mode={args.ref_mode} / "
-        f"{len(prompts)} prompts x {args.n_samples} samples / "
-        f"{args.rounds} round(s)"
+        f"{args.algorithm.upper()} / ref_mode={args.ref_mode} / decoding={decoding} / "
+        f"{len(prompts)} prompts (+{len(holdout)} held out) x {args.n_samples} "
+        f"samples / {args.rounds} round(s)"
     )
+    print(f"decoding args: {runner.gen_args}")
 
     run_id = runner.run(rounds=args.rounds, run_id=args.resume)
     print(f"\nrun_id {run_id} — re-inspect with: python run_loop.py --report {run_id}")

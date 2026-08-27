@@ -11,7 +11,7 @@ from trl import KTOConfig, KTOTrainer
 from datasets import Dataset
 
 from metrics import config
-from reference_model import attach_reference
+from training.reference_model import attach_reference, training_stats
 
 torch.cuda.empty_cache()
 gc.collect()
@@ -40,9 +40,10 @@ def train_kto(
     output_dir=None,
     ref_mode="sft",
     sft_path=None,
+    seed=config.DEFAULT_TRAINING_SEED,
 ):
     print("\n" + "=" * 50)
-    print(f"KTO Training (Epochs: {num_epochs})")
+    print(f"KTO Training (Epochs: {num_epochs}, seed: {seed})")
     print("=" * 50)
 
     # Nota: partiamo sempre dal modello di base SFT per l'addestramento KTO
@@ -113,7 +114,9 @@ def train_kto(
         optim="adamw_8bit",
         weight_decay=0.01,
         lr_scheduler_type="linear",
-        seed=3407,
+        # TrainingArguments falls back to `seed` for data_seed, so this covers
+        # the sampler's shuffle as well as init and dropout
+        seed=seed,
         output_dir=save_dir,
         save_strategy="epoch",
         save_total_limit=3,
@@ -140,6 +143,13 @@ def train_kto(
     print("\nStarting KTO training...")
     trainer.train()
 
+    stats = training_stats(trainer.state.log_history)
+    if "kl_mean" in stats:
+        print(
+            f"  KL(policy || reference): mean {stats['kl_mean']:.4f}, "
+            f"final {stats['kl_final']:.4f}, max {stats['kl_max']:.4f}"
+        )
+
     print(f"\nSaving FINAL KTO model in: {save_dir}")
     # Only the policy adapter. With a reference attached, peft would otherwise
     # save every adapter, leaving a stray reference/ copy of the anchor inside
@@ -159,6 +169,7 @@ def train_kto(
     config.free_vram()
 
     print("KTO Training done.")
+    return stats
 
 
 if __name__ == "__main__":

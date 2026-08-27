@@ -728,14 +728,42 @@ def run_full_comparison(
 
 ROUND_INDEX = "round"
 
-DRIFT_COLUMNS = ["cos_prompt", "kl_prompt", "cos_baseline", "kl_baseline"]
+DRIFT_COLUMNS = [
+    "cos_prompt",
+    "embed_dist_prompt",
+    "cos_baseline",
+    "embed_dist_baseline",
+    # the real KL, from policy_kl.py — how far the round's policy moved from
+    # the SFT baseline, measured on the text it generated
+    "logratio_per_token",
+    "kl_k3_per_token",
+    # instruction following
+    "cos_subject",
+]
+
+# Booleans, so they aggregate as a percentage rather than a mean of floats
+COMPLIANCE_COLUMNS = ["url_ok", "attachment_ok"]
 
 
 def load_run(store, run_id: int) -> pd.DataFrame:
-    """Every message of a run as a long DataFrame, one row per message."""
+    """Every message of a run as a long DataFrame, one row per message.
+
+    The store joins each message's subject in, so the frame carries
+    `subject_text`, `category`, `generator`, `sentiment`, `urls` and
+    `attachments` alongside the message's own fields. DBRefs are flattened to
+    `subject_id` / `checkpoint_id` strings, which group and print where a DBRef
+    object would not; `checkpoint_hash` is already on the message, so a
+    breakdown by the adapter that generated a row needs no join at all.
+    """
     messages = store.get_messages(run_id)
     if not messages:
         return pd.DataFrame()
+
+    for message in messages:
+        for field in ("subject", "checkpoint"):
+            ref = message.pop(field, None)
+            message[f"{field}_id"] = str(ref.id) if ref is not None else None
+
     return pd.DataFrame(messages)
 
 
@@ -772,6 +800,10 @@ def round_summary(
     for column in DRIFT_COLUMNS:
         if column in work.columns:
             summary[column] = grouped[column].mean()
+
+    for column in COMPLIANCE_COLUMNS:
+        if column in work.columns:
+            summary[column] = grouped[column].mean() * 100
 
     return summary.reset_index()
 
