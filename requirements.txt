@@ -1,40 +1,16 @@
-# Dependencies of the metrics/ and visualisation/ packages.
-# Versions are the ones the notebook pinned; everything else is unpinned
-# because the notebook installed whatever Colab had.
-
-pandas
-numpy
-torch
-transformers
-tqdm
-sentence-transformers
-
-# The loop's persistence. MongoDB itself has to be running on localhost:27017;
-# the test suite skips rather than fails when it is not.
-pymongo
-
-# Training / generation (also needed by bco_trainer.py and kto_trainer.py)
-unsloth
-# The notebook pinned trl==0.15.2, but the checked-out venv has 0.18.1 and the
-# trainers now use the `processing_class` argument, which both versions accept
-# (`tokenizer` was removed in ~0.16). Pinning to 0.15.2 would contradict the
-# installed environment, so the floor is expressed as a minimum instead.
-trl>=0.15.2
-datasets>=3.4.1
-
-# SVM baseline detector — the notebook pinned these two explicitly
-scikit-learn==1.4.2
-imbalanced-learn==0.11.0
-joblib
-
-# Plots. Rendered headless (Agg backend) and written to output/figures;
-# ipywidgets and ipython are no longer needed - the interactive viewers were
-# replaced by static text reports.
-matplotlib
-seaborn
-
-# Tests: `pytest tests/`
-pytest
-
-# Dashboard: `streamlit run dashboard/app.py`. Brings altair with it.
-streamlit
+# Full install: dashboard, training/generation, the SVM detector and the tests.
+#
+#   pip install -r requirements.txt
+#
+# The dependency sets live in pyproject.toml as optional-dependency extras, so
+# there is one list to maintain rather than several drifting copies:
+#
+#   pip install '.[dashboard]'   dashboard + data backend, no torch/unsloth
+#   pip install '.[train]'       generation and the KTO/BCO trainers (heavy)
+#   pip install '.[detectors]'   the SVM baseline detector
+#   pip install '.[dev]'         pytest
+#
+# unsloth pins a specific torch/CUDA build; install the training extra into an
+# environment that already has a working torch. MongoDB must be running on
+# localhost:27017 for the store (the tests skip rather than fail without it).
+.[all]

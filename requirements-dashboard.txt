@@ -1,0 +1,9 @@
+# Dashboard + data backend only — no torch, no unsloth.
+#
+#   pip install -r requirements-dashboard.txt
+#
+# Reads runs out of MongoDB and renders them; everything model-heavy happened
+# during the run and is read back from the store. MongoDB must be running on
+# localhost:27017. The dependency set is defined once, as the `dashboard` extra
+# in pyproject.toml — this file just installs the checkout with that extra.
+.[dashboard]
