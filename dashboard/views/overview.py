@@ -192,6 +192,18 @@ def render(run_id: int) -> None:
         "evade."
     )
 
+    charts.score_bands(summary, TRAIN_SPLIT)
+    st.caption(
+        "The same rounds without the threshold. Both rates above collapse the "
+        "score to a yes/no at 0.5, so a message moving 0.05 → 0.45 counts as no "
+        "change at all and one moving 0.51 → 0.99 counts as none either. The "
+        "bands are fixed quarters of the score range, so the two upper ones sum "
+        "to the evasion rate — what they add is **where** the mass went. Watch "
+        "whether messages arrive in the upper bands from the pale middle "
+        "(the detector was already wavering) or straight from `caught` (the "
+        "policy is genuinely flipping confident decisions)."
+    )
+
     st.divider()
 
     # -- guardrail 1: degeneration -----------------------------------------

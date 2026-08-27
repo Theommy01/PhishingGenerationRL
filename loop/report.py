@@ -6,7 +6,7 @@ improvement look smaller than it is. The cumulative pool is for training only.
 """
 
 import re
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Sequence
 
 import pandas as pd
 
@@ -214,12 +214,44 @@ def attach_compliance(
     return records
 
 
+# Quarters of the score range, not sample quartiles: the point is to watch mass
+# move between fixed bands as the rounds go on, and sample quartiles hold 25%
+# each by definition, so stacking those would draw a flat chart every time.
+#
+# The split at 0.5 is SAFE_THRESHOLD, so the two right-hand bands sum to the
+# evasion rate and nothing contradicts the headline figure. The 0.25 and 0.75
+# cuts separate a detector that is confident from one that is wavering, which
+# is where the interesting movement turns out to be.
+SCORE_BANDS = (
+    ("caught", 0.00, 0.25),
+    ("caught_weak", 0.25, 0.50),
+    ("evaded_weak", 0.50, 0.75),
+    ("evaded", 0.75, 1.01),  # 1.01 so a score of exactly 1.0 lands somewhere
+)
+
+
+def score_bands(scores: Sequence[float]) -> Dict[str, float]:
+    """Percentage of messages in each fixed band of the score range."""
+    if len(scores) == 0:
+        return {}
+    return {
+        name: sum(low <= s < high for s in scores) / len(scores) * 100
+        for name, low, high in SCORE_BANDS
+    }
+
+
 def round_metrics(messages: List[Dict], threshold: float = config.SAFE_THRESHOLD) -> Dict:
     """Evasion metrics for one round.
 
     evasion_rate is per message; asr_at_n is per prompt — the fraction of
     prompts where at least one of the n samples evaded. With n=1 the two
     collapse to the same number, so nothing is lost by reporting both.
+
+    Both of those threshold the score, which throws away everything about
+    *where* a message sits: 0.49 and 0.01 count the same, and so do 0.51 and
+    0.99. `score_bands` and the score quartiles keep that, and the ScamLLM
+    distribution is bimodal enough (half the messages below 0.1) that it
+    matters — see SCORE_BANDS.
     """
     if not messages:
         return {}
@@ -260,12 +292,23 @@ def round_metrics(messages: List[Dict], threshold: float = config.SAFE_THRESHOLD
             return None
         return values[min(int(fraction * len(values)), len(values) - 1)]
 
+    ordered_scores = sorted(scores)
+
+    def score_at(fraction):
+        return ordered_scores[min(int(fraction * len(ordered_scores)), len(ordered_scores) - 1)]
+
     return {
         "messages": len(messages),
         "prompts": len(by_prompt),
         "mean_score": sum(scores) / len(scores) * 100,
         "evasion_rate": sum(evaded) / len(evaded) * 100,
         "asr_at_n": sum(any(v) for v in by_prompt.values()) / len(by_prompt) * 100,
+        # Where the scores actually sit, which the two rates above threshold
+        # away. Percentages, to match mean_score.
+        "score_p25": score_at(0.25) * 100,
+        "score_p50": score_at(0.50) * 100,
+        "score_p75": score_at(0.75) * 100,
+        "score_bands": score_bands(scores),
         "duplicates": len(bodies) - len(set(bodies)),
         "cos_prompt": mean_of("cos_prompt"),
         "embed_dist_prompt": mean_of("embed_dist_prompt"),
@@ -312,6 +355,12 @@ def trajectory(store, run_id: int) -> pd.DataFrame:
                 "mean_score": metrics.get("mean_score"),
                 "evasion_rate": metrics.get("evasion_rate"),
                 "asr_at_n": metrics.get("asr_at_n"),
+                # the distribution the three figures above threshold away: the
+                # median score, and the share sitting in the outer bands where
+                # the detector is confident rather than wavering
+                "score_p50": metrics.get("score_p50"),
+                "band_caught": (metrics.get("score_bands") or {}).get("caught"),
+                "band_evaded": (metrics.get("score_bands") or {}).get("evaded"),
                 # has it moved? (log ratio vs the SFT baseline, median)
                 "logratio_per_token": metrics.get("logratio_per_token"),
                 "logratio_p5": metrics.get("logratio_p5"),
