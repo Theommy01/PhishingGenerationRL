@@ -33,6 +33,45 @@ def test_round_metrics_separates_per_message_and_per_prompt_evasion():
     assert metrics["prompts"] == 2
 
 
+def test_score_bands_split_the_range_not_the_sample():
+    """Fixed quarters of the score range, so the shares can move between rounds."""
+    # 3 of 4 below 0.25 — sample quartiles would report 25% in each band
+    scores = [0.01, 0.02, 0.03, 0.99]
+
+    bands = report.score_bands(scores)
+    assert bands == {
+        "caught": 75.0,
+        "caught_weak": 0.0,
+        "evaded_weak": 0.0,
+        "evaded": 25.0,
+    }
+
+
+def test_the_bands_agree_with_the_evasion_rate():
+    """The 0.5 cut is SAFE_THRESHOLD, so the two halves must reconcile."""
+    messages = [
+        {"prompt_id": i, "score": s, "body": f"b{i}"}
+        for i, s in enumerate([0.1, 0.3, 0.49, 0.5, 0.6, 0.8, 0.95, 1.0])
+    ]
+
+    metrics = report.round_metrics(messages, threshold=0.5)
+    bands = metrics["score_bands"]
+    assert bands["evaded_weak"] + bands["evaded"] == pytest.approx(metrics["evasion_rate"])
+    assert bands["caught"] + bands["caught_weak"] == pytest.approx(100 - metrics["evasion_rate"])
+    # a score of exactly 1.0 has to land in a band, not fall off the end
+    assert sum(bands.values()) == pytest.approx(100.0)
+
+
+def test_round_metrics_keep_the_score_quartiles():
+    """The median moves even when no message crosses the threshold."""
+    before = [{"prompt_id": i, "score": 0.1, "body": f"b{i}"} for i in range(4)]
+    after = [{"prompt_id": i, "score": 0.45, "body": f"c{i}"} for i in range(4)]
+
+    assert report.round_metrics(before)["evasion_rate"] == report.round_metrics(after)["evasion_rate"]
+    assert report.round_metrics(before)["score_p50"] == pytest.approx(10.0)
+    assert report.round_metrics(after)["score_p50"] == pytest.approx(45.0)
+
+
 def test_evasion_trajectory_across_rounds(store, prompts, make_records, make_checkpoint):
     """The headline: one row per round, evasion rising or falling."""
     run_id = store.create_run(prompts, {})

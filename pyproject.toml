@@ -1,0 +1,80 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "phishing-generation-rl"
+version = "0.1.0"
+description = "Adversarial fine-tuning loop for phishing-message generation, with a Streamlit dashboard over its runs."
+readme = "README.md"
+requires-python = ">=3.10"
+
+# The data backend: reading runs, rounds and messages out of MongoDB and
+# computing every metric that is stored on them. No model, no GPU — this is all
+# the dashboard needs at run time, because the heavy work (generation, scoring,
+# SBERT) happens during a run and its results are read back from the store.
+#
+#   scipy   the paired flip-table and the transfer tab (spearmanr, binomtest)
+#   pymongo the store; MongoDB itself must be running on localhost:27017
+dependencies = [
+    "pandas",
+    "numpy",
+    "scipy",
+    "pymongo",
+]
+
+[project.optional-dependencies]
+# `pip install '.[dashboard]'` — browse runs with no training dependency.
+# altair rides in with streamlit; matplotlib/seaborn back the "thesis figure"
+# toggle in visualisation.charts.
+dashboard = [
+    "streamlit",
+    "matplotlib",
+    "seaborn",
+]
+
+# `pip install '.[train]'` — generation and the KTO/BCO trainers. This is the
+# heavy set: unsloth pins a specific torch/CUDA build, so install it in an
+# environment that already has a working torch rather than expecting pip to
+# resolve it here.
+train = [
+    "torch",
+    "transformers",
+    "unsloth",
+    "trl>=0.15.2",
+    "datasets>=3.4.1",
+    "sentence-transformers",
+]
+
+# `pip install '.[detectors]'` — the SVM baseline detector and its resampling.
+detectors = [
+    "scikit-learn==1.4.2",
+    "imbalanced-learn==0.11.0",
+    "joblib",
+]
+
+dev = [
+    "pytest",
+]
+
+# Everything, for a full working checkout.
+all = [
+    "phishing-generation-rl[dashboard,train,detectors,dev]",
+]
+
+[tool.setuptools]
+# Explicit, so setuptools does not try to auto-discover packages and trip over
+# .venv/, output/, Models/, unsloth_compiled_cache/ and the checkpoint dirs.
+packages = [
+    "dashboard",
+    "dashboard.views",
+    "detectors",
+    "loop",
+    "metrics",
+    "training",
+    "visualisation",
+]
+py-modules = [
+    "generate_dataset",
+    "run_loop",
+]

@@ -191,6 +191,56 @@ def score_distribution(df: pd.DataFrame, threshold: float = 0.5):
     st.altair_chart(chart + rule, use_container_width=True)
 
 
+# Diverging about the 0.5 threshold: caught below, evaded above, and the pale
+# shade on each side for the band where the detector is barely committed.
+BAND_LABELS = {
+    "caught": "caught (0 – .25)",
+    "caught_weak": "caught, weakly (.25 – .5)",
+    "evaded_weak": "evaded, weakly (.5 – .75)",
+    "evaded": "evaded (.75 – 1)",
+}
+BAND_COLORS = ["#2c7fb8", "#a6cee3", "#fdbf6f", "#e67e22"]
+
+
+def score_bands(summary: pd.DataFrame, split: str = "train"):
+    """The share of messages in each fixed score band, stacked, per round."""
+    if summary.empty or "score_bands" not in summary:
+        st.info("no scored messages yet")
+        return
+
+    rows = summary[(summary["split"] == split) & summary["score_bands"].notna()]
+    if rows.empty:
+        st.info("no scored messages yet")
+        return
+
+    data = pd.DataFrame(
+        [
+            {"round": row["round"], "band": BAND_LABELS[name], "percent": percent}
+            for _, row in rows.iterrows()
+            for name, percent in (row["score_bands"] or {}).items()
+        ]
+    )
+    chart = (
+        alt.Chart(data)
+        .mark_area()
+        .encode(
+            x=alt.X("round:O", title="Round"),
+            y=alt.Y("percent:Q", title="Messages (%)", stack="zero"),
+            color=alt.Color(
+                "band:N",
+                title="Detector score",
+                # the order the bands sit in, not alphabetical
+                sort=list(BAND_LABELS.values()),
+                scale=alt.Scale(domain=list(BAND_LABELS.values()), range=BAND_COLORS),
+            ),
+            order=alt.Order("color_band_sort_index:Q"),
+            tooltip=["round", "band", alt.Tooltip("percent:Q", format=".1f")],
+        )
+        .properties(height=260)
+    )
+    st.altair_chart(chart, use_container_width=True)
+
+
 def breakdown_bars(df: pd.DataFrame, group: str, value: str = "evaded"):
     """Evasion by category or generator, per round."""
     if df.empty or group not in df:

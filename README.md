@@ -49,11 +49,36 @@ BCO/KTO results were computed with the inverted one. See `PORTING_NOTES.md` §1.
 
 ## Setup
 
-Dependencies are managed with **uv**, not pip:
+Dependencies are grouped so a machine that only browses runs never installs
+torch or unsloth. The sets are defined once in `pyproject.toml` as extras:
+
+| you want to… | install | pulls in |
+| --- | --- | --- |
+| browse runs in the dashboard | `dashboard` | streamlit, matplotlib, pandas, pymongo — **no torch/unsloth** |
+| run the loop (generate + train) | `train` | torch, transformers, unsloth, trl, sentence-transformers |
+| use the SVM baseline detector | `detectors` | scikit-learn, imbalanced-learn |
+| everything | `all` | all of the above, plus pytest |
+
+The data backend (reading runs and computing their metrics) is the base
+install and is always present; every extra builds on it.
+
+With **uv**:
 
 ```bash
-uv sync
+uv sync --extra dashboard      # dashboard + backend only
+uv sync --all-extras           # a full working checkout
 ```
+
+or with **pip**, from a checkout:
+
+```bash
+pip install '.[dashboard]'     # dashboard + backend only
+pip install -r requirements.txt   # everything (delegates to the 'all' extra)
+```
+
+`requirements-dashboard.txt` is the pip equivalent of the first line, for
+anyone who reaches for a requirements file. unsloth pins a specific torch/CUDA
+build, so install `train` into an environment that already has a working torch.
 
 You also need:
 
