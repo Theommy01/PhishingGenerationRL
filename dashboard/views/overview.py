@@ -224,7 +224,9 @@ def render(run_id: int) -> None:
             "which is likelihood displacement and a real thing to watch for."
         )
     with right:
-        charts.score_distribution(frame)
+        charts.score_distribution(
+            frame, detector=data.run_config(run_id).get("detector") or "scamllm"
+        )
         st.caption(
             "A rising mean can hide a split distribution: a few messages "
             "evading completely reads the same as all of them improving."

@@ -48,7 +48,11 @@ def _delta_frame(df, in_loop, held_out, target, baseline, split):
 def render(run_id: int) -> None:
     store = data.get_store()
     scored = store.scored_detectors(run_id)
-    df = transfer.with_detector_columns(data.messages_frame(run_id))
+    # Which detector supplied the reward is a property of the run, not a
+    # constant: its verdict is the message's own `score`, so reading the wrong
+    # name off it would label one detector's scores with another's.
+    reward = data.run_config(run_id).get("detector") or "scamllm"
+    df = transfer.with_detector_columns(data.messages_frame(run_id), in_loop=reward)
     present = transfer.detectors_present(df)
 
     st.caption(
@@ -59,17 +63,20 @@ def render(run_id: int) -> None:
     )
 
     if len(present) < 2:
+        # suggest a detector this run does not already have — which is not
+        # always bert-phishing, since it can be the one in the loop
+        suggestion = "scamllm" if reward != "scamllm" else "bert-phishing"
         st.warning(
             f"Only one detector has scored this run ({present or 'none'}). "
             "Add another with:\n\n"
-            f"```\npython -m detectors.backfill {run_id} --detector bert-phishing\n```\n"
+            f"```\npython -m detectors.backfill {run_id} --detector {suggestion}\n```\n"
             "It reads stored bodies only — no GPU, no regeneration."
         )
         return
 
     columns = st.columns(4)
     in_loop = columns[0].selectbox(
-        "in the loop", present, index=present.index("scamllm") if "scamllm" in present else 0
+        "in the loop", present, index=present.index(reward) if reward in present else 0
     )
     others = [d for d in present if d != in_loop]
     held_out = columns[1].selectbox("held out", others)

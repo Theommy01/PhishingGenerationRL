@@ -165,8 +165,12 @@ def guardrail(summary: pd.DataFrame, column: str, title: str, y_title: str, doma
     st.altair_chart(chart + marks, use_container_width=True)
 
 
-def score_distribution(df: pd.DataFrame, threshold: float = 0.5):
-    """Where the scores sit, per round — a mean can hide a bimodal split."""
+def score_distribution(df: pd.DataFrame, threshold: float = 0.5, detector: str = "scamllm"):
+    """Where the scores sit, per round — a mean can hide a bimodal split.
+
+    `score` is whichever detector supplied the reward for the run, so the axis
+    is named after it rather than after ScamLLM.
+    """
     if df.empty or "score" not in df:
         st.info("no scored messages yet")
         return
@@ -176,7 +180,7 @@ def score_distribution(df: pd.DataFrame, threshold: float = 0.5):
         .transform_density("score", groupby=["round"], as_=["score", "density"], extent=[0, 1])
         .mark_area(opacity=0.45)
         .encode(
-            x=alt.X("score:Q", title="ScamLLM score (higher = evaded)"),
+            x=alt.X("score:Q", title=f"{detector} score (higher = evaded)"),
             y=alt.Y("density:Q", title="Density", stack=None),
             color=alt.Color("round:O", title="Round"),
             tooltip=["round"],

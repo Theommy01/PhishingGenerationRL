@@ -79,6 +79,64 @@ def test_an_unknown_algorithm_is_rejected_by_argparse():
         run_loop.parse_args(["--algorithm", "dpo"])
 
 
+# -- --detector -------------------------------------------------------------
+
+
+@pytest.fixture
+def captured_runner(monkeypatch):
+    """Stand in for LoopRunner and record what the CLI built it with.
+
+    The detector resolution happens in main(), before anything is generated, so
+    this exercises it without a model in sight.
+    """
+    recorded = {}
+
+    class FakeRunner:
+        def __init__(self, **kwargs):
+            recorded.update(kwargs)
+            self.gen_args = kwargs.get("gen_args") or {}
+
+        def run(self, rounds, run_id=None):
+            return run_id or 1
+
+    monkeypatch.setattr(run_loop, "LoopRunner", FakeRunner)
+    return recorded
+
+
+def test_the_detector_flag_reaches_the_runner(captured_runner):
+    assert run_loop.main(["--detector", "bert-phishing", "--limit", "2"]) == 0
+
+    assert captured_runner["detector"] == "bert-phishing"
+
+
+def test_the_reward_defaults_to_scamllm(captured_runner):
+    assert run_loop.main(["--limit", "2"]) == 0
+
+    assert captured_runner["detector"] == run_loop.DEFAULT_DETECTOR == "scamllm"
+
+
+def test_a_resumed_run_keeps_the_detector_it_started_with(
+    store, prompts, captured_runner, capsys
+):
+    """Its labels are already in the pool; switching mid-run would train the
+    later rounds on a different question from the earlier ones."""
+    run_id = store.create_run(prompts, {"detector": "bert-phishing"})
+
+    assert run_loop.main(["--resume", str(run_id), "--detector", "scamllm"]) == 0
+
+    assert captured_runner["detector"] == "bert-phishing"
+    assert "ignoring --detector scamllm" in capsys.readouterr().out
+
+
+def test_a_run_from_before_the_flag_resumes_as_scamllm(store, prompts, captured_runner):
+    """Every run recorded without a `detector` key was rewarded by ScamLLM."""
+    run_id = store.create_run(prompts, {"algorithm": "kto"})
+
+    assert run_loop.main(["--resume", str(run_id)]) == 0
+
+    assert captured_runner["detector"] == "scamllm"
+
+
 # -- --report ---------------------------------------------------------------
 
 
