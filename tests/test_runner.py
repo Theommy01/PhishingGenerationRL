@@ -99,6 +99,20 @@ def test_unknown_ref_mode_is_refused(runner_for):
         runner_for(ref_mode="sideways")
 
 
+def test_an_unknown_reward_detector_is_refused_before_any_generation(store, prompts):
+    """Checked at construction: a bad name should not cost hours of generating."""
+    with pytest.raises(ValueError, match="unknown detector"):
+        LoopRunner(prompts=prompts, store=store, detector="not-a-detector")
+
+
+def test_the_reward_detector_is_recorded_on_the_run(store, runner_for):
+    """Which detector wrote the labels is the difference between two runs that
+    otherwise look identical, so it belongs in the run's config."""
+    run_id = runner_for(detector="bert-phishing").start()
+
+    assert store.get_run(run_id)["config"]["detector"] == "bert-phishing"
+
+
 def test_greedy_decoding_with_several_samples_is_refused(runner_for):
     """It would return n identical messages."""
     with pytest.raises(ValueError, match="requires sampling"):

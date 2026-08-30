@@ -222,6 +222,7 @@ python run_loop.py --verify 1786641452
 | `--limit` | all | first N prompts. Use it — a full round is slow |
 | `--algorithm` | `kto` | `kto` or `bco`; alternatives, not stages |
 | `--ref-mode` | `sft` | KL anchor; see below |
+| `--detector` | `scamllm` | which detector's verdict is the reward; see below |
 | `--rounds` | 1 | training rounds after the baseline |
 | `--n-samples` | 4 | messages generated per prompt |
 | `--epochs` | 1 | epochs per round |
@@ -250,6 +251,34 @@ The reference is loaded as a **second LoRA adapter on the same base model**,
 and TRL swaps between them. Policy and reference share the identical frozen
 4-bit base, so a second base model is never needed — handing TRL a checkpoint
 *path* makes it build one anyway, which costs 5.5 GB and OOMs on an 11 GB card.
+
+### `--detector`: which detector supplies the reward
+
+The in-loop detector's score becomes each message's `score`, and its verdict the
+desirable/undesirable label BCO and KTO train on. Every other registered
+detector stays a control, scored after the fact with `detectors.backfill` and
+never optimised against.
+
+ScamLLM is the default and produced every result written up so far. Pointing the
+same setup at a second detector is a direct test of the transfer question: if
+the policy learns detector-specific artefacts, then a run rewarded by
+`bert-phishing` should show the same rising evasion against *it* and the same
+flat-or-falling evasion against ScamLLM — the mirror image of what run
+`1787343134` shows.
+
+```bash
+# same checkpoint and settings, a different reward
+python run_loop.py --detector bert-phishing --sft-path ./checkpoint-2104 --rounds 4
+
+# then score the control, which is now ScamLLM
+python -m detectors.backfill RUN_ID --detector scamllm
+```
+
+The choice is recorded in the run's `config.detector`, and a `--resume` takes it
+from the run rather than the flag — the earlier rounds' labels are already in
+the cumulative pool, so switching mid-run would train later rounds on a
+different question. Runs made before the flag existed have no such key and are
+read as ScamLLM.
 
 ### The three questions, and what answers them
 

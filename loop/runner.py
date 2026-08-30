@@ -19,6 +19,13 @@ from loop.store import HOLDOUT_SPLIT, TRAIN_SPLIT, LoopStore, utc_now
 ALGORITHMS = ("bco", "kto")
 from training.reference_model import REF_MODES  # ("sft", "previous", "base")
 
+# The detector whose score is the reward unless a run says otherwise. Every
+# published result so far used this one, so it stays the default; the parameter
+# exists because "did the policy learn about phishing or about ScamLLM" is
+# answered differently depending on which detector is in the loop, and running
+# the same setup against a second one is the cleanest way to ask.
+DEFAULT_DETECTOR = "scamllm"
+
 
 # =============================================================================
 # Default implementations of the injected steps
@@ -51,10 +58,43 @@ def supports_on_prompt(generate_fn) -> bool:
         return False
 
 
-def default_score(records, threshold) -> List[Dict]:
-    from generate_dataset import score_messages
+def score_with_detector(name: str) -> Callable:
+    """A `score_fn` that rewards against one registered detector.
 
-    return score_messages(records, threshold)
+    Whichever detector this is, its score lands on the message as `score` and
+    its verdict as `label` — the desirable/undesirable class BCO and KTO train
+    on. That is what "in the loop" means, and it is the one thing that changes
+    when the reward detector does: everything downstream reads those two fields
+    without caring which model wrote them.
+
+    The label is computed here from the runner's threshold rather than by the
+    detector's own `label_messages`, so one run has one threshold whatever
+    default a detector carries.
+    """
+
+    def score(records, threshold) -> List[Dict]:
+        from detectors import get_detector, get_spec
+
+        spec = get_spec(name)
+        if not spec.is_available():
+            raise RuntimeError(
+                f"detector {name!r} is registered but not available here, so it "
+                "cannot supply the reward"
+            )
+
+        print(f"\nScoring {len(records)} messages with {name}...")
+        scores = get_detector(name).score_messages([r["body"] for r in records])
+        for record, value in zip(records, scores):
+            record["score"] = float(value)
+            record["label"] = bool(value >= threshold)
+        return records
+
+    return score
+
+
+def default_score(records, threshold) -> List[Dict]:
+    """Reward against ScamLLM, which is what every run did before this."""
+    return score_with_detector(DEFAULT_DETECTOR)(records, threshold)
 
 
 def default_train(
@@ -125,6 +165,7 @@ class LoopRunner:
         holdout: Optional[List[Dict]] = None,
         algorithm: str = "kto",
         ref_mode: str = "sft",
+        detector: str = DEFAULT_DETECTOR,
         n_samples: int = 4,
         gen_args: Optional[dict] = None,
         decoding: str = "default",
@@ -133,7 +174,7 @@ class LoopRunner:
         seed: int = config.DEFAULT_TRAINING_SEED,
         sft_path: str = config.PATH_SFT,
         generate_fn: Callable = default_generate,
-        score_fn: Callable = default_score,
+        score_fn: Optional[Callable] = None,
         train_fn: Callable = default_train,
         policy_kl_fn: Callable = default_policy_kl,
         sim_model=None,
@@ -145,6 +186,24 @@ class LoopRunner:
             raise ValueError(f"unknown algorithm: {algorithm!r} {ALGORITHMS}")
         if ref_mode not in REF_MODES:
             raise ValueError(f"unknown ref_mode: {ref_mode!r} {REF_MODES}")
+        # An unusable reward detector is a run that generates for hours and then
+        # cannot label anything, so it fails here rather than after round 0.
+        # A caller-supplied score_fn is trusted and skips the check: that is the
+        # injection point the stubs use, and it need not touch the registry.
+        if score_fn is None:
+            from detectors import available, get_spec
+
+            try:
+                spec = get_spec(detector)
+            except KeyError as exc:
+                # the CLI reports ValueError as a usage error; an unknown
+                # detector is one, not a traceback
+                raise ValueError(str(exc)) from exc
+            if not spec.is_available():
+                raise ValueError(
+                    f"detector {detector!r} is registered but not available here "
+                    f"(available: {', '.join(available())})"
+                )
 
         self.prompts = prompts
         self.holdout = list(holdout or [])
@@ -155,13 +214,14 @@ class LoopRunner:
         self.store = store or LoopStore()
         self.algorithm = algorithm
         self.ref_mode = ref_mode
+        self.detector = detector
         self.n_samples = n_samples
         self.threshold = threshold
         self.epochs = epochs
         self.seed = seed
         self.sft_path = sft_path
         self.generate_fn = generate_fn
-        self.score_fn = score_fn
+        self.score_fn = score_fn or score_with_detector(detector)
         self.train_fn = train_fn
         self.policy_kl_fn = policy_kl_fn
         self.measure_drift = measure_drift
@@ -193,12 +253,18 @@ class LoopRunner:
         A caller-supplied `sim_model` is left alone: it was not ours to unload,
         and dropping only our reference would not free it anyway.
         """
+        import detectors
         from metrics import models
 
         if self._sim_model is not None and self._sim_model is models._CACHE.get("sbert"):
             self._sim_model = None
 
         models.unload_auxiliary_models()
+        # The registry caches every detector it has built, the reward one
+        # included. Dropping ScamLLM's module singleton is not enough once the
+        # loop scores through the registry — the spec would still hold it, and
+        # the VRAM with it.
+        detectors.unload_all()
 
     def baselines(self, run_id: int):
         """Round-0 embeddings for this run, computed once and cached."""
@@ -233,6 +299,10 @@ class LoopRunner:
         return {
             "algorithm": self.algorithm,
             "ref_mode": self.ref_mode,
+            # which detector's verdict became the training labels. Runs made
+            # before this was a parameter have no such key and were all ScamLLM,
+            # so readers fall back to that rather than guessing.
+            "detector": self.detector,
             "sft_path": self.sft_path,
             **self._generation_config(),
             **self._training_config(),

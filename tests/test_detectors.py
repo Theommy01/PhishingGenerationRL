@@ -81,6 +81,47 @@ def test_score_with_runs_several_detectors(registry):
     assert out["b"]["labels"] == [False, False]
 
 
+def test_the_reward_can_come_from_any_registered_detector(registry):
+    """`score_with_detector` is what makes the in-loop detector a parameter."""
+    from loop.runner import score_with_detector
+
+    registry.register(
+        base.DetectorSpec(name="stub", build=lambda: Stub("EVADE"), description="")
+    )
+    records = [{"body": "please EVADE now"}, {"body": "plain text"}]
+
+    scored = score_with_detector("stub")(records, 0.5)
+
+    assert [r["score"] for r in scored] == [0.9, 0.1]
+    assert [r["label"] for r in scored] == [True, False]
+
+
+def test_the_reward_label_uses_the_runs_threshold_not_the_detectors(registry):
+    """One run, one threshold, whatever default a detector carries."""
+    from loop.runner import score_with_detector
+
+    registry.register(
+        base.DetectorSpec(name="stub", build=lambda: Stub("EVADE"), description="")
+    )
+
+    scored = score_with_detector("stub")([{"body": "please EVADE now"}], 0.95)
+
+    assert scored[0]["label"] is False, "0.9 is below the 0.95 asked for"
+
+
+def test_an_unavailable_detector_cannot_supply_the_reward(registry):
+    from loop.runner import score_with_detector
+
+    registry.register(
+        base.DetectorSpec(
+            name="absent", build=Stub, description="", is_available=lambda: False
+        )
+    )
+
+    with pytest.raises(RuntimeError, match="not available"):
+        score_with_detector("absent")([{"body": "anything"}], 0.5)
+
+
 def test_the_real_registry_has_one_in_loop_detector():
     import detectors
 

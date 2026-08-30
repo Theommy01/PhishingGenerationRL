@@ -10,6 +10,10 @@ KTO on everything collected so far, and regenerate over the same prompts.
     # BCO, anchoring the KL term to the pinned SFT checkpoint
     python run_loop.py --algorithm bco --ref-mode sft --rounds 3
 
+    # the same setup rewarded against a different detector, which is how the
+    # "learned phishing or learned the detector" question gets a second reading
+    python run_loop.py --detector bert-phishing --rounds 3
+
     # carry an interrupted run on for two more rounds
     python run_loop.py --resume 1786641452 --rounds 2
 
@@ -28,7 +32,7 @@ import sys
 
 from generate_dataset import DECODING_PRESETS, DEFAULT_PROMPTS_PATH, load_prompts
 from loop import report
-from loop.runner import ALGORITHMS, REF_MODES, LoopRunner
+from loop.runner import ALGORITHMS, DEFAULT_DETECTOR, REF_MODES, LoopRunner
 from loop.store import LoopStore
 from metrics import config
 
@@ -82,6 +86,17 @@ def parse_args(argv=None):
             "decoding preset: 'default' samples at temperature 0.9, 'sampling' "
             "at 0.7, 'greedy' is deterministic and only valid at --n-samples 1. "
             "The resolved arguments are stored on every message"
+        ),
+    )
+    parser.add_argument(
+        "--detector",
+        default=None,
+        help=(
+            f"the detector whose score is the reward and whose verdict becomes "
+            f"the training label (default: {DEFAULT_DETECTOR}). Every other "
+            f"registered detector stays a control, scored afterwards with "
+            f"`python -m detectors.backfill`. A resumed run keeps the detector "
+            f"it started with, as it keeps its subjects"
         ),
     )
     parser.add_argument("--rounds", type=int, default=1, help="training rounds to run")
@@ -205,9 +220,8 @@ def main(argv=None) -> int:
             print(f"no such run: {args.resume}", file=sys.stderr)
             return 1
         stored = store.run_prompts(args.resume)
-        held_count = (store.get_run(args.resume).get("config") or {}).get(
-            "holdout_prompts", 0
-        )
+        stored_config = store.get_run(args.resume).get("config") or {}
+        held_count = stored_config.get("holdout_prompts", 0)
         # the run's subject list is training prompts first, held out after
         prompts = stored[: len(stored) - held_count] if held_count else stored
         holdout = stored[len(stored) - held_count :] if held_count else []
@@ -215,7 +229,17 @@ def main(argv=None) -> int:
             f"resuming run {args.resume} from its {len(stored)} stored subjects "
             f"({len(holdout)} held out)"
         )
+        # The reward detector is part of what the run measures, like its
+        # subjects, so it comes from the run rather than from this invocation's
+        # flags. Runs made before --detector existed were all ScamLLM.
+        detector = stored_config.get("detector", DEFAULT_DETECTOR)
+        if args.detector is not None and args.detector != detector:
+            print(
+                f"ignoring --detector {args.detector}: run {args.resume} was "
+                f"labelled by {detector} and the later rounds must match"
+            )
     else:
+        detector = args.detector or DEFAULT_DETECTOR
         prompts = load_prompts(args.prompts)
         prompts, holdout = take_holdout(prompts, args.holdout)
         if args.limit is not None:
@@ -237,6 +261,7 @@ def main(argv=None) -> int:
             store=store,
             algorithm=args.algorithm,
             ref_mode=args.ref_mode,
+            detector=detector,
             n_samples=args.n_samples,
             gen_args=gen_args,
             decoding=decoding,
@@ -252,9 +277,9 @@ def main(argv=None) -> int:
         return 2
 
     print(
-        f"{args.algorithm.upper()} / ref_mode={args.ref_mode} / decoding={decoding} / "
-        f"{len(prompts)} prompts (+{len(holdout)} held out) x {args.n_samples} "
-        f"samples / {args.rounds} round(s)"
+        f"{args.algorithm.upper()} / ref_mode={args.ref_mode} / reward={detector} / "
+        f"decoding={decoding} / {len(prompts)} prompts (+{len(holdout)} held out) "
+        f"x {args.n_samples} samples / {args.rounds} round(s)"
     )
     print(f"decoding args: {runner.gen_args}")
 
