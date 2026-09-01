@@ -92,6 +92,10 @@ You also need:
 Other environment overrides: `THESIS_BASE_DIR` (repo root by default),
 `PHISHNET_BCO_CHECKPOINT`, `PHISHNET_KTO_CHECKPOINT`, `PHISHNET_SVM_MODEL`.
 
+Only the loop itself needs the checkpoint and the GPU. If you are here to read
+someone else's runs, MongoDB and the base install are enough — see *Sharing a
+run with someone else* for loading an archive they sent you.
+
 ---
 
 ## The loop
@@ -199,52 +203,77 @@ wrote it.
 
 ### Sharing a run with someone else
 
-`loop/archive.py` moves runs between databases:
+`loop/archive.py` moves runs between databases. An archive is one file holding
+everything a run needs to stand up on its own — its rounds and messages plus the
+subjects, checkpoints and datasets they reference — so what arrives is a working
+copy, not a table of numbers: `get_messages()` joins the subjects back in,
+`verify_dataset()` re-materialises, the dashboard opens it.
+
+**Sending.** Name the run, and optionally leave a line for whoever opens it:
 
 ```bash
-# everything a run needs to stand up on its own, in one file
-python -m loop.archive export run-1788122158.tar.gz --run 1788122158 --note "final KTO run"
+python -m loop.archive export run-1788122158.tar.gz \
+    --run 1788122158 --note "final KTO run, bert-phishing reward"
+```
 
-# what is in an archive, without a database or an import
-python -m loop.archive inspect run-1788122158.tar.gz
+Repeat `--run` for several; omit it entirely to export the whole database. Three
+full runs — 9,000 messages — come to about 3.6 MB. Send the `.tar.gz` however you
+would send any file.
 
-# on the other side
+**Receiving.** You need MongoDB running and the base install — no GPU, no
+checkpoint, no torch. Look before you load:
+
+```bash
+python -m loop.archive inspect run-1788122158.tar.gz   # no database touched
 python -m loop.archive import run-1788122158.tar.gz
 ```
 
-Naming a run pulls in its rounds and messages plus the subjects, checkpoints
-and datasets they reference, so the recipient gets a working copy rather than a
-table of numbers: `get_messages()` joins subjects back in, `verify_dataset()`
-re-materialises, the dashboard opens it. Omitting `--run` takes the whole
-database. Three full runs — 9,000 messages — come to about 3.6 MB.
+The import prints what it inserted and re-verifies the datasets that landed.
+After that the run is just another run: `python run_loop.py --report <run_id>`,
+`--verify <run_id>`, the dashboard, `python -m detectors.backfill <run_id>`.
 
-Inside is a gzipped JSONL file per collection plus a manifest, written as
-MongoDB **canonical Extended JSON**. That matters because the schema is held
+| flag | |
+| --- | --- |
+| `--run ID` | export only this run; repeat for several, omit for everything |
+| `--note "…"` | a line recorded in the manifest, shown by `inspect` |
+| `--on-conflict skip` | *(default)* leave a run id this database already holds alone |
+| `--on-conflict remap` | import it alongside, under the next free id |
+| `--on-conflict replace` | drop the local run of that id first |
+| `--no-verify` | skip the post-import dataset re-hash |
+| `--db NAME` | read or write a database other than `phishnet_rl` |
+
+`--db` is for staging — importing a colleague's archive somewhere separate to
+look at it before merging. Note that nothing else takes it: `run_loop.py`, the
+dashboard and `backfill` all read `phishnet_rl`, so that is where an archive has
+to land to be browsable.
+
+**Adapter weights do not travel.** A checkpoint document is a hash and a file
+manifest, not the 168 MB it describes, so `--verify` on the far side reports it
+missing — correctly. Send the weights separately and the recorded hashes prove
+they are the ones that generated the messages.
+
+**Colliding ids are expected, not an error.** Subjects, checkpoints and datasets
+are content-addressed, so each is matched on its natural key first: a recipient
+who ran the same `prompts.json` keeps their own subject documents, and the
+incoming DBRefs are rewritten onto them rather than duplicating anything. A
+`run_id` is a unix timestamp, so two people running the same afternoon can
+genuinely collide — hence `--on-conflict`. Importing the same archive twice
+inserts nothing the second time.
+
+**What is in the file.** A gzipped JSONL file per collection plus a manifest,
+written as MongoDB *canonical* Extended JSON, which `bson.json_util.loads` reads
+back a line at a time. The format is not incidental: this schema is held
 together by DBRefs, and `json.dumps(default=str)` flattens those into strings —
 the documents would arrive but no longer point at each other. Canonical rather
 than relaxed keeps ints and doubles apart, which `dataset_fingerprint` hashes.
-This is the faithful export, not the convenient one; for rows to train on,
+
+So this is the faithful export, not the convenient one. For rows to train on,
 `create_dataset(export_path=...)` still writes plain prompt/completion/label
 JSONL.
 
-**Adapter weights do not travel.** A checkpoint is a hash and a file manifest,
-not the 168 MB it describes, so `--verify` on the far side reports it missing —
-correctly. Send the weights separately and the recorded hashes prove they are
-the ones that generated the messages.
-
-Arriving is not a blind insert. Subjects, checkpoints and datasets are
-content-addressed, so each is matched on its natural key first: a recipient who
-ran the same `prompts.json` keeps their own subject documents and the incoming
-DBRefs are rewritten onto them. `run_id` is a unix timestamp, so two people
-running the same afternoon can collide on one — an existing run is skipped by
-default, `--on-conflict remap` imports alongside it under the next free id, and
-`--on-conflict replace` overwrites it. Importing the same archive twice inserts
-nothing the second time.
-
-After an import, every dataset that landed is re-materialised and re-hashed
-against the messages that arrived with it. That check is the end-to-end claim:
-same query, same cut-off, same rows, same hash on both machines. A failure sets
-the exit code.
+Every dataset that lands is re-materialised and re-hashed against the messages
+that arrived with it. That is the end-to-end claim — same query, same cut-off,
+same rows, same hash on both machines — and a failure sets the exit code.
 
 ### Running it
 
