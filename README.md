@@ -232,6 +232,12 @@ The import prints what it inserted and re-verifies the datasets that landed.
 After that the run is just another run: `python run_loop.py --report <run_id>`,
 `--verify <run_id>`, the dashboard, `python -m detectors.backfill <run_id>`.
 
+The dashboard needs nothing else — every tab reads from the messages, rounds and
+subjects that travelled. The one visible difference is the Provenance tab, which
+reports each checkpoint as `missing` because the adapter directories are not
+yours; the training pools next to them still verify, since that check re-hashes
+the messages rather than the weights.
+
 | flag | |
 | --- | --- |
 | `--run ID` | export only this run; repeat for several, omit for everything |

@@ -64,7 +64,6 @@ import time
 from typing import Any, Dict, Iterable, List, Optional, Sequence
 
 from bson import DBRef, ObjectId, json_util
-from pymongo import UpdateOne
 
 from loop.store import (
     CHECKPOINTS_COLLECTION,
@@ -531,29 +530,42 @@ def import_archive(
             continue
         document = prepare(document)
         document.pop("_id", None)
-        result = store.rounds.update_one(
-            {"run_id": document["run_id"], "round": document["round"]},
-            {"$setOnInsert": document},
-            upsert=True,
-        )
-        inserted["rounds"] += 1 if result.upserted_id else 0
+        if store.rounds.find_one(
+            {"run_id": document["run_id"], "round": document["round"]}, {"_id": 1}
+        ):
+            continue
+        store.rounds.insert_one(document)
+        inserted["rounds"] += 1
 
     # Messages keep their `_id` under a plain import, so re-importing the same
     # archive is a no-op. A remapped run is a genuinely new run, so its messages
     # need new ids or the second import would collide with the first.
-    operations = []
+    pending = []
     for document in documents["messages"]:
         if not in_scope(document):
             continue
         document = prepare(document)
         if run_map:
             document["_id"] = ObjectId()
-        operations.append(
-            UpdateOne({"_id": document["_id"]}, {"$setOnInsert": document}, upsert=True)
-        )
-    if operations:
-        result = store.messages.bulk_write(operations, ordered=False)
-        inserted["messages"] = result.upserted_count
+        pending.append(document)
+
+    if pending:
+        # Skip what is already here and insert the rest, rather than upserting
+        # each with `$setOnInsert`. The upsert would be tidier, but MongoDB
+        # builds the document it inserts with the fields in sorted order, and a
+        # message whose keys arrive reshuffled reads back as a differently
+        # shaped frame than the one it left — same values, different column
+        # order, for no reason the recipient can see.
+        here = {
+            existing["_id"]
+            for existing in store.messages.find(
+                {"_id": {"$in": [document["_id"] for document in pending]}}, {"_id": 1}
+            )
+        }
+        fresh = [document for document in pending if document["_id"] not in here]
+        if fresh:
+            store.messages.insert_many(fresh, ordered=False)
+        inserted["messages"] = len(fresh)
 
     # -- did it survive the trip? --------------------------------------------
 

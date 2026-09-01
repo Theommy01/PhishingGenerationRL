@@ -247,3 +247,24 @@ def test_manifest_describes_what_is_inside(store, populated, tmp_path):
     )
     on_disk = json.load(open(os.path.join(path, "manifest.json")))
     assert on_disk["collections"]["messages"]["count"] == manifest["runs"][0]["messages"]
+
+
+def test_documents_keep_their_field_order(store, other_store, populated, tmp_path):
+    """A message must read back the same shape, not just the same values.
+
+    MongoDB rebuilds a `$setOnInsert` document with its fields sorted, which
+    turns an imported run into a differently ordered frame — same numbers,
+    columns shuffled — for no reason the recipient can see.
+    """
+    path = str(tmp_path / "run.tar.gz")
+    archive.export_archive(store, path, [populated])
+    archive.import_archive(other_store, path)
+
+    key = {"run_id": populated, "round": 0, "prompt_id": 0, "sample_idx": 0}
+    here = store.messages.find_one(key)
+    there = other_store.messages.find_one(key)
+    assert list(there) == list(here)
+
+    round_here = store.rounds.find_one({"run_id": populated, "round": 0})
+    round_there = other_store.rounds.find_one({"run_id": populated, "round": 0})
+    assert list(round_there) == list(round_here)
