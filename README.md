@@ -16,7 +16,7 @@ outcome — see `--ref-mode` below.
 |---|---|
 | `run_loop.py` | **CLI for the whole loop.** Start here. |
 | `generate_dataset.py` | Generate messages from prompt specs, score them, build a training set. Also a CLI. |
-| `loop/` | The loop: `store.py` (MongoDB), `runner.py` (the cycle), `report.py` (per-round metrics). |
+| `loop/` | The loop: `store.py` (MongoDB), `runner.py` (the cycle), `report.py` (per-round metrics), `archive.py` (export/import runs). |
 | `training/` | One round of `kto_trainer` or `bco_trainer`, `reference_model.py` (what the KL term is anchored to), `policy_kl.py` (how far it ended up). |
 | `metrics/` | `config.py` (paths, text helpers), `models.py` (AI detector, SBERT), `analysis.py`, `generation.py`. |
 | `visualisation/charts.py` | Every figure and text report. Writes to `output/`. |
@@ -196,6 +196,55 @@ way, `store.messages_for_subject(id)` and `store.messages_for_checkpoint(id)`
 collect every message a subject line or an adapter ever produced, across runs;
 `store.checkpoint_for_message(m)` goes from one message to the adapter that
 wrote it.
+
+### Sharing a run with someone else
+
+`loop/archive.py` moves runs between databases:
+
+```bash
+# everything a run needs to stand up on its own, in one file
+python -m loop.archive export run-1788122158.tar.gz --run 1788122158 --note "final KTO run"
+
+# what is in an archive, without a database or an import
+python -m loop.archive inspect run-1788122158.tar.gz
+
+# on the other side
+python -m loop.archive import run-1788122158.tar.gz
+```
+
+Naming a run pulls in its rounds and messages plus the subjects, checkpoints
+and datasets they reference, so the recipient gets a working copy rather than a
+table of numbers: `get_messages()` joins subjects back in, `verify_dataset()`
+re-materialises, the dashboard opens it. Omitting `--run` takes the whole
+database. Three full runs — 9,000 messages — come to about 3.6 MB.
+
+Inside is a gzipped JSONL file per collection plus a manifest, written as
+MongoDB **canonical Extended JSON**. That matters because the schema is held
+together by DBRefs, and `json.dumps(default=str)` flattens those into strings —
+the documents would arrive but no longer point at each other. Canonical rather
+than relaxed keeps ints and doubles apart, which `dataset_fingerprint` hashes.
+This is the faithful export, not the convenient one; for rows to train on,
+`create_dataset(export_path=...)` still writes plain prompt/completion/label
+JSONL.
+
+**Adapter weights do not travel.** A checkpoint is a hash and a file manifest,
+not the 168 MB it describes, so `--verify` on the far side reports it missing —
+correctly. Send the weights separately and the recorded hashes prove they are
+the ones that generated the messages.
+
+Arriving is not a blind insert. Subjects, checkpoints and datasets are
+content-addressed, so each is matched on its natural key first: a recipient who
+ran the same `prompts.json` keeps their own subject documents and the incoming
+DBRefs are rewritten onto them. `run_id` is a unix timestamp, so two people
+running the same afternoon can collide on one — an existing run is skipped by
+default, `--on-conflict remap` imports alongside it under the next free id, and
+`--on-conflict replace` overwrites it. Importing the same archive twice inserts
+nothing the second time.
+
+After an import, every dataset that landed is re-materialised and re-hashed
+against the messages that arrived with it. That check is the end-to-end claim:
+same query, same cut-off, same rows, same hash on both machines. A failure sets
+the exit code.
 
 ### Running it
 
