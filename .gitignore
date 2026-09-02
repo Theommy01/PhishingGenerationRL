@@ -15,3 +15,6 @@ output/
 # LoRA adapters / trainer checkpoints (hundreds of MB each)
 checkpoint-*/
 Models/*/
+
+# Console output from long runs, redirected there by hand (hundreds of KB each)
+logs/

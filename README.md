@@ -16,7 +16,7 @@ outcome — see `--ref-mode` below.
 |---|---|
 | `run_loop.py` | **CLI for the whole loop.** Start here. |
 | `generate_dataset.py` | Generate messages from prompt specs, score them, build a training set. Also a CLI. |
-| `loop/` | The loop: `store.py` (MongoDB), `runner.py` (the cycle), `report.py` (per-round metrics). |
+| `loop/` | The loop: `store.py` (MongoDB), `runner.py` (the cycle), `report.py` (per-round metrics), `archive.py` (export/import runs). |
 | `training/` | One round of `kto_trainer` or `bco_trainer`, `reference_model.py` (what the KL term is anchored to), `policy_kl.py` (how far it ended up). |
 | `metrics/` | `config.py` (paths, text helpers), `models.py` (AI detector, SBERT), `analysis.py`, `generation.py`. |
 | `visualisation/charts.py` | Every figure and text report. Writes to `output/`. |
@@ -91,6 +91,10 @@ You also need:
 
 Other environment overrides: `THESIS_BASE_DIR` (repo root by default),
 `PHISHNET_BCO_CHECKPOINT`, `PHISHNET_KTO_CHECKPOINT`, `PHISHNET_SVM_MODEL`.
+
+Only the loop itself needs the checkpoint and the GPU. If you are here to read
+someone else's runs, MongoDB and the base install are enough — see *Sharing a
+run with someone else* for loading an archive they sent you.
 
 ---
 
@@ -196,6 +200,86 @@ way, `store.messages_for_subject(id)` and `store.messages_for_checkpoint(id)`
 collect every message a subject line or an adapter ever produced, across runs;
 `store.checkpoint_for_message(m)` goes from one message to the adapter that
 wrote it.
+
+### Sharing a run with someone else
+
+`loop/archive.py` moves runs between databases. An archive is one file holding
+everything a run needs to stand up on its own — its rounds and messages plus the
+subjects, checkpoints and datasets they reference — so what arrives is a working
+copy, not a table of numbers: `get_messages()` joins the subjects back in,
+`verify_dataset()` re-materialises, the dashboard opens it.
+
+**Sending.** Name the run, and optionally leave a line for whoever opens it:
+
+```bash
+python -m loop.archive export run-1788122158.tar.gz \
+    --run 1788122158 --note "final KTO run, bert-phishing reward"
+```
+
+Repeat `--run` for several; omit it entirely to export the whole database. Three
+full runs — 9,000 messages — come to about 3.6 MB. Send the `.tar.gz` however you
+would send any file.
+
+**Receiving.** You need MongoDB running and the base install — no GPU, no
+checkpoint, no torch. Look before you load:
+
+```bash
+python -m loop.archive inspect run-1788122158.tar.gz   # no database touched
+python -m loop.archive import run-1788122158.tar.gz
+```
+
+The import prints what it inserted and re-verifies the datasets that landed.
+After that the run is just another run: `python run_loop.py --report <run_id>`,
+`--verify <run_id>`, the dashboard, `python -m detectors.backfill <run_id>`.
+
+The dashboard needs nothing else — every tab reads from the messages, rounds and
+subjects that travelled. The one visible difference is the Provenance tab, which
+reports each checkpoint as `missing` because the adapter directories are not
+yours; the training pools next to them still verify, since that check re-hashes
+the messages rather than the weights.
+
+| flag | |
+| --- | --- |
+| `--run ID` | export only this run; repeat for several, omit for everything |
+| `--note "…"` | a line recorded in the manifest, shown by `inspect` |
+| `--on-conflict skip` | *(default)* leave a run id this database already holds alone |
+| `--on-conflict remap` | import it alongside, under the next free id |
+| `--on-conflict replace` | drop the local run of that id first |
+| `--no-verify` | skip the post-import dataset re-hash |
+| `--db NAME` | read or write a database other than `phishnet_rl` |
+
+`--db` is for staging — importing a colleague's archive somewhere separate to
+look at it before merging. Note that nothing else takes it: `run_loop.py`, the
+dashboard and `backfill` all read `phishnet_rl`, so that is where an archive has
+to land to be browsable.
+
+**Adapter weights do not travel.** A checkpoint document is a hash and a file
+manifest, not the 168 MB it describes, so `--verify` on the far side reports it
+missing — correctly. Send the weights separately and the recorded hashes prove
+they are the ones that generated the messages.
+
+**Colliding ids are expected, not an error.** Subjects, checkpoints and datasets
+are content-addressed, so each is matched on its natural key first: a recipient
+who ran the same `prompts.json` keeps their own subject documents, and the
+incoming DBRefs are rewritten onto them rather than duplicating anything. A
+`run_id` is a unix timestamp, so two people running the same afternoon can
+genuinely collide — hence `--on-conflict`. Importing the same archive twice
+inserts nothing the second time.
+
+**What is in the file.** A gzipped JSONL file per collection plus a manifest,
+written as MongoDB *canonical* Extended JSON, which `bson.json_util.loads` reads
+back a line at a time. The format is not incidental: this schema is held
+together by DBRefs, and `json.dumps(default=str)` flattens those into strings —
+the documents would arrive but no longer point at each other. Canonical rather
+than relaxed keeps ints and doubles apart, which `dataset_fingerprint` hashes.
+
+So this is the faithful export, not the convenient one. For rows to train on,
+`create_dataset(export_path=...)` still writes plain prompt/completion/label
+JSONL.
+
+Every dataset that lands is re-materialised and re-hashed against the messages
+that arrived with it. That is the end-to-end claim — same query, same cut-off,
+same rows, same hash on both machines — and a failure sets the exit code.
 
 ### Running it
 
